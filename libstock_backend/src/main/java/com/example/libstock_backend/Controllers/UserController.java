@@ -9,6 +9,7 @@ import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Repositories.UserRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/user")
 public class UserController {
 
