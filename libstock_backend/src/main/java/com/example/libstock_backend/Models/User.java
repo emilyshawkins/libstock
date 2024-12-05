@@ -13,18 +13,16 @@ public class User {
     private String lastName;
     private String password;
     private boolean isAdmin;
-    private int cardNumber;
     private String address;
 
     public User() {}
 
-    public User(String email, String firstName, String lastName, String password, boolean isAdmin, int cardNumber, String address) {
+    public User(String email, String firstName, String lastName, String password, boolean isAdmin, String address) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.isAdmin = isAdmin;
-        this.cardNumber = cardNumber;
         this.address = address;
     }
 
@@ -50,10 +48,6 @@ public class User {
 
     public boolean isAdmin() {
         return isAdmin;
-    }
-
-    public int getCardNumber() {
-        return cardNumber;
     }
 
     public String getAddress() {
@@ -82,10 +76,6 @@ public class User {
 
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
-    }
-
-    public void setCardNumber(int cardNumber) {
-        this.cardNumber = cardNumber;
     }
 
     public void setAddress(String address) {
