@@ -6,6 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NotificationRepository extends MongoRepository<Notification, String> {
-    List<Notification> findByUserID(String userID);
+    List<Notification> findByUserEmail(String email);
     Optional<Notification> findById(String id);
 }
