@@ -17,4 +17,24 @@ public class UserDTO {
         this.isAdmin = isAdmin;
         this.address = address;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public String getAddress() {
+        return address;
+    }
 }
