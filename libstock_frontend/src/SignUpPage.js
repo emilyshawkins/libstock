@@ -6,25 +6,35 @@ import './SignUpPage.css';
 
 function SignUpPage() {
     // State for form fields
-    const [fullName, setFullName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
     const [message, setMessage] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!fullName || !email || !password || !phoneNumber) {
+        if (!firstName || !lastName || !email || !password) {
             alert('All fields are required!');
             return;
         }
         try {
-            const response = await axios.post('http://localhost:3000/api/users/signup', {
-                fullName,
-                email,
-                password,
-                phoneNumber,
-            });
+            const response = await axios.post(
+                'http://localhost:8080/user/admin_signup',  // URL
+                {  // Data (Request body)
+                  firstName: firstName,
+                  lastName: lastName,
+                  email: email,
+                  password: password,
+                  isAdmin: true
+                },
+                {  // Configuration (headers, etc.)
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                }
+              );
+              
             setMessage('Sign Up Successful! You can now log in.');
             console.log(response.data);
         } catch (error) {
@@ -39,12 +49,22 @@ function SignUpPage() {
             {message && <p>{message}</p>} {/* Display success/error message */}
             <form onSubmit={handleSubmit} className="signup-form">
                 <div className="input-group">
-                    <label htmlFor="fullName">Full Name</label>
+                    <label htmlFor="firstName">First Name</label>
                     <input
                         type="text"
-                        id="fullName"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        id="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="input-group">
+                    <label htmlFor="lastName">Last Name</label>
+                    <input
+                        type="text"
+                        id="lastName"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                         required
                     />
                 </div>
@@ -65,16 +85,6 @@ function SignUpPage() {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="input-group">
-                    <label htmlFor="phoneNumber">Phone Number</label>
-                    <input
-                        type="text"
-                        id="phoneNumber"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
                         required
                     />
                 </div>
