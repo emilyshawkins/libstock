@@ -32,6 +32,7 @@ public class UserController {
         if (existingUser != null) {
             return ResponseEntity.status(Response.SC_CONFLICT).body(null);
         }
+        user.setAdmin(true);
         userRepository.save(user);
         return ResponseEntity.ok(new UserDTO(user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null));
     }
