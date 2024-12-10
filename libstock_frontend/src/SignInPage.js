@@ -1,16 +1,37 @@
 // src/SignInPage.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './SignInPage.css'; 
 
 function SignInPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle sign-in logic here (e.g., authentication)
-        console.log('Sign In attempt with', email, password);
+        if (!email || !password) {
+            alert('All fields are required!');
+            return;
+        }
+        try {
+            const response = await axios.post(
+                'http://localhost:8080/user/login',  // URL
+                {  // Data (Request body)
+                  email: email,
+                  password: password,
+                },
+                {  // Configuration (headers, etc.)
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                }
+              );
+              console.log(response.data);
+              
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
