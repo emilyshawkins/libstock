@@ -7,7 +7,6 @@ function Navbar() {
     return (
         <header className="header">
             <div className="logo-container">
-                {/* Wrap logo with Link for navigation */}
                 <Link to="/">
                     <img src="/logo.png" alt="Logo" className="logo" />
                 </Link>
