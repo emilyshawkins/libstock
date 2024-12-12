@@ -1,12 +1,14 @@
 // src/SignInPage.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './SignInPage.css'; 
+import './SignInPage.css';
 
 function SignInPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate(); // Hook for navigation
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,27 +18,26 @@ function SignInPage() {
         }
         try {
             const response = await axios.post(
-                'http://localhost:8080/user/login',  // URL
-                {  // Data (Request body)
-                  email: email,
-                  password: password,
-                },
-                {  // Configuration (headers, etc.)
-                  headers: {
-                    'Content-Type': 'application/json'
-                  }
-                }
-              );
-              console.log(response.data);
-              
+                'http://localhost:3000/user/login', 
+                { email, password },
+                { headers: { 'Content-Type': 'application/json' } }
+            );
+            console.log('Login successful:', response.data);
+
+            // Redirect to the homepage upon successful login
+            navigate('/');
         } catch (error) {
-            console.error(error);
+            setErrorMessage(
+                error.response?.data?.message || 'Your email or passwork is incorrect'
+            );
+            console.error('Login error:', error);
         }
     };
 
     return (
         <div className="signin-container">
-            <h2>Admin Sign In</h2>
+            <h2>Sign In</h2>
+            {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
             <form onSubmit={handleSubmit} className="signin-form">
                 <div className="input-group">
                     <label htmlFor="email">Email</label>

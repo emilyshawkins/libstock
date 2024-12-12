@@ -7,13 +7,18 @@ function Navbar() {
     return (
         <header className="header">
             <div className="logo-container">
-                <img src="logo.png" alt="Logo" className="logo" />
+                {/* Wrap logo with Link for navigation */}
+                <Link to="/">
+                    <img src="/logo.png" alt="Logo" className="logo" />
+                </Link>
                 <h1 className="site-title">LibStock</h1>
             </div>
             <div className="nav-links">
                 <div className="main-nav">
                     <div className="button-container">
-                        <button className="nav-button">Home</button>
+                        <Link to="/">
+                            <button className="nav-button">Home</button>
+                        </Link>
                     </div>
                     <div className="button-container">
                         <button className="nav-button">About</button>
@@ -22,7 +27,6 @@ function Navbar() {
                         <button className="nav-button">Contact</button>
                     </div>
                     <div className="button-container">
-                        {/* Use Link to wrap the Sign In button for navigation */}
                         <Link to="/signin">
                             <button className="nav-button">Sign In</button>
                         </Link>

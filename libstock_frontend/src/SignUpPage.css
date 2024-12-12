@@ -1,4 +1,14 @@
 /* src/SignUpPage.css */
+.toggle-role {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.toggle-role label {
+    font-size: 17px;
+    color: #476778;
+}
+
 .signup-container {
     max-width: 400px;
     margin: 50px auto;

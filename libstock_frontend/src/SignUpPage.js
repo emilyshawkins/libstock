@@ -1,4 +1,3 @@
-// src/SignUpPage.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -11,6 +10,7 @@ function SignUpPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false); // Toggle between admin and user
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,34 +19,46 @@ function SignUpPage() {
             return;
         }
         try {
+            const endpoint = isAdmin 
+                ? 'http://localhost:3000/user/admin_signup' 
+                : 'http://localhost:3000/user/signup';
             const response = await axios.post(
-                'http://localhost:8080/user/admin_signup',  // URL
-                {  // Data (Request body)
-                  firstName: firstName,
-                  lastName: lastName,
-                  email: email,
-                  password: password,
-                  isAdmin: true
+                endpoint,
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    isAdmin
                 },
-                {  // Configuration (headers, etc.)
-                  headers: {
-                    'Content-Type': 'application/json'
-                  }
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 }
-              );
-              
+            );
             setMessage('Sign Up Successful! You can now log in.');
             console.log(response.data);
         } catch (error) {
-            setMessage(error.response.data.message || 'An error occurred');
+            setMessage(error.response?.data?.message || 'An error occurred');
             console.error(error);
         }
     };
 
     return (
         <div className="signup-container">
-            <h2>Create an Admin Account</h2>
-            {message && <p>{message}</p>} {/* Display success/error message */}
+            <h2>{isAdmin ? 'Create an Admin Account' : 'Create an User Account'}</h2>
+            <div className="toggle-role">
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={isAdmin}
+                        onChange={() => setIsAdmin(!isAdmin)}
+                    />
+                    Sign up as Admin
+                </label>
+            </div>
+            {message && <p>{message}</p>}
             <form onSubmit={handleSubmit} className="signup-form">
                 <div className="input-group">
                     <label htmlFor="firstName">First Name</label>
@@ -88,7 +100,9 @@ function SignUpPage() {
                         required
                     />
                 </div>
-                <button type="submit" className="signup-button">Sign Up</button>
+                <button type="submit" className="signup-button">
+                    {isAdmin ? 'Sign Up as Admin' : 'Sign Up as User'}
+                </button>
                 <div className="signin-link">
                     <span>Already have an account? 
                         <Link to="/signin"> Sign In!</Link>
