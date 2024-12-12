@@ -1,0 +1,145 @@
+/* src/UserHomePage.css */
+.home-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #476778;
+    margin-bottom: 20px;
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 60px;
+    width: 100%;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.left-bar {
+    position: fixed;
+    top: 60px; /* Start below the top bar */
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    gap: 30px;
+}
+
+.left-bar-button {
+    width: 90%;
+    margin: 10px 0;
+    padding: 20px 50px;
+    font-size: 18px;
+    color: white;
+    background-color: #35505d;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.left-bar-button:hover {
+    background-color: #2b404a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content {
+    flex-grow: 1;
+    margin-left: 250px; /* Space for the left sidebar */
+    padding: 20px;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+}
+.notification-icon,
+.user-icon {
+    margin-left: 20px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: background-color 0.3s;
+}
+
+.notification-icon img,
+.user-icon img {
+    width: 35px;
+    height: 35px;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-bar input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.item-card {
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-card h3 {
+    margin: 0 0 10px 0;
+    color: #476778;
+}
+
+.item-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.manage-button {
+    background-color: #476778;
+    color: white;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.manage-button:hover {
+    background-color: #35505d;
+}
