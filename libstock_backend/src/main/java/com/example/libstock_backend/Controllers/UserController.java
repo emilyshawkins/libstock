@@ -3,6 +3,10 @@ package com.example.libstock_backend.Controllers;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.libstock_backend.DTOs.JwtDTO;
 import com.example.libstock_backend.DTOs.LoginDTO;
 import com.example.libstock_backend.DTOs.UserDTO;
 import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Repositories.UserRepository;
+import com.example.libstock_backend.Service.JwtUtils;
+import com.example.libstock_backend.Service.MyUserDetailsService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -24,7 +31,16 @@ import com.example.libstock_backend.Repositories.UserRepository;
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private MyUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @PostMapping("/admin_signup")
     public ResponseEntity<UserDTO> create(@RequestBody User user) {
@@ -38,12 +54,29 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO user) {
-        User existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null);
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(401).body("Unauthorized");
         }
-        return ResponseEntity.ok(new UserDTO(existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getAddress()));
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
+        final String jwt = jwtUtils.generateToken(userDetails);
+
+        return ResponseEntity.ok(new JwtDTO(jwt));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        User existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser != null) {
+            return ResponseEntity.status(Response.SC_CONFLICT).body(null);
+        }
+        user.setAdmin(false); // Assuming normal registration
+        userRepository.save(user);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @GetMapping("/get")
