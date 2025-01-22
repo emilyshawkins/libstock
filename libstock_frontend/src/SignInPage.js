@@ -25,7 +25,7 @@ function SignInPage() {
             console.log('Login successful:', response.data);
 
             // Redirect to the homepage upon successful login
-            navigate('/');
+            navigate('/user/home');
         } catch (error) {
             setErrorMessage(
                 error.response?.data?.message || 'Your email or passwork is incorrect'
