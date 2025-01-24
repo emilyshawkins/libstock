@@ -21,7 +21,7 @@ function SignUpPage() {
         try {
             const endpoint = isAdmin 
                 ? 'http://localhost:8080/user/admin_signup' 
-                : 'http://localhost:8080/user/signup';
+                : 'http://localhost:8080/user/user_signup';
             const response = await axios.post(
                 endpoint,
                 {
