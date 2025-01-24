@@ -27,12 +27,23 @@ public class UserController {
     UserRepository userRepository;
 
     @PostMapping("/admin_signup")
-    public ResponseEntity<UserDTO> create(@RequestBody User user) {
+    public ResponseEntity<UserDTO> create_admin(@RequestBody User user) {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser != null) {
             return ResponseEntity.status(Response.SC_CONFLICT).body(null);
         }
         user.setAdmin(true);
+        userRepository.save(user);
+        return ResponseEntity.ok(new UserDTO(user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null));
+    }
+
+    @PostMapping("/user_signup")
+    public ResponseEntity<UserDTO> create_user(@RequestBody User user) {
+        User existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser != null) {
+            return ResponseEntity.status(Response.SC_CONFLICT).body(null);
+        }
+        user.setAdmin(false);
         userRepository.save(user);
         return ResponseEntity.ok(new UserDTO(user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null));
     }
