@@ -1,4 +1,4 @@
-/* src/UserHomePage.css */
+/* General container styling */
 .home-container {
     max-width: 800px;
     margin: 50px auto;
@@ -16,6 +16,7 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Top bar styling */
 .top-bar {
     position: fixed;
     top: 0;
@@ -30,9 +31,10 @@ h1 {
     z-index: 1000;
 }
 
+/* Left sidebar */
 .left-bar {
     position: fixed;
-    top: 60px; /* Start below the top bar */
+    top: 60px;
     left: 0;
     width: 250px;
     height: 100%;
@@ -61,9 +63,6 @@ h1 {
 
 .left-bar-button:hover {
     background-color: #2b404a;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .content {
@@ -73,6 +72,8 @@ h1 {
     background-color: #f9f9f9;
     overflow-y: auto;
 }
+
+/* Notification and user icon */
 .notification-icon {
     margin-left: 20px;
     cursor: pointer;
@@ -104,6 +105,7 @@ h1 {
     border-radius: 50%;
 }
 
+/* Dropdown menu */
 .dropdown-menu {
     position: absolute;
     top: 50px;
@@ -128,6 +130,7 @@ h1 {
     background-color: #476778;
 }
 
+/* Search bar */
 .search-bar {
     margin-bottom: 20px;
     text-align: center;
@@ -141,6 +144,7 @@ h1 {
     border-radius: 5px;
 }
 
+/* Items list and cards */
 .items-list {
     display: flex;
     flex-direction: column;
@@ -177,4 +181,87 @@ h1 {
 
 .manage-button:hover {
     background-color: #35505d;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+    .home-container {
+        margin: 20px;
+        padding: 10px;
+    }
+
+    .top-bar {
+        justify-content: space-between;
+        padding: 0 10px;
+    }
+
+    .left-bar {
+        position: static;
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        box-shadow: none;
+        background-color: #f9f9f9;
+        gap: 10px;
+    }
+
+    .left-bar-button {
+        width: auto;
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .search-bar input {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .items-list {
+        gap: 10px;
+    }
+
+    .item-card {
+        padding: 10px;
+    }
+
+    .manage-button {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: 10px;
+    }
+
+    .left-bar {
+        display: none;
+    }
+
+    .content {
+        margin: 0;
+    }
+
+    .search-bar input {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .item-card h3 {
+        font-size: 16px;
+    }
+
+    .item-card p {
+        font-size: 12px;
+    }
 }
