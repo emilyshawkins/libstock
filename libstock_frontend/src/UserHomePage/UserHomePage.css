@@ -73,8 +73,7 @@ h1 {
     background-color: #f9f9f9;
     overflow-y: auto;
 }
-.notification-icon,
-.user-icon {
+.notification-icon {
     margin-left: 20px;
     cursor: pointer;
     width: 40px;
@@ -91,6 +90,42 @@ h1 {
 .user-icon img {
     width: 35px;
     height: 35px;
+}
+
+.user-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.user-icon {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 150px;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #476778;
 }
 
 .search-bar {

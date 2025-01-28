@@ -17,6 +17,7 @@
     height: 80px;
     width: auto;
     margin-right: 10px;
+    border-radius: 100%;
 }
 
 .site-title {
