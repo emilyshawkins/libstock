@@ -9,6 +9,7 @@ function HomePage() {
     const [borrowedItems, setBorrowedItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [userInfo, setUserInfo] = useState({ name: '', email: '' });
 
     // Fetch borrowed items from the server when the component mounts
     useEffect(() => {
@@ -17,6 +18,9 @@ function HomePage() {
                 const response = await axios.get('http://localhost:3000/user/home'); 
                 setBorrowedItems(response.data);
                 setFilteredItems(response.data);
+
+                const userResponse = await axios.get('http://localhost:3000/user/info');
+                setUserInfo(userResponse.data); // Assume the response includes { name, email }
             } catch (error) {
                 console.error('Error fetching borrowed items:', error);
             }
@@ -45,12 +49,6 @@ function HomePage() {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    // Handle logout
-    const handleLogout = () => {
-        console.log('Logging out...');
-        // Perform logout logic here
-    };
-
     return (
         <div className="home-container">
             <h1>Welcome to Your Dashboard</h1>
@@ -67,8 +65,12 @@ function HomePage() {
                     />
                     {isDropdownOpen && (
                         <div className="dropdown-menu">
-                            <h2>User Name </h2>
-                            <p> Email@gmail.com </p>
+                            <div className="dropdown-user-info">
+                                <p>User Name</p>
+                                <p><strong>{userInfo.name}</strong></p>  {/*backend return username and email*/}
+                                <p>User Email</p>
+                                <p>{userInfo.email}</p>
+                            </div>
                             <Link to="/account-settings" className="dropdown-item">
                                 Account Settings
                             </Link>
