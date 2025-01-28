@@ -8,12 +8,13 @@ function HomePage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [borrowedItems, setBorrowedItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     // Fetch borrowed items from the server when the component mounts
     useEffect(() => {
         async function fetchBorrowedItems() {
             try {
-                const response = await axios.get('http://localhost:3000/user/borrowed-items'); 
+                const response = await axios.get('http://localhost:3000/user/home'); 
                 setBorrowedItems(response.data);
                 setFilteredItems(response.data);
             } catch (error) {
@@ -39,6 +40,17 @@ function HomePage() {
         console.log(`Managing item with ID: ${itemId}`);
     };
 
+    // Handle dropdown toggle
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    // Handle logout
+    const handleLogout = () => {
+        console.log('Logging out...');
+        // Perform logout logic here
+    };
+
     return (
         <div className="home-container">
             <h1>Welcome to Your Dashboard</h1>
@@ -46,8 +58,25 @@ function HomePage() {
                 <div className="notification-icon">
                     <img src="/notification-icon.png" alt="Notifications" />
                 </div>
-                <div className="user-icon">
-                    <img src="/user-icon.png" alt="User Account" />
+                <div className="user-icon-container">
+                    <img
+                        src="/user-icon.png"
+                        alt="User Account"
+                        className="user-icon"
+                        onClick={toggleDropdown}
+                    />
+                    {isDropdownOpen && (
+                        <div className="dropdown-menu">
+                            <h2>User Name </h2>
+                            <p> Email@gmail.com </p>
+                            <Link to="/account-settings" className="dropdown-item">
+                                Account Settings
+                            </Link>
+                            <Link to="/signin" className="dropdown-item">
+                                Log Out
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="main-content">
@@ -63,7 +92,7 @@ function HomePage() {
                     <button className="left-bar-button">Collection</button>
                     <button className="left-bar-button">Wishlist</button>
                     <button className="left-bar-button">Favorite</button>
-                    <button className="left-bar-button">Setting Account</button>
+                    <button className="left-bar-button">Inventory Setting</button>
                 </div>
                 <div className="search-bar">
                 <input

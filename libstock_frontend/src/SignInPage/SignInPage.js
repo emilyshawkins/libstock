@@ -18,7 +18,7 @@ function SignInPage() {
         }
         try {
             const response = await axios.post(
-                'http://localhost:8080/user/login', 
+                'http://localhost:8080/login', 
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
