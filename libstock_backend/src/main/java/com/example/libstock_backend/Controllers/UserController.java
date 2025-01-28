@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.libstock_backend.DTOs.LoginDTO;
+import com.example.libstock_backend.DTOs.ProfileDTO;
 import com.example.libstock_backend.DTOs.UserDTO;
 import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Repositories.UserRepository;
@@ -67,39 +68,31 @@ public class UserController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<UserDTO> update(@RequestBody User user) {
-        User existingUser = userRepository.findByEmail(user.getEmail());
+    public ResponseEntity<UserDTO> update(@RequestBody ProfileDTO profile) {
+        User existingUser = userRepository.findByEmail(profile.getPreviousEmail());
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
 
         // Check if email is being changed and if so, check if it is already in use
-        if (user.getEmail() != null) {
-            if (!user.getEmail().equals(existingUser.getEmail())) {
-                User duplicateUser = userRepository.findByEmail(user.getEmail());
-                if (duplicateUser != null) {
-                    return ResponseEntity.status(Response.SC_CONFLICT).body(null);
-                }
-                existingUser.setEmail(user.getEmail());
+        if (profile.getNewEmail() != null) {
+            User duplicateUser = userRepository.findByEmail(profile.getNewEmail());
+            if (duplicateUser != null) {
+                return ResponseEntity.status(Response.SC_CONFLICT).body(null);
             }
+            existingUser.setEmail(profile.getNewEmail());
+            
         }
-        if (user.getFirstName() != null) {
-            existingUser.setFirstName(user.getFirstName());
+        if (profile.getFirstName() != null) {
+            existingUser.setFirstName(profile.getFirstName());
         }
-        if (user.getLastName() != null) {
-            existingUser.setLastName(user.getLastName());
+        if (profile.getLastName() != null) {
+            existingUser.setLastName(profile.getLastName());
         }
-        if (user.getPassword() != null) {
-            existingUser.setPassword(user.getPassword());
-        }
-        if (user.getAddress() != null) {
-            existingUser.setAddress(user.getAddress());
+        if (profile.getPassword() != null) {
+            existingUser.setPassword(profile.getPassword());
         }
 
-        // Should not be appear as an option but if attempted should not be able to change admin status
-        if (user.isAdmin() != existingUser.isAdmin()) {
-            return ResponseEntity.status(Response.SC_FORBIDDEN).body(null);
-        }
         userRepository.save(existingUser);
         return ResponseEntity.ok(new UserDTO(existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getAddress()));
     }
