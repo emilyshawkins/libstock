@@ -1,4 +1,5 @@
 /* src/Navbar.css */
+/* Header styling */
 .header {
     display: flex;
     justify-content: space-between;
@@ -8,6 +9,7 @@
     color: white;
 }
 
+/* Logo container styling */
 .logo-container {
     display: flex;
     align-items: center;
@@ -27,6 +29,7 @@
     margin: 0;
 }
 
+/* Navigation links */
 .nav-links {
     display: flex;
     justify-content: center;
@@ -40,6 +43,7 @@
     gap: 30px;
 }
 
+/* Button container styling */
 .button-container {
     display: flex;
     flex-direction: column;
@@ -61,6 +65,7 @@
     background-color: #35505d;
 }
 
+/* Sign-up link styling */
 .signup-link span {
     font-size: 14px;
     color: #476778;
@@ -75,4 +80,67 @@
 
 .signup-link a:hover {
     color: #35505d;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .logo {
+        height: 60px;
+    }
+
+    .site-title {
+        font-size: 24px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .nav-button {
+        padding: 15px 30px;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header {
+        padding: 10px;
+    }
+
+    .logo {
+        height: 50px;
+    }
+
+    .site-title {
+        font-size: 20px;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-button {
+        padding: 10px 20px;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .signup-link span {
+        font-size: 12px;
+    }
+
+    .signup-link a {
+        font-size: 12px;
+    }
 }
