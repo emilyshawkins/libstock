@@ -2,9 +2,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './Navbar'; // Import Navbar
-import SignInPage from './SignInPage'; // Import SignInPage
-import SignUpPage from './SignUpPage'; // Import SignUpPage
-import UserHomePage from './UserHomePage'; // Import UserHomePage
+import SignInPage from './SignInPage/SignInPage'; // Import SignInPage
+import SignUpPage from './SignUpPage/SignUpPage'; // Import SignUpPage
+import UserHomePage from './UserHomePage/UserHomePage'; // Import UserHomePage
 
 function App() {
     return (
