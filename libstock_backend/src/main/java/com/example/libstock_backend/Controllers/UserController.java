@@ -104,7 +104,7 @@ public class UserController {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
         userRepository.delete(existingUser);
-        return ResponseEntity.ok(new UserDTO(existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getAddress()));
+        return ResponseEntity.ok().body(null);
     }
 
 }
