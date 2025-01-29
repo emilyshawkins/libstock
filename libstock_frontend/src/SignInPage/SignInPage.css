@@ -8,17 +8,20 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Title styling */
 h2 {
     text-align: center;
     color: #476778;
 }
 
+/* Form styling */
 .signin-form {
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
+/* Input group styling */
 .input-group {
     display: flex;
     flex-direction: column;
@@ -36,6 +39,7 @@ h2 {
     border-radius: 5px;
 }
 
+/* Button styling */
 .signin-button {
     background-color: #476778;
     color: white;
@@ -48,4 +52,31 @@ h2 {
 
 .signin-button:hover {
     background-color: #35505d;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+    .signin-container {
+        max-width: 90%;
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .input-group label {
+        font-size: 16px;
+    }
+
+    .input-group input {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .signin-button {
+        padding: 6px;
+        font-size: 14px;
+    }
 }
