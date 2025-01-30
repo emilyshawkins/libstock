@@ -1,6 +1,7 @@
-// src/SignInPage.js
+/* src/SignInPage.js */
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import './SignInPage.css';
 
@@ -8,29 +9,36 @@ function SignInPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate(); // Hook for navigation
+    const [loading, setLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setErrorMessage(""); 
+
         if (!email || !password) {
-            alert('All fields are required!');
+            setErrorMessage("Email and password are required.");
+            setLoading(false);
             return;
         }
+
         try {
             const response = await axios.post(
-                'http://localhost:8080/user/login', 
+                'http://localhost:8080/user/login',
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
-            console.log('Login successful:', response.data);
+            console.log("Login successful:", response.data);
 
             // Redirect to the homepage upon successful login
-            navigate('/user/home');
+            navigate("/user/home");
         } catch (error) {
-            setErrorMessage(
-                error.response?.data?.message || 'Your email or passwork is incorrect'
-            );
-            console.error('Login error:', error);
+            setErrorMessage(error.response?.data?.message || "Your email or password is incorrect.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -49,17 +57,34 @@ function SignInPage() {
                         required
                     />
                 </div>
-                <div className="input-group">
+                <div className="input-group password-group">
                     <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <div className="password-container">
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                    </div>
                 </div>
-                <button type="submit" className="signin-button">Sign In</button>
+                <div className="input-group remember-me">
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={rememberMe}
+                            onChange={() => setRememberMe(!rememberMe)}
+                        />
+                        Remember Me
+                    </label>
+                </div>
+                <button type="submit" className="signin-button" disabled={loading}>
+                    {loading ? "Signing In..." : "Sign In"}
+                </button>
                 <div className="signup-link">
                     <span>Don't have an account? 
                         <Link to="/signup"> Sign Up!</Link>
