@@ -1,5 +1,6 @@
 import React from "react";
 import "./AdminInventory.css";
+import AddBook from "./AddBook";
 
 const AdminInventory = () => {
   return (
@@ -61,9 +62,7 @@ const AdminInventory = () => {
 
         {/* PAGE CONTAINER */}
         <div className="page-container">
-          <div className="page-title category-title">
-            {/* <h1>Book Viewer</h1> */}
-          </div>
+          <div className="page-title category-title"></div>
 
           {/* BOOK LIST SECTION */}
           <section id="book_list">
@@ -89,7 +88,7 @@ const AdminInventory = () => {
                   Young Adult
                 </a>
               </div>
-
+              {/* Sort Option */}
               <div className="small-12 medium-3 columns">
                 <select className="sort-options">
                   <option value="" disabled defaultValue>
@@ -101,121 +100,12 @@ const AdminInventory = () => {
                 </select>
               </div>
             </div>
-
+            {/* Add Book Button */}
+            <AddBook />
             {/* Grid Shuffle */}
             <div className="grid-shuffle">
               <ul id="grid" className="row">
-                {/* BOOK ITEM #1 */}
-                <li
-                  className="book-item small-12 medium-6 columns"
-                  data-groups='["classic"]'
-                  data-date-created="1937"
-                  data-title="Of Mice and Men"
-                  data-color="#fcc278"
-                >
-                  <div className="bk-img">
-                    <div className="bk-wrapper">
-                      <div className="bk-book bk-bookdefault">
-                        <div className="bk-front">
-                          <div
-                            className="bk-cover"
-                            style={{
-                              backgroundImage:
-                                "url('http://interactivejoe.com/book-viewer/assets/images/bk_1-small.jpg')",
-                            }}
-                          ></div>
-                        </div>
-                        <div className="bk-back"></div>
-                        <div className="bk-left"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="item-details">
-                    <h3 className="book-item_title">Of Mice and Men</h3>
-                    <p className="author">by John Steinbeck &bull; 1937</p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Etiam tellus nisi, eget pulvinar in, molestie et arcu.
-                    </p>
-                    <a href="#" className="button ">
-                      Details
-                    </a>
-                  </div>
-                </li>
-                {/* BOOK ITEM #2 */}
-                <li
-                  className="book-item small-12 medium-6 columns"
-                  data-groups='["classic"]'
-                  data-date-created="1937"
-                  data-title="Of Mice and Men"
-                  data-color="#fcc278"
-                >
-                  <div className="bk-img">
-                    <div className="bk-wrapper">
-                      <div className="bk-book bk-bookdefault">
-                        <div className="bk-front">
-                          <div
-                            className="bk-cover"
-                            style={{
-                              backgroundImage:
-                                "url('http://interactivejoe.com/book-viewer/assets/images/bk_1-small.jpg')",
-                            }}
-                          ></div>
-                        </div>
-                        <div className="bk-back"></div>
-                        <div className="bk-left"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="item-details">
-                    <h3 className="book-item_title">Of Mice and Men</h3>
-                    <p className="author">by John Steinbeck &bull; 1937</p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Etiam tellus nisi, eget pulvinar in, molestie et arcu.
-                    </p>
-                    <a href="#" className="button ">
-                      Details
-                    </a>
-                  </div>
-                </li>
-                {/* BOOK ITEM #3 */}
-                <li
-                  className="book-item small-12 medium-6 columns"
-                  data-groups='["classic"]'
-                  data-date-created="1937"
-                  data-title="Of Mice and Men"
-                  data-color="#fcc278"
-                >
-                  <div className="bk-img">
-                    <div className="bk-wrapper">
-                      <div className="bk-book bk-bookdefault">
-                        <div className="bk-front">
-                          <div
-                            className="bk-cover"
-                            style={{
-                              backgroundImage:
-                                "url('http://interactivejoe.com/book-viewer/assets/images/bk_1-small.jpg')",
-                            }}
-                          ></div>
-                        </div>
-                        <div className="bk-back"></div>
-                        <div className="bk-left"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="item-details">
-                    <h3 className="book-item_title">Of Mice and Men</h3>
-                    <p className="author">by John Steinbeck &bull; 1937</p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Etiam tellus nisi, eget pulvinar in, molestie et arcu.
-                    </p>
-                    <a href="#" className="button ">
-                      Details
-                    </a>
-                  </div>
-                </li>
+                {/* BOOK ITEMS */}
               </ul>
             </div>
           </section>
