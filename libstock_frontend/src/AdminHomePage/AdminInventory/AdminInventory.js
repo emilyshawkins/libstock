@@ -36,19 +36,11 @@ const AdminInventory = () => {
         {/* HEADER */}
         <header id="header" className="page-header">
           <div className="page-header-container row">
-            {/* Logo */}
-            <div className="main-logo">
-              <a href="#" className="logo">
-                The Library
-              </a>
-            </div>
-
             <div className="menu-search">
               {/* Main Navigation */}
               <div className="main-navigation">
                 <a href="#">Menu</a>
               </div>
-
               {/* Search */}
               <div className="catalog-search">
                 <input
@@ -149,125 +141,48 @@ const AdminInventory = () => {
                       Details
                     </a>
                   </div>
-
-                  <div className="overlay-details">
-                    <a href="#" className="close-overlay-btn">
-                      Close
-                    </a>
-                    <div className="overlay-image">
-                      <img
-                        src="http://interactivejoe.com/book-viewer/assets/images/bk_1-large.jpg"
-                        alt="Book Cover"
-                      />
-                      <div className="back-color"></div>
-                    </div>
-                    <div className="overlay-desc activated">
-                      <h2 className="overlay_title">Of Mice and Men</h2>
-                      <p className="author">by John Steinbeck</p>
-                      <p className="published">1937</p>
-                      <p className="synopsis">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Etiam luctus convallis sem. Nunc sed tristique augue.
-                        Aenean at nulla vel lacus volutpat bibendum vitae ut
-                        nibh. Aliquam eu metus et purus rutrum malesuada. Aenean
-                        in auctor mauris, non vulputate libero. Nullam auctor,
-                        purus ut cursus convallis, lectus tellus dignissim
-                        lectus, id tempor ipsum leo ut nulla. Vestibulum vitae
-                        elit erat.
-                      </p>
-                      <a href="#" className="button preview">
-                        Preview
-                      </a>
-                    </div>
-                    <div className="overlay-preview">
-                      <a href="#" className="back-preview-btn">
-                        Back
-                      </a>
-                      <h4 className="preview-title">Preview</h4>
-                      <div className="preview-content">
-                        <h5>Chapter 1</h5>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Etiam luctus convallis sem. Nunc sed tristique
-                          augue. Aenean at nulla vel lacus volutpat bibendum
-                          vitae ut nibh. Aliquam eu metus et purus rutrum
-                          malesuada. Aenean in auctor mauris, non vulputate
-                          libero. Nullam auctor, purus ut cursus convallis,
-                          lectus tellus dignissim lectus, id tempor ipsum leo ut
-                          nulla. Vestibulum vitae elit erat.
-                        </p>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Etiam luctus convallis sem. Nunc sed tristique
-                          augue. Aenean at nulla vel lacus volutpat bibendum
-                          vitae ut nibh. Aliquam eu metus et purus rutrum
-                          malesuada. Aenean in auctor mauris, non vulputate
-                          libero. Nullam auctor, purus ut cursus convallis,
-                          lectus tellus dignissim lectus, id tempor ipsum leo ut
-                          nulla. Vestibulum vitae elit erat.
-                        </p>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Etiam luctus convallis sem. Nunc sed tristique
-                          augue. Aenean at nulla vel lacus volutpat bibendum
-                          vitae ut nibh. Aliquam eu metus et purus rutrum
-                          malesuada. Aenean in auctor mauris, non vulputate
-                          libero. Nullam auctor, purus ut cursus convallis,
-                          lectus tellus dignissim lectus, id tempor ipsum leo ut
-                          nulla. Vestibulum vitae elit erat.
-                          <br />
-                          &nbsp;
-                          <br />
-                          &nbsp;
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                 </li>
+                {/* BOOK ITEM #2 */}
                 <li
                   className="book-item small-12 medium-6 columns"
                   data-groups='["classic"]'
                   data-date-created="1937"
-                  data-title="The Hobbit"
+                  data-title="Of Mice and Men"
                   data-color="#fcc278"
-                ></li>
-                {/* Repeat the above pattern for the other <li> items... */}
-                {/* BOOK ITEM #2, #3, #4, etc. */}
-
-                {/* 
-                  For brevity, not rewriting every single item in full here.
-                  Convert each similarly, ensuring "class" => "className"
-                  and "for" => "htmlFor".
-                */}
+                >
+                  <div className="bk-img">
+                    <div className="bk-wrapper">
+                      <div className="bk-book bk-bookdefault">
+                        <div className="bk-front">
+                          <div
+                            className="bk-cover"
+                            style={{
+                              backgroundImage:
+                                "url('http://interactivejoe.com/book-viewer/assets/images/bk_1-small.jpg')",
+                            }}
+                          ></div>
+                        </div>
+                        <div className="bk-back"></div>
+                        <div className="bk-left"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="item-details">
+                    <h3 className="book-item_title">Of Mice and Men</h3>
+                    <p className="author">by John Steinbeck &bull; 1937</p>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Etiam tellus nisi, eget pulvinar in, molestie et arcu.
+                    </p>
+                    <a href="#" className="button ">
+                      Details
+                    </a>
+                  </div>
+                </li>
               </ul>
             </div>
           </section>
         </div>
-
-        {/* FOOTER */}
-        <footer id="footer" className="page-footer">
-          <div className="row footer-wrapper">
-            <div className="original-version small-12 columns">
-              <a
-                href="http://interactivejoe.com/book-viewer/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <em>Original Version can be found here.</em>
-              </a>
-            </div>
-            <div className="copyright small-12 columns">
-              &copy; 2016 -{" "}
-              <a
-                href="http://interactivejoe.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                InteractiveJoe
-              </a>
-            </div>
-          </div>
-        </footer>
       </div>
       {/* /main */}
 

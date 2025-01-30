@@ -5,24 +5,6 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,700");
 @import url("https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css");
 
-/* ------------------------------------------------------
-   Global Variables (converted to plain values)
-------------------------------------------------------- */
-/* 
-   From SCSS:
-   $global-width: 1024px;
-   $primary: #219e9a;
-   $light-gray: #ecf0f1;
-   $medium-gray: #d2d6d5;
-   $dark-gray: #313131;
-   $black: #000;
-   $white: #fff;
-   $body-font-family: 'Lato','Helvetica Neue',Helvetica,Arial,sans-serif;
-*/
-
-/* ------------------------------------------------------
-   Global styles
-------------------------------------------------------- */
 html,
 body,
 .main,
@@ -119,27 +101,6 @@ a.button:focus {
   width: 100%;
   border-bottom: 1px solid #d2d6d5; /* $medium-gray */
   background-color: #fff; /* $white */
-}
-
-.main-logo {
-  display: inline-block;
-  padding: 1em;
-  width: auto;
-}
-
-.main-logo a.logo {
-  display: block;
-  width: 150px;
-  height: 40px;
-  text-indent: -9999px;
-  background: url("http://interactivejoe.com/book-viewer/assets/images/logo.svg");
-  background-color: #fff; /* $white */
-  transition: background-color 250ms ease-out;
-}
-
-.main-logo a.logo:hover,
-.main-logo a.logo:focus {
-  background-color: #ecf0f1; /* $light-gray */
 }
 
 .menu-search {
@@ -721,23 +682,6 @@ a.filter-item.active {
   height: 100%;
 }
 
-.main-overlay .overlay-details {
-  position: absolute;
-  display: block;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  max-width: 800px;
-  max-height: 480px;
-  padding: 40px;
-  overflow: hidden;
-  border-radius: 3px;
-  background-color: #fff; /* $white */
-  box-shadow: 0px 2px 1px 2px rgba(0, 0, 0, 0.3);
-  transform: translate(-50%, -50%);
-}
-
 /* book cover image in lightbox */
 .main-overlay .overlay-image {
   position: relative;
@@ -851,7 +795,7 @@ a.filter-item.active {
   margin-top: 0;
 }
 
-.main-overlay .overlay-preview {
+/* .main-overlay .overlay-preview {
   position: relative;
   display: inline-block;
   float: right;
@@ -863,7 +807,7 @@ a.filter-item.active {
 
 .main-overlay .overlay-preview.activated {
   margin-top: -430px;
-}
+} */
 
 /* Multi-line truncate with arguments (15px, 1.5, 16) => 15*1.5*16=360 */
 .main-overlay .preview-content {
@@ -925,27 +869,4 @@ a.filter-item.active {
     rgba(255, 255, 255, 0.8) 30%,
     rgba(255, 255, 255, 1) 80%
   );
-}
-
-/* Overlay details hidden by default */
-.overlay-details {
-  display: none;
-}
-
-/* ------------------------------------------------------
-   Footer
-------------------------------------------------------- */
-#footer {
-  margin-top: 60px;
-  padding: 15px 0 20px;
-  border-top: 1px solid #fff; /* $white */
-  background-color: rgba(49, 49, 49, 0.5); /* rgba($dark-gray, 0.5) */
-}
-
-#footer div,
-#footer a,
-#footer p {
-  color: #fff; /* $white */
-  font-size: 12px;
-  text-align: center;
 }
