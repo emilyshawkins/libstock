@@ -70,5 +70,11 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/get_all")
+    public ResponseEntity<Iterable<Book>> get_all() {
+        System.out.println("Getting all books");
+        System.out.println(BookRepository.findAll());
+        return ResponseEntity.ok(BookRepository.findAll());
+    }
 
 }
