@@ -1,4 +1,4 @@
-// src/BulletinBoard.js
+/* src/BulletinBoard.js */
 import React from 'react';
 import './BulletinBoard.css'; // Define styles for the bulletin board
 

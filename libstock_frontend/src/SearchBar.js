@@ -1,6 +1,6 @@
-// src/SearchBar.js
+/* src/SearchBar.js */
 import React from 'react';
-import './SearchBar.css'; // We will define styles for the search bar
+import './SearchBar.css'; 
 
 function SearchBar() {
     return (
