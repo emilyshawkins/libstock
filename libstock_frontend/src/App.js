@@ -11,6 +11,7 @@ import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
+import AdminInventory from "./AdminHomePage/AdminInventory/AdminInventory"; // Import AdminInventory
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function MainContent() {
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
+        <Route path="/admin/inventory" element={<AdminInventory />} />{" "}
       </Routes>
     </>
   );

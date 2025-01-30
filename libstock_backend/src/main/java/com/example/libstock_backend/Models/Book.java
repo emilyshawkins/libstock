@@ -1,7 +1,7 @@
 package com.example.libstock_backend.Models;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
