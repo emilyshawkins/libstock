@@ -1,12 +1,10 @@
 /* src/UserHomePage.css */
 .home-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 50px auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
-    align-items: center;
-    justify-content: flex-start;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -16,7 +14,12 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Top bar styling */
+.error-message {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
 .top-bar {
     position: fixed;
     top: 0;
@@ -31,7 +34,65 @@ h1 {
     z-index: 1000;
 }
 
-/* Left sidebar */
+/* User Icon */
+.user-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.user-icon {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 200px;
+}
+
+.dropdown-user-info {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
+.dropdown-user-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    display: block;
+    color: #333;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+}
+
+
+.dropdown-item:hover {
+    background-color: #476778;
+    color: white;
+}
+
+.logout-button {
+    font-weight: normal;
+}
+
+/* Left Sidebar */
 .left-bar {
     position: fixed;
     top: 60px;
@@ -42,16 +103,17 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0px 0;
+    padding: 10px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    gap: 30px;
+    gap: 15px;
 }
 
+/* Sidebar Buttons */
 .left-bar-button {
     width: 90%;
     margin: 10px 0;
-    padding: 20px 50px;
-    font-size: 18px;
+    padding: 15px;
+    font-size: 16px;
     color: white;
     background-color: #35505d;
     border: none;
@@ -65,74 +127,9 @@ h1 {
     background-color: #2b404a;
 }
 
-.content {
-    flex-grow: 1;
-    margin-left: 250px; /* Space for the left sidebar */
-    padding: 20px;
-    background-color: #f9f9f9;
-    overflow-y: auto;
-}
-
-/* Notification and user icon */
-.notification-icon {
-    margin-left: 20px;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    overflow: hidden;
-    transition: background-color 0.3s;
-}
-
-.notification-icon img,
-.user-icon img {
-    width: 35px;
-    height: 35px;
-}
-
-.user-icon-container {
-    position: relative;
-    display: inline-block;
-}
-
-.user-icon {
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-/* Dropdown menu */
-.dropdown-menu {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 150px;
-}
-
-.dropdown-item {
-    padding: 10px 15px;
-    display: block;
-    color: #333;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.dropdown-item:hover {
-    background-color: #476778;
-}
-
-/* Search bar */
+/* Search Bar */
 .search-bar {
-    margin-bottom: 20px;
+    margin: 20px auto;
     text-align: center;
 }
 
@@ -144,13 +141,21 @@ h1 {
     border-radius: 5px;
 }
 
-/* Items list and cards */
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Items List */
 .items-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
+/* Item Card */
 .item-card {
     padding: 15px;
     background-color: white;
@@ -168,6 +173,7 @@ h1 {
     color: #555;
 }
 
+/* Manage Button */
 .manage-button {
     background-color: #476778;
     color: white;
@@ -183,16 +189,16 @@ h1 {
     background-color: #35505d;
 }
 
-/* Responsive styling */
 @media screen and (max-width: 768px) {
     .home-container {
         margin: 20px;
-        padding: 10px;
+        padding: 15px;
     }
 
     .top-bar {
+        flex-direction: row;
         justify-content: space-between;
-        padding: 0 10px;
+        padding: 10px;
     }
 
     .left-bar {
@@ -203,7 +209,6 @@ h1 {
         padding: 10px;
         box-shadow: none;
         background-color: #f9f9f9;
-        gap: 10px;
     }
 
     .left-bar-button {
@@ -212,7 +217,7 @@ h1 {
         font-size: 14px;
     }
 
-    .content {
+    .main-content {
         margin-left: 0;
         padding: 10px;
     }
@@ -234,6 +239,14 @@ h1 {
         font-size: 14px;
         padding: 6px 10px;
     }
+
+    .dropdown-menu {
+        width: 180px;
+    }
+
+    .dropdown-user-info p {
+        font-size: 12px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -248,7 +261,7 @@ h1 {
         display: none;
     }
 
-    .content {
+    .main-content {
         margin: 0;
     }
 
@@ -263,5 +276,18 @@ h1 {
 
     .item-card p {
         font-size: 12px;
+    }
+
+    .manage-button {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .dropdown-menu {
+        width: 160px;
+    }
+
+    .dropdown-user-info p {
+        font-size: 10px;
     }
 }

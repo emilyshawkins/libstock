@@ -1,6 +1,7 @@
 /* src/SignUpPage.js */
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import './SignUpPage.css';
 
@@ -12,6 +13,7 @@ function SignUpPage() {
     const [message, setMessage] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
     const [errors, setErrors] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -51,7 +53,7 @@ function SignUpPage() {
 
             setMessage('Sign Up Successful! You can now log in.');
             console.log(response.data);
-            navigate('/login');
+            navigate('/signin');
         } catch (error) {
             if (error.response?.data?.errors) {
                 setErrors(error.response.data.errors);
@@ -113,17 +115,21 @@ function SignUpPage() {
                     />
                     {errors.email && <p className="error">{errors.email}</p>}
                 </div>
-                <div className="input-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    {errors.password && <p className="error">{errors.password}</p>}
-                </div>
+                <div className="input-group password-group">
+                                    <label htmlFor="password">Password</label>
+                                    <div className="password-container">
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            id="password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required
+                                        />
+                                        <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
+                                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </span>
+                                    </div>
+                                </div>
                 <button type="submit" className="signup-button">
                     {isAdmin ? 'Sign Up as Admin' : 'Sign Up as User'}
                 </button>
