@@ -31,56 +31,56 @@ public class UserController {
     public ResponseEntity<UserDTO> create_admin(@RequestBody User user) {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser != null) {
-            return ResponseEntity.status(Response.SC_CONFLICT).body(null);
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if email already in use
         }
         user.setAdmin(true);
         userRepository.save(user);
-        return ResponseEntity.ok(new UserDTO(user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null));
+        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin())); // 200 OK if account creation successful
     }
 
     @PostMapping("/user_signup")
     public ResponseEntity<UserDTO> create_user(@RequestBody User user) {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser != null) {
-            return ResponseEntity.status(Response.SC_CONFLICT).body(null);
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if email already in use
         }
         user.setAdmin(false);
         userRepository.save(user);
-        return ResponseEntity.ok(new UserDTO(user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null));
+        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin()));
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO user) {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null);
+            return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null); // 401 Unauthorized if email not found or password incorrect
         }
-        return ResponseEntity.ok(new UserDTO(existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getAddress()));
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin())); // 200 OK if login successful
     }
 
     @GetMapping("/get")
-    public ResponseEntity<UserDTO> get(@RequestParam String email) {
-        User existingUser = userRepository.findByEmail(email);
+    public ResponseEntity<UserDTO> get(@RequestParam String id) {
+        User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(new UserDTO(existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getAddress()));
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin()));
     }
 
     @PatchMapping("/update")
     public ResponseEntity<UserDTO> update(@RequestBody ProfileDTO profile) {
-        User existingUser = userRepository.findByEmail(profile.getPreviousEmail());
+        User existingUser = userRepository.findById(profile.getId()).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
 
         // Check if email is being changed and if so, check if it is already in use
-        if (profile.getNewEmail() != null) {
-            User duplicateUser = userRepository.findByEmail(profile.getNewEmail());
+        if (profile.getEmail() != null) {
+            User duplicateUser = userRepository.findByEmail(profile.getEmail());
             if (duplicateUser != null) {
                 return ResponseEntity.status(Response.SC_CONFLICT).body(null);
             }
-            existingUser.setEmail(profile.getNewEmail());
+            existingUser.setEmail(profile.getEmail());
             
         }
         if (profile.getFirstName() != null) {
@@ -94,7 +94,7 @@ public class UserController {
         }
 
         userRepository.save(existingUser);
-        return ResponseEntity.ok(new UserDTO(existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getAddress()));
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin()));
     }
     
     @DeleteMapping("/delete")

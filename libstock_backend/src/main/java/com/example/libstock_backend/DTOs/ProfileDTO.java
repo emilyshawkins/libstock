@@ -2,36 +2,35 @@ package com.example.libstock_backend.DTOs;
 
 public class ProfileDTO {
 
-    private String previousEmail;
-    private String newEmail;
+    private String id;
+    private String email;
     private String password;
     private String firstName;
     private String lastName;
 
     public ProfileDTO() {}
 
-    public ProfileDTO(String previousEmail, String newEmail, String password, String firstName, String lastName) {
-        this.newEmail = newEmail;
-        this.previousEmail = previousEmail;
+    public ProfileDTO(String id, String email, String password, String firstName, String lastName) {
+        this.id = id;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public String getNewEmail() {
-        return newEmail;        
+    public String getId() {
+        return id;
     }
 
-    public void setNewEmail(String newEmail) {
-        this.newEmail = newEmail;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getPreviousEmail() {
-        return previousEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPreviousEmail(String previousEmail) {
-        this.previousEmail = previousEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

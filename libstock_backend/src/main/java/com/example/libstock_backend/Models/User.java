@@ -13,17 +13,15 @@ public class User {
     private String lastName;
     private String password;
     private boolean isAdmin;
-    private String address;
 
     public User() {}
 
-    public User(String email, String firstName, String lastName, String password, boolean isAdmin, String address) {
+    public User(String email, String firstName, String lastName, String password, boolean isAdmin) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.isAdmin = isAdmin;
-        this.address = address;
     }
 
     public String getId() {
@@ -50,10 +48,6 @@ public class User {
         return isAdmin;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -76,9 +70,5 @@ public class User {
 
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }
