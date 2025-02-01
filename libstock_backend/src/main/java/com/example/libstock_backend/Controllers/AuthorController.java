@@ -3,7 +3,9 @@ package com.example.libstock_backend.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +42,7 @@ public class AuthorController {
         return ResponseEntity.ok(author);
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/update")
     public ResponseEntity<Author> update_author(@RequestBody Author author) {
         Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
         if (existingAuthor == null) {
@@ -52,7 +54,7 @@ public class AuthorController {
         return ResponseEntity.ok(existingAuthor);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<Author> delete_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
         if (author == null) {

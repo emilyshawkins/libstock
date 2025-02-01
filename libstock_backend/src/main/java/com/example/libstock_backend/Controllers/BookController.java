@@ -3,6 +3,7 @@ package com.example.libstock_backend.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,7 +60,7 @@ public class BookController {
         return ResponseEntity.ok(existingBook);
     }
 
-    @PatchMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<Book> delete_book(@RequestParam String id) {
         Book existingBook = BookRepository.findById(id).orElse(null);
         if (existingBook == null) {
