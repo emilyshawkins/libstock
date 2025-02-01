@@ -7,5 +7,6 @@ import java.util.List;
 public interface BookAuthorRepository extends MongoRepository<BookAuthor, String> {
     List<BookAuthor> findByAuthorID(String authorID); // Find all books by an author
     List<BookAuthor> findByISBN(int ISBN); // Find all authors of a book
+    BookAuthor findByAuthorIDAndISBN(String authorID, int ISBN); // Find a specific author of a specific book
     
 }
