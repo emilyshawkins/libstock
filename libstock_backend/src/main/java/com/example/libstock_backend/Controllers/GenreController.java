@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.libstock_backend.DTOs.GenreUpdateDTO;
 import com.example.libstock_backend.Models.Genre;
 import com.example.libstock_backend.Repositories.GenreRepository;
 
@@ -35,8 +34,8 @@ public class GenreController {
     }
 
     @GetMapping("/read")
-    public ResponseEntity<Genre> read_genre(@RequestParam String genre) {
-        Genre existingGenre = genreRepository.findByName(genre);
+    public ResponseEntity<Genre> read_genre(@RequestParam String id) {
+        Genre existingGenre = genreRepository.findById(id).orElse(null);
         if (existingGenre == null) {
             return ResponseEntity.notFound().build();
         }
@@ -44,19 +43,19 @@ public class GenreController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<Genre> update_genre(@RequestBody GenreUpdateDTO genre) {
-        Genre existingGenre = genreRepository.findByName(genre.getCurrentName());
+    public ResponseEntity<Genre> update_genre(@RequestBody Genre genre) {
+        Genre existingGenre = genreRepository.findById(genre.getId()).orElse(null);
         if (existingGenre == null) {
             return ResponseEntity.notFound().build();
         }
-        existingGenre.setName(genre.getNewName());
+        existingGenre.setName(genre.getName());
         genreRepository.save(existingGenre);
         return ResponseEntity.ok(existingGenre);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Genre> delete_genre(@RequestParam String genre) {
-        Genre existingGenre = genreRepository.findByName(genre);
+    public ResponseEntity<Genre> delete_genre(@RequestParam String id) {
+        Genre existingGenre = genreRepository.findById(id).orElse(null);
         if (existingGenre == null) {
             return ResponseEntity.notFound().build();
         }

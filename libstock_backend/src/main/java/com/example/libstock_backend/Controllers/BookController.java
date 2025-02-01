@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.libstock_backend.DTOs.BookUpdateDTO;
 import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Repositories.BookRepository;
 
@@ -34,8 +33,8 @@ public class BookController {
     }
 
     @GetMapping("/read")
-    public ResponseEntity<Book> read_book(@RequestParam int ISBN) {
-        Book book = BookRepository.findByISBN(ISBN);
+    public ResponseEntity<Book> read_book(@RequestParam String id) {
+        Book book = BookRepository.findById(id).orElse(null);
         if (book == null) {
             return ResponseEntity.notFound().build();
         }
@@ -43,12 +42,12 @@ public class BookController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<Book> update_book(@RequestBody BookUpdateDTO book) {
-        Book existingBook = BookRepository.findByISBN(book.getCurrentISBN());
+    public ResponseEntity<Book> update_book(@RequestBody Book book) {
+        Book existingBook = BookRepository.findById(book.getId()).orElse(null);
         if (existingBook == null) {
             return ResponseEntity.notFound().build();
         }
-        existingBook.setISBN(book.getNewISBN());
+        existingBook.setISBN(book.getISBN());
         existingBook.setTitle(book.getTitle());
         existingBook.setSummary(book.getSummary());
         existingBook.setPublicationDate(book.getPublicationDate());
@@ -61,8 +60,8 @@ public class BookController {
     }
 
     @PatchMapping("/delete")
-    public ResponseEntity<Book> delete_book(@RequestParam int ISBN) {
-        Book existingBook = BookRepository.findByISBN(ISBN);
+    public ResponseEntity<Book> delete_book(@RequestParam String id) {
+        Book existingBook = BookRepository.findById(id).orElse(null);
         if (existingBook == null) {
             return ResponseEntity.notFound().build();
         }
@@ -72,8 +71,6 @@ public class BookController {
 
     @GetMapping("/get_all")
     public ResponseEntity<Iterable<Book>> get_all() {
-        System.out.println("Getting all books");
-        System.out.println(BookRepository.findAll());
         return ResponseEntity.ok(BookRepository.findAll());
     }
 
