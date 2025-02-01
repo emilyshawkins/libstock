@@ -22,7 +22,7 @@ public class AuthorController {
     AuthorRepository authorRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<Author> create(@RequestBody Author author) {
+    public ResponseEntity<Author> create_author(@RequestBody Author author) {
         Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
         if (existingAuthor != null) {
             return ResponseEntity.badRequest().body(null);
@@ -32,7 +32,7 @@ public class AuthorController {
     }
 
     @GetMapping("/read")
-    public ResponseEntity<Author> read(@RequestParam String id) {
+    public ResponseEntity<Author> read_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
         if (author == null) {
             return ResponseEntity.notFound().build();
@@ -41,7 +41,7 @@ public class AuthorController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Author> update(@RequestBody Author author) {
+    public ResponseEntity<Author> update_author(@RequestBody Author author) {
         Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
         if (existingAuthor == null) {
             return ResponseEntity.notFound().build();
@@ -53,7 +53,7 @@ public class AuthorController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Author> delete(@RequestParam String id) {
+    public ResponseEntity<Author> delete_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
         if (author == null) {
             return ResponseEntity.notFound().build();
