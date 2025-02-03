@@ -1,5 +1,6 @@
 import React from "react";
 import "./AdminInventory.css";
+import { Link } from "react-router-dom";
 
 const AdminInventory = () => {
   return (
@@ -102,13 +103,16 @@ const AdminInventory = () => {
               </div>
             </div>
             {/* Create Button */}
-            <button
-              onClick={() => {
-                alert("Create Button Clicked");
-              }}
-            >
-              Create a Book
-            </button>
+            <Link to="/admin/inventory/add-book">
+              <button
+                onClick={() => {
+                  console.log("Create Button Clicked");
+                }}
+              >
+                Create a Book
+              </button>
+            </Link>
+
             {/* Grid Shuffle */}
             <div className="grid-shuffle">
               <ul id="grid" className="row">
