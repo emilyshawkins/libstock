@@ -1,0 +1,80 @@
+/* src/Navbar/Topbar.css */
+.top-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 60px;
+    width: 100%;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* ✅ Adds a shadow for better visibility */
+}
+
+/* Ensure content does not overlap with the fixed Topbar */
+.main-content {
+    margin-top: 70px; /* ✅ Pushes content down so it isn't hidden behind the Topbar */
+}
+
+/* User Icon Container */
+.user-icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* User Icon */
+.user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 200px;
+    padding: 10px;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #476778;
+    color: white;
+}
+
+/* Ensure log out button looks the same as other links */
+.logout-button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    color: #333;
+}
+
+.logout-button:hover {
+    background-color: #476778;
+    color: white;
+}

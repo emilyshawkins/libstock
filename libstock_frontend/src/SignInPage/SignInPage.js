@@ -31,10 +31,26 @@ function SignInPage() {
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
+
             console.log("Login successful:", response.data);
+
+            // Extract user ID and token from the response
+            const { id, token, name } = response.data; 
+
+            if (id) {
+                // Store user ID and token in localStorage
+                localStorage.setItem("userId", id);
+                localStorage.setItem("userName", name);
+                if (token) {
+                    localStorage.setItem("token", token);
+                }
+            } else {
+                console.error("No user ID found in response");
+            }
 
             // Redirect to the homepage upon successful login
             navigate("/user/home");
+
         } catch (error) {
             setErrorMessage(error.response?.data?.message || "Your email or password is incorrect.");
         } finally {

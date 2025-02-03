@@ -1,0 +1,111 @@
+.settings-container {
+    max-width: 1000px;
+    margin: 90px auto;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center all content */
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    color: #476778;
+}
+
+/* Center the labels inside the container */
+.accordion {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the labels */
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Center each label */
+.accordion-label {
+    display: flex;
+    justify-content: left; /* Center text inside */
+    align-items: center;
+    width: 100%; /* Full width */
+    max-width: 800px; /* Set a max width */
+    cursor: pointer;
+    background-color: #476778;
+    color: white;
+    padding: 30px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.accordion-label input {
+    margin-right: 10px;
+}
+
+/* Center the content inside each accordion section */
+.accordion-content {
+    background-color: #f9f9f9;
+    padding: 0 30px;
+    border-radius: 0 0 5px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: left; /* Center content */
+    text-align: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px; /* Set the same max-width as labels */
+    margin-top: 10px;
+}
+
+/* Ensure inputs are properly centered */
+.accordion-content input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px; /* Set max width */
+}
+
+/* Ensure buttons are centered */
+.accordion-content button {
+    padding: 10px;
+    background-color: #35505d;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px; /* Keep buttons a good size */
+}
+
+.accordion-content button:hover {
+    background-color: #2b404a;
+}
+
+/* Delete Account */
+.delete-label {
+    background-color: #d9534f;
+}
+
+.delete-button {
+    background-color: #d9534f;
+    padding: 10px;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}

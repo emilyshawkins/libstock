@@ -20,19 +20,6 @@ h1 {
     text-align: center;
 }
 
-.top-bar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 60px;
-    width: 100%;
-    background-color: whitesmoke;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0 20px;
-    z-index: 1000;
-}
 
 /* User Icon */
 .user-icon-container {
@@ -108,44 +95,38 @@ h1 {
     gap: 15px;
 }
 
-/* Sidebar Buttons */
-.left-bar-button {
-    width: 90%;
-    margin: 10px 0;
-    padding: 15px;
-    font-size: 16px;
-    color: white;
-    background-color: #35505d;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
-.left-bar-button:hover {
-    background-color: #2b404a;
-}
 
 /* Search Bar */
 .search-bar {
-    margin: 20px auto;
-    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
 }
 
 .search-bar input {
-    width: 80%;
+    width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    text-align: left;
+}
+
+.content {
+    text-align: left;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
 }
 
 /* Main Content */
 .main-content {
-    margin-left: 250px;
-    padding: 20px;
-    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+    justify-content: center; /* Centers content vertically */
+    text-align: center;
 }
 
 /* Items List */
@@ -224,7 +205,8 @@ h1 {
 
     .search-bar input {
         width: 100%;
-        font-size: 14px;
+        max-width: 500px;
+        margin-bottom: 20px;
     }
 
     .items-list {

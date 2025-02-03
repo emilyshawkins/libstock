@@ -1,4 +1,3 @@
-/* src/App.js */
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -7,11 +6,14 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./Navbar/Navbar"; // Import Navbar
+import Sidebar from "./Navbar/Sidebar"; // Import Sidebar
+import Topbar from "./Navbar/Topbar"; // Import Sidebar
 import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import AdminInventory from "./AdminHomePage/AdminInventory/AdminInventory"; // Import AdminInventory
+import AccountSettings from "./AccountSetting/AccountSettings"; // Import UserSettings
 
 function App() {
   return (
@@ -24,23 +26,27 @@ function App() {
 function MainContent() {
   const location = useLocation(); // Get the current route path
 
-  // Determine if Navbar should be displayed
-  const isNavbarVisible = location.pathname !== "/user/home";
+  // Show Navbar ONLY on "/", "/signin", and "/signup"
+  const isNavbarVisible = ["/", "/signin", "/signup"].includes(location.pathname);
+
+  // Show Sidebar on ALL pages EXCEPT "/", "/signin", "/signup"
+  const isSidebarVisible = !isNavbarVisible;
+  const isTopbarbarVisible = !isNavbarVisible;
 
   return (
     <>
-      {/* Display Navbar only if not on /user/home */}
       {isNavbarVisible && <Navbar />}
+      {isSidebarVisible && <Sidebar />}
+      {isTopbarbarVisible && <Topbar />}
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
-        <Route path="/user/home" element={<UserHomePage />} />{" "}
-        {/* User Home page */}
+        <Route path="/user/home" element={<UserHomePage />} /> {/* User Home page */}
+        <Route path="/admin/home" element={<AdminHomePage />} /> {/* Admin Home page */}
+        <Route path="/admin/inventory" element={<AdminInventory />} /> {/* Admin Inventory */}
+        <Route path="/user/settings" element={<AccountSettings />} /> {/* Account Settings */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
-        {/* Admin Home page */}
-        <Route path="/admin/inventory" element={<AdminInventory />} />{" "}
       </Routes>
     </>
   );
