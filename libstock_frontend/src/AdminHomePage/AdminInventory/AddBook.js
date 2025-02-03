@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 function AddBook() {
-  const [ISBN, setISBN] = useState("");
+  const [isbn, setISBN] = useState("");
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [publicationDate, setPublicationDate] = useState("");
@@ -24,7 +24,7 @@ function AddBook() {
     setSuccessMessage("");
 
     if (
-      !ISBN ||
+      !isbn ||
       !title ||
       !summary ||
       !publicationDate ||
@@ -41,7 +41,7 @@ function AddBook() {
       const response = await axios.post(
         "http://localhost:8080/book/create",
         {
-          ISBN,
+          isbn,
           title,
           summary,
           publicationDate,
@@ -74,7 +74,7 @@ function AddBook() {
           <input
             type="text"
             id="isbn"
-            value={ISBN}
+            value={isbn}
             onChange={(e) => setISBN(e.target.value)}
             required
           />
