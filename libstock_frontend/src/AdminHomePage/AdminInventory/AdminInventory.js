@@ -4,6 +4,8 @@ import "./AdminInventory.css";
 import AddBook from "./AddBook";
 import { Link } from "react-router-dom";
 
+const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY; // Access API key from .env
+
 const AdminInventory = () => {
   const [books, setBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,16 +29,50 @@ const AdminInventory = () => {
   };
 
   const searchBooks = async () => {
-    if (!searchQuery) return;
+    if (!searchQuery.trim()) return;
+
     try {
       const response = await axios.get(
-        `https://openlibrary.org/search.json?q=${searchQuery}`
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
+          searchQuery
+        )}&key=${API_KEY}`
       );
-      setSearchResults(response.data.docs);
+
+      if (response.data.items) {
+        setBooks(response.data.items.slice(0, 5)); // Show top 5 results
+      } else {
+        setBooks([]);
+      }
     } catch (error) {
-      console.error("Error searching books", error);
+      console.error("Error fetching books:", error);
     }
   };
+
+  const addBookToDatabase = async (book) => {
+    const bookData = {
+      ISBN: book.volumeInfo.industryIdentifiers?.[0]?.identifier || "Unknown",
+      title: book.volumeInfo.title,
+      summary: book.volumeInfo.description || "No description available",
+      publicationDate: book.volumeInfo.publishedDate || "Unknown",
+      price: 0, // Default price (Modify as needed)
+      purchaseable: true,
+      count: 1,
+      numCheckedOut: 0,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/book/create",
+        bookData
+      );
+      if (response.status === 200) {
+        alert("Book added successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding book to database:", error);
+      alert("Failed to add book.");
+    }
+  };
+
   return (
     <div id="main-container" className="main-container nav-effect-1">
       {/* NAV MENU */}
@@ -90,41 +126,35 @@ const AdminInventory = () => {
           </div>
         </header>
 
-        <section id="book_list">
-          <h3>Local Books</h3>
-          <ul>
-            {books.map((book) => (
-              <li key={book.ISBN} className="book-item">
-                <h3>{book.title}</h3>
-                <p>{book.summary}</p>
-                <p>Published: {book.publicationDate}</p>
-                <p>Price: ${book.price}</p>
-              </li>
-            ))}
-          </ul>
+        <div className="search-container">
+          <h2>Search Books</h2>
+          <input
+            type="text"
+            placeholder="Search by title or author..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button onClick={searchBooks}>Search</button>
 
-          <h3>Search Results</h3>
-          <ul className="search-results">
-            {searchResults.map((book, index) => (
-              <li key={index} className="book-item">
+          {/* Display search results */}
+          <div className="book-results">
+            {books.map((book) => (
+              <div key={book.id} className="book-card">
                 <img
                   src={
-                    book.cover_i
-                      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-                      : "https://via.placeholder.com/128x193?text=No+Cover"
+                    book.volumeInfo.imageLinks?.thumbnail || "placeholder.jpg"
                   }
-                  alt={book.title}
-                  className="book-cover"
+                  alt={book.volumeInfo.title}
                 />
-                <div className="book-details">
-                  <h3>{book.title}</h3>
-                  <p>Author: {book.author_name?.join(", ") || "Unknown"}</p>
-                  <p>First Published: {book.first_publish_year || "N/A"}</p>
-                </div>
-              </li>
+                <h3>{book.volumeInfo.title}</h3>
+                <p>{book.volumeInfo.authors?.join(", ") || "Unknown Author"}</p>
+                <button onClick={() => addBookToDatabase(book)}>
+                  Add to Database
+                </button>
+              </div>
             ))}
-          </ul>
-        </section>
+          </div>
+        </div>
         {/* PAGE CONTAINER */}
         <div className="page-container">
           <div className="page-title category-title">

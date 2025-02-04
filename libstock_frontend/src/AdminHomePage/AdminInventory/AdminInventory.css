@@ -660,3 +660,46 @@ a.filter-item.active {
 .bk-img .bk-left {
   background-color: #219e9a; /* $primary */
 }
+
+/* This is the start of my code */
+.search-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+input {
+  padding: 8px;
+  width: 300px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: #476778;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.book-results {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.book-card {
+  width: 200px;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.book-card img {
+  max-width: 100px;
+  height: auto;
+}
