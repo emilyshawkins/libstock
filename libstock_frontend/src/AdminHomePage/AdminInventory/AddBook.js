@@ -54,7 +54,7 @@ function AddBook() {
       );
       console.log("Book added successfully!", response.data);
       setSuccessMessage("Book added successfully!");
-      navigate("/books");
+      navigate("/admin/inventory");
     } catch (error) {
       console.error("Error adding book", error);
       setErrorMessage(error.response?.data?.message || "Failed to add book.");

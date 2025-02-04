@@ -1,8 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./AdminInventory.css";
+import AddBook from "./AddBook";
 import { Link } from "react-router-dom";
 
 const AdminInventory = () => {
+  const [books, setBooks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/book/get-all");
+      setBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching books", error);
+    }
+  };
+
+  const handleBookAdded = (newBook) => {
+    setBooks((prevBooks) => [...prevBooks, newBook]);
+  };
+
+  const searchBooks = async () => {
+    if (!searchQuery) return;
+    try {
+      const response = await axios.get(
+        `https://openlibrary.org/search.json?q=${searchQuery}`
+      );
+      setSearchResults(response.data.docs);
+    } catch (error) {
+      console.error("Error searching books", error);
+    }
+  };
   return (
     <div id="main-container" className="main-container nav-effect-1">
       {/* NAV MENU */}
@@ -43,23 +77,54 @@ const AdminInventory = () => {
                 <a href="#">Menu</a>
               </div>
               {/* Search */}
-              <div className="catalog-search">
+              <div className="search-section">
                 <input
-                  className="shuffle-search input_field"
-                  type="search"
-                  autoComplete="off"
-                  maxLength="128"
-                  id="input-search"
+                  type="text"
+                  placeholder="Search books..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <label className="input_label" htmlFor="input-search">
-                  <span className="input_label-content">Search Library</span>
-                  <span className="input_label-search"></span>
-                </label>
+                <button onClick={searchBooks}>Search</button>
               </div>
             </div>
           </div>
         </header>
 
+        <section id="book_list">
+          <h3>Local Books</h3>
+          <ul>
+            {books.map((book) => (
+              <li key={book.ISBN} className="book-item">
+                <h3>{book.title}</h3>
+                <p>{book.summary}</p>
+                <p>Published: {book.publicationDate}</p>
+                <p>Price: ${book.price}</p>
+              </li>
+            ))}
+          </ul>
+
+          <h3>Search Results</h3>
+          <ul className="search-results">
+            {searchResults.map((book, index) => (
+              <li key={index} className="book-item">
+                <img
+                  src={
+                    book.cover_i
+                      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+                      : "https://via.placeholder.com/128x193?text=No+Cover"
+                  }
+                  alt={book.title}
+                  className="book-cover"
+                />
+                <div className="book-details">
+                  <h3>{book.title}</h3>
+                  <p>Author: {book.author_name?.join(", ") || "Unknown"}</p>
+                  <p>First Published: {book.first_publish_year || "N/A"}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
         {/* PAGE CONTAINER */}
         <div className="page-container">
           <div className="page-title category-title">
@@ -120,7 +185,8 @@ const AdminInventory = () => {
                 <li
                   className="book-item small-12 medium-6 columns"
                   data-groups='["classic"]'
-                  data-date-created="1937"
+                  data-date-creat
+                  ed="1937"
                   data-title="Of Mice and Men"
                   data-color="#fcc278"
                 >
