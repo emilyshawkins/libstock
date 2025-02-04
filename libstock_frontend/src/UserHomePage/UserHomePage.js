@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import Sidebar from "../Navbar/Sidebar";
-import Topbar from "../Navbar/Topbar"; 
 import './UserHomePage.css';
 
 function HomePage() {
@@ -63,20 +61,16 @@ function HomePage() {
 
     return (
         <div className="home-container">
-            <Topbar /> 
-            <div className="main-content">
-                <Sidebar /> 
-                <div className="search-bar">
-                    <input
-                        type="text"
-                        placeholder="Search items..."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                   />
-                </div>
-                <div className="content">
-                    <p>Manage your borrowed items and account here.</p>
-                </div>
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search items..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                />
+            </div>
+            <div className="content">
+                <p>Manage your borrowed items and account here.</p>
             </div>
             {loading ? <p>Loading items...</p> : (
                 <div className="items-list">

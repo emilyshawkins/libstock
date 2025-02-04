@@ -1,13 +1,13 @@
-.settings-container {
-    max-width: 1000px;
-    margin: 90px auto;
+.settings-content {
+    max-width: 100px;
+    margin: 80px auto;
     padding: 10px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center all content */
+    align-items: center; 
     text-align: center;
 }
 
@@ -16,14 +16,13 @@ h2 {
     color: #476778;
 }
 
-/* Center the labels inside the container */
 .accordion {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center the labels */
     gap: 20px;
     width: 100%;
-    padding: 20px;
+    padding: 100px;
 }
 
 /* Center each label */
@@ -108,4 +107,13 @@ h2 {
 
 .delete-button:hover {
     background-color: #c9302c;
+}
+
+.profile-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    align-items: center;
 }
