@@ -47,6 +47,32 @@ const AdminInventory = () => {
       console.error("Error fetching books:", error);
     }
   };
+
+  const addBookToDatabase = async (book) => {
+    const bookData = {
+      ISBN: book.volumeInfo.industryIdentifiers?.[0]?.identifier || "Unknown",
+      title: book.volumeInfo.title,
+      summary: book.volumeInfo.description || "No description available",
+      publicationDate: book.volumeInfo.publishedDate || "Unknown",
+      price: 0, // Default price (Modify as needed)
+      purchaseable: true,
+      count: 1,
+      numCheckedOut: 0,
+    };
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/book/create",
+        bookData
+      );
+      if (response.status === 200) {
+        alert("Book added successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding book to database:", error);
+      alert("Failed to add book.");
+    }
+  };
+
   return (
     <div id="main-container" className="main-container nav-effect-1">
       {/* NAV MENU */}
@@ -122,6 +148,9 @@ const AdminInventory = () => {
                 />
                 <h3>{book.volumeInfo.title}</h3>
                 <p>{book.volumeInfo.authors?.join(", ") || "Unknown Author"}</p>
+                <button onClick={() => addBookToDatabase(book)}>
+                  Add to Database
+                </button>
               </div>
             ))}
           </div>
