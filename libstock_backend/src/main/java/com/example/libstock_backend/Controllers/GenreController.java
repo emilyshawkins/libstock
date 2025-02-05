@@ -60,6 +60,6 @@ public class GenreController {
             return ResponseEntity.notFound().build();
         }
         genreRepository.delete(existingGenre);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok(existingGenre);
     }
 }
