@@ -7,14 +7,16 @@ public class ProfileDTO {
     private String password;
     private String firstName;
     private String lastName;
+    private byte[] image;
 
     public ProfileDTO() {}
 
-    public ProfileDTO(String id, String email, String password, String firstName, String lastName) {
+    public ProfileDTO(String id, String email, String password, String firstName, String lastName, byte[] image) {
         this.id = id;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.image = image;
     }
 
     public String getId() {
@@ -55,6 +57,14 @@ public class ProfileDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
     
 }

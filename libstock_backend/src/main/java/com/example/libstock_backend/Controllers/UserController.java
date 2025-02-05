@@ -34,8 +34,9 @@ public class UserController {
             return ResponseEntity.badRequest().body(null); // 400 Bad Request if email already in use
         }
         user.setAdmin(true);
+        user.setImage(null);
         userRepository.save(user);
-        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin())); // 200 OK if account creation successful
+        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), user.getImage())); // 200 OK if account creation successful
     }
 
     @PostMapping("/user_signup")
@@ -46,7 +47,7 @@ public class UserController {
         }
         user.setAdmin(false);
         userRepository.save(user);
-        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin()));
+        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), user.getImage())); // 200 OK if account creation successful
     }
 
     @PostMapping("/login")
@@ -55,7 +56,7 @@ public class UserController {
         if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
             return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null); // 401 Unauthorized if email not found or password incorrect
         }
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin())); // 200 OK if login successful
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage())); // 200 OK if login successful
     }
 
     @GetMapping("/get")
@@ -64,7 +65,7 @@ public class UserController {
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin()));
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage()));
     }
 
     @PatchMapping("/update")
@@ -92,9 +93,12 @@ public class UserController {
         if (profile.getPassword() != null) {
             existingUser.setPassword(profile.getPassword());
         }
+        if (profile.getImage() != null) {
+            existingUser.setImage(profile.getImage());
+        }
 
         userRepository.save(existingUser);
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin()));
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage()));
     }
     
     @DeleteMapping("/delete")
@@ -105,6 +109,17 @@ public class UserController {
         }
         userRepository.delete(existingUser);
         return ResponseEntity.ok().body(null);
+    }
+
+    @PostMapping("/set_profile_img")
+    public ResponseEntity<UserDTO> set_profile_img(@RequestParam String id, @RequestBody byte[] image) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        if (existingUser == null) {
+            return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
+        }
+        existingUser.setImage(image);
+        userRepository.save(existingUser);
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage()));
     }
 
 }

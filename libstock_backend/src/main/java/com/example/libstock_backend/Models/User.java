@@ -13,15 +13,17 @@ public class User {
     private String lastName;
     private String password;
     private boolean isAdmin;
+    private byte[] image;
 
     public User() {}
 
-    public User(String email, String firstName, String lastName, String password, boolean isAdmin) {
+    public User(String email, String firstName, String lastName, String password, boolean isAdmin, byte[] image) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.isAdmin = isAdmin;
+        this.image = image;
     }
 
     public String getId() {
@@ -48,6 +50,10 @@ public class User {
         return isAdmin;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -70,5 +76,9 @@ public class User {
 
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
