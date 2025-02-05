@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Topbar.css"; // Ensure correct styles
 
@@ -34,6 +34,10 @@ function Topbar() {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const handleSettingsClick = () => {
+        navigate("/user/settings"); 
+    };
+
     const handleLogout = () => {
         localStorage.removeItem("userId");
         navigate("/signin");
@@ -57,9 +61,9 @@ function Topbar() {
                             <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
                             <p>{userInfo.email || ""}</p>
                         </div>
-                        <Link to="/user/settings" className="dropdown-item">
+                        <button className="dropdown-item" onClick={handleSettingsClick}>
                             Account Settings
-                        </Link>
+                        </button>
                         <button className="dropdown-item logout-button" onClick={handleLogout}>
                             Log Out
                         </button>
