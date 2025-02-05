@@ -98,8 +98,8 @@ public class UserController {
     }
     
     @DeleteMapping("/delete")
-    public ResponseEntity<UserDTO> delete(@RequestBody User user) {
-        User existingUser = userRepository.findByEmail(user.getEmail());
+    public ResponseEntity<UserDTO> delete(@RequestParam String id) {
+        User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
