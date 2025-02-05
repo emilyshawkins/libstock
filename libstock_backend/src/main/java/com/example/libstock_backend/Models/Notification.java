@@ -10,7 +10,7 @@ public class Notification {
     @Id
     private String id;
 
-    private String userEmail; // user that the notification is for
+    private String userId; // user that the notification is for
 
     private LocalDateTime date;
     private String message;
@@ -18,8 +18,8 @@ public class Notification {
 
     public Notification() {}
 
-    public Notification(String userID, LocalDateTime date, String message, boolean read) {
-        this.userEmail = userID;
+    public Notification(String userId, LocalDateTime date, String message, boolean read) {
+        this.userId = userId;
         this.date = date;
         this.message = message;
         this.read = read;
@@ -29,8 +29,8 @@ public class Notification {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
     public LocalDateTime getDate() {
@@ -49,8 +49,8 @@ public class Notification {
         this.id = id;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setDate(LocalDateTime date) {

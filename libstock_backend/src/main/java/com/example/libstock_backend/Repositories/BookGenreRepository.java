@@ -5,8 +5,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface BookGenreRepository extends MongoRepository<BookGenre, String> {
-    List<BookGenre> findByISBN(int ISBN); // Find all genres of a book
-    List<BookGenre> findByGenreName(String genreName); // Find all books of a genre
-    BookGenre findByGenreNameAndISBN(String genreName, int ISBN); // Find a book of a genre
+    List<BookGenre> findByBookId(String bookId); // Find all genres of a book
+    List<BookGenre> findByGenreId(String genreId); // Find all books of a genre
+    BookGenre findByGenreIdAndBookId(String genreId, String bookId); // Find a book of a genre
     
 }

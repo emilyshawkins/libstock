@@ -25,7 +25,7 @@ public class BookAuthorController {
     
     @PostMapping("/create")
     public ResponseEntity<BookAuthor> create_bookauthor(@RequestBody BookAuthor bookAuthor) {
-        BookAuthor existingBookAuthor = bookauthorRepository.findByAuthorIDAndISBN(bookAuthor.getAuthorID(), bookAuthor.getISBN());
+        BookAuthor existingBookAuthor = bookauthorRepository.findByAuthorIdAndBookId(bookAuthor.getAuthorId(), bookAuthor.getBookId());
         if (existingBookAuthor != null) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -48,8 +48,8 @@ public class BookAuthorController {
         if (existingBookAuthor == null) {
             return ResponseEntity.notFound().build();
         }
-        existingBookAuthor.setAuthorID(bookAuthor.getAuthorID());
-        existingBookAuthor.setISBN(bookAuthor.getISBN());
+        existingBookAuthor.setAuthorId(bookAuthor.getAuthorId());
+        existingBookAuthor.setBookId(bookAuthor.getBookId());
         bookauthorRepository.save(existingBookAuthor);
         return ResponseEntity.ok(existingBookAuthor);
     }

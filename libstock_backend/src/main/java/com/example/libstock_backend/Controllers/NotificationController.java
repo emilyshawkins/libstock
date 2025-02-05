@@ -26,6 +26,9 @@ public class NotificationController {
 
     @PostMapping("/create")
     public ResponseEntity<Notification> create_notification(@RequestBody Notification notification) {
+
+        notification.setRead(false);
+        
         notificationRepository.save(notification);
         return ResponseEntity.ok(notification);
     }
@@ -46,7 +49,7 @@ public class NotificationController {
         if (existingNotification == null) {
             return ResponseEntity.notFound().build();
         }
-        existingNotification.setUserEmail(notification.getUserEmail());
+        existingNotification.setUserId(notification.getUserId());
         existingNotification.setDate(notification.getDate());
         existingNotification.setMessage(notification.getMessage());
         existingNotification.setRead(notification.isRead());

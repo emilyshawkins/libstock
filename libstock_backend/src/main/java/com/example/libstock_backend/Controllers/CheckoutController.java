@@ -28,7 +28,7 @@ public class CheckoutController {
 
     @PostMapping("/create")
     public ResponseEntity<Checkout> create_checkout(@RequestBody Checkout checkout) {
-        Checkout existingCheckout = checkoutRepository.findByUserEmailAndISBN(checkout.getUserEmail(), checkout.getISBN());
+        Checkout existingCheckout = checkoutRepository.findByUserIdAndBookId(checkout.getUserId(), checkout.getBookId());
         if (existingCheckout != null) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -63,20 +63,12 @@ public class CheckoutController {
             return ResponseEntity.notFound().build();
         }
 
-        if (existingCheckout.getStatus().equals("Checked Out") && checkout.getStatus().equals("Returned")) {
-            existingCheckout.setStatus("Returned");
-            checkoutRepository.save(existingCheckout);
-            return ResponseEntity.ok(existingCheckout);
-        }
-        else if(existingCheckout.getStatus().equals("Checked Out") && new Date().after(existingCheckout.getDueDate())) {
-            existingCheckout.setStatus("Overdue");
-            checkoutRepository.save(existingCheckout);
-            return ResponseEntity.ok(existingCheckout);
-        }
-        else {
-            return ResponseEntity.ok(existingCheckout);
-    
-        }
+        existingCheckout.setBookId(checkout.getBookId());
+        existingCheckout.setUserId(checkout.getUserId());
+
+        checkoutRepository.save(existingCheckout);
+        return ResponseEntity.ok(existingCheckout);
+
     }
 
     @DeleteMapping("/delete")

@@ -8,15 +8,15 @@ public class Queue {
     @Id
     private String id;
 
-    private String userEmail;
-    private int ISBN;
+    private String userId;
+    private String bookId;
     private int position;
 
     public Queue() {}
 
-    public Queue(String userEmail, int ISBN, int position) {
-        this.userEmail = userEmail;
-        this.ISBN = ISBN;
+    public Queue(String userId, String bookId, int position) {
+        this.userId = userId;
+        this.bookId = bookId;
         this.position = position;
     }
 
@@ -24,24 +24,28 @@ public class Queue {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return bookId;
     }
 
     public int getPosition() {
         return position;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setISBN(int ISBN) {
-        this.ISBN = ISBN;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public void setPosition(int position) {

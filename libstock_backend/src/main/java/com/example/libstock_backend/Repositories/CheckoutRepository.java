@@ -7,6 +7,6 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface CheckoutRepository extends MongoRepository<Checkout, String> {
-    List<Checkout> findByUserEmail(String userEmail); // Find all checkouts by user
-    Checkout findByUserEmailAndISBN(String userEmail, int ISBN); // Find a book checked out by a user
+    List<Checkout> findByUserId(String userId); // Find all checkouts by user
+    Checkout findByUserIdAndBookId(String userId, String bookId); // Find a book checked out by a user
 }
