@@ -1,3 +1,4 @@
+/* src/AccountSetting.js */
 import React, { useState } from "react";
 import axios from "axios";
 import "./AccountSettings.css";
@@ -40,7 +41,7 @@ const handleUploadProfilePicture = async () => {
     formData.append("profilePicture", profilePicture);
 
     try {
-        const response = await axios.post("http://localhost:8080/user/uploadProfilePicture", formData, {
+        const response = await axios.post("http://localhost:8080/user/set_profile_img", formData, {
             headers: { "Content-Type": "multipart/form-data" },
         });
 

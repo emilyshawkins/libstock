@@ -30,8 +30,9 @@ h2 {
 }
 
 .input-group input {
+    width: 92%;
     padding: 10px;
-    font-size: 18px;
+    font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
@@ -52,16 +53,24 @@ h2 {
 
 .eye-icon {
     position: absolute;
-    right: 10px;
+    right: 20px;
     cursor: pointer;
     font-size: 18px;
     color: #476778;
 }
 
-.remember-me {
+.remember-me-container {
     display: flex;
-    align-items: left;
-    gap: 10px;
+    align-items: center;
+    font-size: 15px;
+    color: #476778;
+}
+
+.remember-me-container input {
+    height: 20px;
+    width: auto;
+    margin-right: 10px;
+    color: #476778;
 }
 
 .signin-button {

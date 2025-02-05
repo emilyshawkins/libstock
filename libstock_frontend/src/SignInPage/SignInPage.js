@@ -44,12 +44,11 @@ function SignInPage() {
                 if (token) {
                     localStorage.setItem("token", token);
                 }
+                // Redirect to the homepage upon successful login
+                navigate("/user/home");
             } else {
                 console.error("No user ID found in response");
             }
-
-            // Redirect to the homepage upon successful login
-            navigate("/user/home");
 
         } catch (error) {
             setErrorMessage(error.response?.data?.message || "Your email or password is incorrect.");
@@ -88,15 +87,13 @@ function SignInPage() {
                         </span>
                     </div>
                 </div>
-                <div className="input-group remember-me">
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={rememberMe}
-                            onChange={() => setRememberMe(!rememberMe)}
-                        />
-                        Remember Me
-                    </label>
+                <div className="remember-me-container">
+                    <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
+                    />
+                    <label>Remember Me</label>
                 </div>
                 <button type="submit" className="signin-button" disabled={loading}>
                     {loading ? "Signing In..." : "Sign In"}

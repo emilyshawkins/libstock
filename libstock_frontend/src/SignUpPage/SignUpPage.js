@@ -71,14 +71,12 @@ function SignUpPage() {
         <div className="signup-container">
             <h2>{isAdmin ? 'Create an Admin Account' : 'Create an User Account'}</h2>
             <div className="toggle-role">
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={isAdmin}
-                        onChange={() => setIsAdmin(!isAdmin)}
-                    />
-                    Sign up as Admin
-                </label>
+                <input
+                    type="checkbox"
+                    checked={isAdmin}
+                    onChange={() => setIsAdmin(!isAdmin)}
+                />
+                <label> Sign up as Admin</label>
             </div>
             {message && <p>{message}</p>}
             <form onSubmit={handleSubmit} className="signup-form">

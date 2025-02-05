@@ -1,11 +1,17 @@
 /* src/SignUpPage.css */
 .toggle-role {
-    text-align: center;
-    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #476778;
+    font-size: 17px;
+    color: #476778;
 }
 
-.toggle-role label {
-    font-size: 17px;
+.toggle-role input {
+    height: 50px;
+    width: auto;
+    margin-right: 10px;
     color: #476778;
 }
 
@@ -61,7 +67,7 @@ h2 {
 }
 
 .signin-link span {
-    font-size: 18px;
+    font-size: 16px;
     color: #476778;
 }
 
