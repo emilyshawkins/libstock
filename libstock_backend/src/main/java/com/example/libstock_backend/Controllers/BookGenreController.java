@@ -24,7 +24,7 @@ public class BookGenreController {
 
     @PostMapping("/create")
     public ResponseEntity<BookGenre> create_bookgenre(@RequestBody BookGenre bookGenre) {
-        BookGenre existingBookGenre = bookgenreRepository.findByGenreNameAndISBN(bookGenre.getGenreName(), bookGenre.getISBN());
+        BookGenre existingBookGenre = bookgenreRepository.findByGenreIdAndBookId(bookGenre.getGenreId(), bookGenre.getBookId());
         if (existingBookGenre != null) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -47,8 +47,8 @@ public class BookGenreController {
         if (existingBookGenre == null) {
             return ResponseEntity.notFound().build();
         }
-        existingBookGenre.setGenreName(bookGenre.getGenreName());
-        existingBookGenre.setISBN(bookGenre.getISBN());
+        existingBookGenre.setGenreId(bookGenre.getGenreId());
+        existingBookGenre.setBookId(bookGenre.getBookId());
         bookgenreRepository.save(existingBookGenre);
         return ResponseEntity.ok(existingBookGenre);
     }

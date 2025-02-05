@@ -8,37 +8,37 @@ public class BookGenre {
     @Id
     private String id;
 
-    private String genreName;
-    private int ISBN;
+    private String genreId;
+    private String bookId;
 
     public BookGenre() {}
 
-    public BookGenre(String genreName, int ISBN) {
-        this.genreName = genreName;
-        this.ISBN = ISBN;
+    public BookGenre(String genreId, String bookId) {
+        this.genreId = genreId;
+        this.bookId = bookId;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public String getGenreId() {
+        return genreId;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return bookId;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
+    public void setGenreId(String genreId) {
+        this.genreId = genreId;
     }
 
-    public void setISBN(int ISBN) {
-        this.ISBN = ISBN;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 }
