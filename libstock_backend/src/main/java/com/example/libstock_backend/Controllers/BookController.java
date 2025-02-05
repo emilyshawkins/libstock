@@ -67,7 +67,7 @@ public class BookController {
             return ResponseEntity.notFound().build();
         }
         BookRepository.delete(existingBook);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(existingBook);
     }
 
     @GetMapping("/get_all")
