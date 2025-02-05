@@ -9,8 +9,8 @@ public class Checkout {
     @Id
     private String id;
 
-    private String userEmail;
-    private int ISBN;
+    private String userId;
+    private String bookId;
     
     private Date checkoutDate;
     private Date dueDate;
@@ -18,9 +18,9 @@ public class Checkout {
 
     public Checkout() {}
 
-    public Checkout(String userEmail, int ISBN, Date checkoutDate, Date dueDate, String status) {
-        this.userEmail = userEmail;
-        this.ISBN = ISBN;
+    public Checkout(String userId, String bookId, Date checkoutDate, Date dueDate, String status) {
+        this.userId = userId;
+        this.bookId = bookId;
         this.checkoutDate = checkoutDate;
         this.dueDate = dueDate;
         this.status = status;
@@ -30,12 +30,12 @@ public class Checkout {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return bookId;
     }
 
     public Date getCheckoutDate() {
@@ -50,12 +50,12 @@ public class Checkout {
         return status;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public void setISBN(int ISBN) {
-        this.ISBN = ISBN;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public void setCheckoutDate(Date checkoutDate) {
