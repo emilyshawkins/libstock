@@ -25,11 +25,11 @@ public class QueueController {
 
     @PostMapping("/create")
     public ResponseEntity<Queue> create_queue(@RequestBody Queue queue) {
-        Queue existingQueue = queueRepository.findByUserEmailAndISBN(queue.getUserEmail(), queue.getISBN());
+        Queue existingQueue = queueRepository.findByUserIdAndBookId(queue.getUserId(), queue.getBookId());
         if (existingQueue != null) {
             return ResponseEntity.badRequest().body(null);
         }
-        int position = queueRepository.countByISBN(queue.getISBN()) + 1;
+        int position = queueRepository.countByBookId(queue.getBookId()) + 1;
         queue.setPosition(position);
         queueRepository.save(queue);
         return ResponseEntity.ok(queue); 
@@ -50,6 +50,9 @@ public class QueueController {
         if (existingQueue == null) {
             return ResponseEntity.notFound().build();
         }
+
+        existingQueue.setUserId(id);
+        existingQueue.setBookId(id);
         existingQueue.setPosition(existingQueue.getPosition() - 1);
         queueRepository.save(existingQueue);
         return ResponseEntity.ok(existingQueue);

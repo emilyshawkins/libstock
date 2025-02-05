@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.example.libstock_backend.Models.Queue;
 
 public interface QueueRepository extends MongoRepository<Queue, String> {
-    Queue findByUserEmailAndISBN(String email, int ISBN);
-    List<Queue> findByISBN(int ISBN);
-    List<Queue> findByUserEmail(String email);
-    int countByISBN(int ISBN);
+    Queue findByUserIdAndBookId(String userId, String bookId);
+    List<Queue> findByBookId(String bookId);
+    List<Queue> findByUserId(String userId);
+    int countByBookId(String bookId);
 }
