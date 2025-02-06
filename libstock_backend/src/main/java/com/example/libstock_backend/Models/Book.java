@@ -10,7 +10,7 @@ public class Book {
     @Id
     private String id;
 
-    private int ISBN;
+    private String ISBN;
     private String title;
     private String summary;
     private String publicationDate;
@@ -21,7 +21,7 @@ public class Book {
 
     public Book() {}
 
-    public Book(int ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchaseable, int count, int numCheckedOut) {
+    public Book(String ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchaseable, int count, int numCheckedOut) {
         this.ISBN = ISBN;
         this.title = title;
         this.summary = summary;
@@ -36,7 +36,7 @@ public class Book {
         return id;
     }
 
-    public int getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
@@ -72,7 +72,7 @@ public class Book {
         this.id = id;
     }
 
-    public void setISBN(int ISBN) {
+    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 

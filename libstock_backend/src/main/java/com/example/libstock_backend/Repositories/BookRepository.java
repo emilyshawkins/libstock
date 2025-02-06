@@ -8,6 +8,6 @@ public interface BookRepository extends MongoRepository<Book, String> {
 
     List<Book> findByISBNContaining(int ISBN);
     List<Book> findByTitleContaining(String title);
-    Book findByISBN(int ISBN);
+    Book findByISBN(String ISBN);
 
 }
