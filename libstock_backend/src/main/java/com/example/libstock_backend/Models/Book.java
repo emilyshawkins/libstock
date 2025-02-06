@@ -18,10 +18,11 @@ public class Book {
     private Boolean purchaseable;
     private int count;
     private int numCheckedOut;
+    private byte[] cover;
 
     public Book() {}
 
-    public Book(String ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchaseable, int count, int numCheckedOut) {
+    public Book(String ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchaseable, int count, int numCheckedOut, byte[] cover) {
         this.ISBN = ISBN;
         this.title = title;
         this.summary = summary;
@@ -30,6 +31,7 @@ public class Book {
         this.purchaseable = purchaseable;
         this.count = count;
         this.numCheckedOut = numCheckedOut;
+        this.cover = cover;
     }
 
     public String getId() {
@@ -68,6 +70,10 @@ public class Book {
         return numCheckedOut;
     }
 
+    public byte[] getCover() {
+        return cover;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -102,6 +108,10 @@ public class Book {
 
     public void setNumCheckedOut(int numCheckedOut) {
         this.numCheckedOut = numCheckedOut;
+    }
+
+    public void setCover(byte[] cover) {
+        this.cover = cover;
     }
 
 }

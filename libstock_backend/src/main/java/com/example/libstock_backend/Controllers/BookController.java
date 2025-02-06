@@ -56,6 +56,7 @@ public class BookController {
         existingBook.setPurchaseable(book.getPurchaseable());
         existingBook.setCount(book.getCount());
         existingBook.setNumCheckedOut(book.getNumCheckedOut());
+        existingBook.setCover(book.getCover());
         BookRepository.save(existingBook);
         return ResponseEntity.ok(existingBook);
     }

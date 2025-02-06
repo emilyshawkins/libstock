@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookRepository extends MongoRepository<Book, String> {
 
-    List<Book> findByISBNContaining(int ISBN);
+    List<Book> findByISBNContaining(String ISBN);
     List<Book> findByTitleContaining(String title);
     Book findByISBN(String ISBN);
 
