@@ -50,22 +50,25 @@ const AdminInventory = () => {
 
   const addBookToDatabase = async (book) => {
     const bookData = {
-      ISBN: book.volumeInfo.industryIdentifiers?.[0]?.identifier || "Unknown",
+      isbn: book.volumeInfo.industryIdentifiers?.[0]?.identifier || "Unknown",
       title: book.volumeInfo.title,
-      summary: book.volumeInfo.description || "No description available",
-      publicationDate: book.volumeInfo.publishedDate || "Unknown",
-      price: 0, // Default price (Modify as needed)
+      summary: "No description available",
+      publicationDate: book.volumeInfo.publishedDate || "Unknown", // Default timestamp format
+      price: 50, // Default price
       purchaseable: true,
-      count: 1,
-      numCheckedOut: 0,
+      count: 50,
+      numCheckedOut: 1,
     };
     try {
       const response = await axios.post(
         "http://localhost:8080/book/create",
-        bookData
+        bookData,
+        { headers: { "Content-Type": "application/json" } }
       );
+
       if (response.status === 200) {
         alert("Book added successfully!");
+        handleBookAdded(bookData); // Update UI
       }
     } catch (error) {
       console.error("Error adding book to database:", error);
@@ -75,33 +78,6 @@ const AdminInventory = () => {
 
   return (
     <div id="main-container" className="main-container nav-effect-1">
-      {/* NAV MENU */}
-      <nav className="nav-menu nav-effect-1" id="menu-1">
-        <h2 className="">The Library</h2>
-        <ul>
-          <li>
-            <a className="" href="#">
-              Checkout
-            </a>
-          </li>
-          <li>
-            <a className="" href="#">
-              Return
-            </a>
-          </li>
-          <li>
-            <a className="" href="#">
-              About
-            </a>
-          </li>
-          <li>
-            <a className="" href="#">
-              Contact
-            </a>
-          </li>
-        </ul>
-      </nav>
-
       {/* MAIN CONTENT WRAPPER */}
       <div className="main clearfix">
         {/* HEADER */}
@@ -111,16 +87,6 @@ const AdminInventory = () => {
               {/* Main Navigation */}
               <div className="main-navigation">
                 <a href="#">Menu</a>
-              </div>
-              {/* Search */}
-              <div className="search-section">
-                <input
-                  type="text"
-                  placeholder="Search books..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <button onClick={searchBooks}>Search</button>
               </div>
             </div>
           </div>
@@ -138,21 +104,37 @@ const AdminInventory = () => {
 
           {/* Display search results */}
           <div className="book-results">
-            {books.map((book) => (
-              <div key={book.id} className="book-card">
-                <img
-                  src={
-                    book.volumeInfo.imageLinks?.thumbnail || "placeholder.jpg"
-                  }
-                  alt={book.volumeInfo.title}
-                />
-                <h3>{book.volumeInfo.title}</h3>
-                <p>{book.volumeInfo.authors?.join(", ") || "Unknown Author"}</p>
-                <button onClick={() => addBookToDatabase(book)}>
-                  Add to Database
-                </button>
-              </div>
-            ))}
+            {books.map((book) => {
+              const volumeInfo = book.volumeInfo; // Shortcut for readability
+              return (
+                <div key={book.id} className="book-card">
+                  <img
+                    src={volumeInfo.imageLinks?.thumbnail || "placeholder.jpg"}
+                    alt={volumeInfo.title}
+                  />
+                  <h3>{volumeInfo.title}</h3>
+                  <p>
+                    <strong>Author:</strong>{" "}
+                    {volumeInfo.authors?.join(", ") || "Unknown Author"}
+                  </p>
+                  <p>
+                    <strong>ISBN:</strong>{" "}
+                    {volumeInfo.industryIdentifiers?.[0]?.identifier || "N/A"}
+                  </p>
+                  <p>
+                    <strong>Publisher:</strong>{" "}
+                    {volumeInfo.publisher || "Unknown Publisher"}
+                  </p>
+                  <p>
+                    <strong>Publication Date:</strong>{" "}
+                    {volumeInfo.publishedDate || "Unknown Date"}
+                  </p>
+                  <button onClick={() => addBookToDatabase(book)}>
+                    Add to Database
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
         {/* PAGE CONTAINER */}
@@ -165,7 +147,7 @@ const AdminInventory = () => {
           <section id="book_list">
             {/* Filter + Sort Toolbar */}
             <div className="toolbar row">
-              <div className="filter-options small-12 medium-9 columns">
+              {/* <div className="filter-options small-12 medium-9 columns">
                 <a href="#" className="filter-item active" data-group="all">
                   All Categories
                 </a>
@@ -184,7 +166,7 @@ const AdminInventory = () => {
                 <a href="#" className="filter-item" data-group="young">
                   Young Adult
                 </a>
-              </div>
+              </div> */}
               {/* Sort Option */}
               <div className="small-12 medium-3 columns">
                 <select className="sort-options">

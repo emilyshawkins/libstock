@@ -101,7 +101,6 @@ function AddBook() {
         <div className="input-group">
           <label htmlFor="publicationDate">Publication Date</label>
           <input
-            type="date"
             id="publicationDate"
             value={publicationDate}
             onChange={(e) => setPublicationDate(e.target.value)}
