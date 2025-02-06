@@ -14,7 +14,7 @@ public class Book {
     private int ISBN;
     private String title;
     private String summary;
-    private Date publicationDate;
+    private String publicationDate;
     private BigDecimal price;
     private Boolean purchaseable;
     private int count;
@@ -22,7 +22,7 @@ public class Book {
 
     public Book() {}
 
-    public Book(int ISBN, String title, String summary, Date publicationDate, BigDecimal price, Boolean purchaseable, int count, int numCheckedOut) {
+    public Book(int ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchaseable, int count, int numCheckedOut) {
         this.ISBN = ISBN;
         this.title = title;
         this.summary = summary;
@@ -49,7 +49,7 @@ public class Book {
         return summary;
     }
 
-    public Date getPublicationDate() {
+    public String getPublicationDate() {
         return publicationDate;
     }
 
@@ -85,7 +85,7 @@ public class Book {
         this.summary = summary;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(String publicationDate) {
         this.publicationDate = publicationDate;
     }
 
