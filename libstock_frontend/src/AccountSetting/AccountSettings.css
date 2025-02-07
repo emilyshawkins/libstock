@@ -1,120 +1,131 @@
 /* src/AccountSetting.css */
-.settings-content {
-    max-width: 100px;
-    margin: 80px auto;
-    padding: 10px;
+.settings-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
     text-align: center;
 }
 
-h2 {
-    text-align: center;
-    color: #476778;
-}
-
-.accordion {
+/* Profile Section */
+.profile-section {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the labels */
-    gap: 20px;
-    width: 100%;
-    padding: 100px;
-}
-
-/* Center each label */
-.accordion-label {
-    display: flex;
-    justify-content: left; /* Center text inside */
     align-items: center;
-    width: 100%; /* Full width */
-    max-width: 800px; /* Set a max width */
-    cursor: pointer;
-    background-color: #476778;
-    color: white;
-    padding: 30px;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
+    margin-bottom: 20px;
 }
 
-.accordion-label input {
-    margin-right: 10px;
+.profile-avatar {
+    position: relative;
+    width: 120px;
+    height: 120px;
 }
 
-/* Center the content inside each accordion section */
-.accordion-content {
-    background-color: #f9f9f9;
-    padding: 0 30px;
-    border-radius: 0 0 5px 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: left; /* Center content */
-    text-align: center;
-    gap: 15px;
+.profile-preview {
     width: 100%;
-    max-width: 400px; /* Set the same max-width as labels */
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #476778;
+}
+
+/* Edit Profile Icon */
+.edit-avatar {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Edit Profile Icon */
+.edit-avatar {
+    position: absolute;
+    bottom: -10px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Pencil Icon */
+.edit-avatar .edit {
+    width: 10px;
+    height: 10px;
+    object-fit: contain;
+}
+
+.user-name {
+    font-size: 22px;
+    color: #333;
     margin-top: 10px;
 }
 
-/* Ensure inputs are properly centered */
-.accordion-content input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 300px; /* Set max width */
+.user-email {
+    font-size: 14px;
+    color: #555;
 }
 
-/* Ensure buttons are centered */
-.accordion-content button {
-    padding: 10px;
-    background-color: #35505d;
+.update-profile-button {
+    background-color: #476778;
     color: white;
+    padding: 8px 15px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
-    max-width: 200px; /* Keep buttons a good size */
+    margin-top: 10px;
 }
 
-.accordion-content button:hover {
-    background-color: #2b404a;
+.update-profile-button:hover {
+    background-color: #35505d;
 }
 
-/* Delete Account */
+/* Accordion */
+.accordion-label {
+    display: block;
+    background-color: #476778;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.accordion-content {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-top: -5px;
+    border-radius: 0 0 5px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .delete-label {
     background-color: #d9534f;
 }
 
 .delete-button {
     background-color: #d9534f;
-    padding: 10px;
     color: white;
+    padding: 10px;
     border: none;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
-    max-width: 200px;
-}
-
-.delete-button:hover {
-    background-color: #c9302c;
-}
-
-.profile-preview {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    align-items: center;
 }
