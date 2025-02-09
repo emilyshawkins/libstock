@@ -8,29 +8,37 @@ public class Favorite {
     @Id
     private String id;
 
-    private String userEmail;
-    private int ISBN;
+    private String userId;
+    private String bookId;
 
     public Favorite() {}
 
-    public Favorite(String userEmail, int ISBN) {
-        this.userEmail = userEmail;
-        this.ISBN = ISBN;
+    public Favorite(String userId, String bookId) {
+        this.userId = userId;
+        this.bookId = bookId;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return bookId;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 }

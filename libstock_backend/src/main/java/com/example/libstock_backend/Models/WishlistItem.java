@@ -9,34 +9,38 @@ public class WishlistItem {
     @Id
     private String id;
 
-    private String userEmail;
-    private int ISBN;
+    private String userId;
+    private String BookId;
 
     public WishlistItem() {}
 
-    public WishlistItem(String userEmail, int ISBN) {
-        this.userEmail = userEmail;
-        this.ISBN = ISBN;
+    public WishlistItem(String userId, String BookId) {
+        this.userId = userId;
+        this.BookId = BookId;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return BookId;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setISBN(int ISBN) {
-        this.ISBN = ISBN;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setBookId(String BookId) {
+        this.BookId = BookId;
     }
     
 }
