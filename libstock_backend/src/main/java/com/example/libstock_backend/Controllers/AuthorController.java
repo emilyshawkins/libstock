@@ -64,5 +64,9 @@ public class AuthorController {
         return ResponseEntity.ok(author);
     }
 
-    
+    @GetMapping("/get_all")
+    public ResponseEntity<Iterable<Author>> get_all_authors() {
+        Iterable<Author> authors = authorRepository.findAll();
+        return ResponseEntity.ok(authors);
+    }    
 }
