@@ -59,8 +59,7 @@ public class BookAuthorController {
         if (existingBookAuthor == null) {
             return ResponseEntity.notFound().build();
         }
-        existingBookAuthor.setAuthorId(bookAuthor.getAuthorId());
-        existingBookAuthor.setBookId(bookAuthor.getBookId());
+
         bookauthorRepository.save(existingBookAuthor);
         return ResponseEntity.ok(existingBookAuthor);
     }
