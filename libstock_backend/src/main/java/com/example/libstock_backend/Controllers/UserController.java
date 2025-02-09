@@ -46,6 +46,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(null); // 400 Bad Request if email already in use
         }
         user.setAdmin(false);
+        user.setImage(null);
         userRepository.save(user);
         return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), user.getImage())); // 200 OK if account creation successful
     }
