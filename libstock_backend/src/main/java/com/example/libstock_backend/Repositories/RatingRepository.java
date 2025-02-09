@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface RatingRepository extends MongoRepository<Rating, String> {
     List<Rating> findByUserId(String userId); // Get all ratings by a user
-    List<Rating> findByBookId(int bookId); // Get all ratings for a book
+    List<Rating> findByBookId(String bookId); // Get all ratings for a book
     Rating findByUserIdAndBookId(String userId, String bookId); // Get a rating by a user for a book
 }

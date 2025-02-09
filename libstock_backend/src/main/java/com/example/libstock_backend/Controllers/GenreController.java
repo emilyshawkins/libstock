@@ -48,7 +48,6 @@ public class GenreController {
         if (existingGenre == null) {
             return ResponseEntity.notFound().build();
         }
-        existingGenre.setName(genre.getName());
         genreRepository.save(existingGenre);
         return ResponseEntity.ok(existingGenre);
     }
@@ -61,5 +60,10 @@ public class GenreController {
         }
         genreRepository.delete(existingGenre);
         return ResponseEntity.ok(existingGenre);
+    }
+
+    @GetMapping("/get_all")
+    public ResponseEntity<Iterable<Genre>> get_all_genres() {
+        return ResponseEntity.ok(genreRepository.findAll());
     }
 }

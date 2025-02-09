@@ -25,10 +25,6 @@ public class AuthorController {
 
     @PostMapping("/create")
     public ResponseEntity<Author> create_author(@RequestBody Author author) {
-        Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
-        if (existingAuthor != null) {
-            return ResponseEntity.badRequest().body(null);
-        }
         authorRepository.save(author);
         return ResponseEntity.ok(author);
     }
@@ -64,5 +60,9 @@ public class AuthorController {
         return ResponseEntity.ok(author);
     }
 
-    
+    @GetMapping("/get_all")
+    public ResponseEntity<Iterable<Author>> get_all_authors() {
+        Iterable<Author> authors = authorRepository.findAll();
+        return ResponseEntity.ok(authors);
+    }    
 }
