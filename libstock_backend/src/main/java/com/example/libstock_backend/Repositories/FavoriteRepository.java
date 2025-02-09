@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface FavoriteRepository extends MongoRepository<Favorite, String> {
-    List<Favorite> findByUserEmail(String userEmail);
-    List<Favorite> findByISBN(int ISBN);
-    Favorite findByUserEmailAndISBN(String userEmail, int ISBN);
+    List<Favorite> findByUserId(String userId);
+    List<Favorite> findByBookId(String bookId);
+    Favorite findByUserIdAndBookId(String userId, String bookId);
 }
