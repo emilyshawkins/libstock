@@ -26,9 +26,6 @@ public class NotificationController {
 
     @PostMapping("/create")
     public ResponseEntity<Notification> create_notification(@RequestBody Notification notification) {
-
-        notification.setRead(false);
-        
         notificationRepository.save(notification);
         return ResponseEntity.ok(notification);
     }
@@ -49,10 +46,7 @@ public class NotificationController {
         if (existingNotification == null) {
             return ResponseEntity.notFound().build();
         }
-        existingNotification.setUserId(notification.getUserId());
-        existingNotification.setDate(notification.getDate());
-        existingNotification.setMessage(notification.getMessage());
-        existingNotification.setRead(notification.isRead());
+
         notificationRepository.save(existingNotification);
         return ResponseEntity.ok(existingNotification);
     }
@@ -65,6 +59,12 @@ public class NotificationController {
         }
         notificationRepository.delete(notification);
         return ResponseEntity.ok(notification);
+    }
+
+    @GetMapping("/get_all")
+    public ResponseEntity<Iterable<Notification>> get_all(@RequestParam String userId) {
+        Iterable<Notification> notifications = notificationRepository.findByUserId(userId);
+        return ResponseEntity.ok(notifications);
     }
     
 }
