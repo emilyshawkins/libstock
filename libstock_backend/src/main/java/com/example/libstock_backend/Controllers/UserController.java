@@ -1,5 +1,8 @@
 package com.example.libstock_backend.Controllers;
 
+import java.io.IOException;
+import java.util.Base64;
+
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.libstock_backend.DTOs.LoginDTO;
 import com.example.libstock_backend.DTOs.ProfileDTO;
@@ -36,7 +40,7 @@ public class UserController {
         user.setAdmin(true);
         user.setImage(null);
         userRepository.save(user);
-        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), user.getImage())); // 200 OK if account creation successful
+        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null)); // 200 OK if account creation successful
     }
 
     @PostMapping("/user_signup")
@@ -48,16 +52,28 @@ public class UserController {
         user.setAdmin(false);
         user.setImage(null);
         userRepository.save(user);
-        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), user.getImage())); // 200 OK if account creation successful
+        return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null)); // 200 OK if account creation successful
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO user) {
+        System.out.println("Logging in");
+        System.out.println(user.getEmail());
+        System.out.println(user.getPassword());
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
             return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null); // 401 Unauthorized if email not found or password incorrect
         }
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage())); // 200 OK if login successful
+
+        String ret_img;
+        if (existingUser.getImage() != null) {
+            ret_img = Base64.getEncoder().encodeToString(existingUser.getImage());
+        }
+        else {
+            ret_img = null;
+        }
+        
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img)); // 200 OK if login successful
     }
 
     @GetMapping("/get")
@@ -66,7 +82,14 @@ public class UserController {
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage()));
+        String ret_img;
+        if (existingUser.getImage() != null) {
+            ret_img = Base64.getEncoder().encodeToString(existingUser.getImage());
+        }
+        else {
+            ret_img = null;
+        }
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img));
     }
 
     @PatchMapping("/update")
@@ -94,12 +117,16 @@ public class UserController {
         if (profile.getPassword() != null) {
             existingUser.setPassword(profile.getPassword());
         }
-        if (profile.getImage() != null) {
-            existingUser.setImage(profile.getImage());
-        }
 
         userRepository.save(existingUser);
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage()));
+        String ret_img;
+        if (existingUser.getImage() != null) {
+            ret_img = Base64.getEncoder().encodeToString(existingUser.getImage());
+        }
+        else {
+            ret_img = null;
+        }
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img));
     }
     
     @DeleteMapping("/delete")
@@ -113,14 +140,20 @@ public class UserController {
     }
 
     @PostMapping("/set_profile_img")
-    public ResponseEntity<UserDTO> set_profile_img(@RequestParam String id, @RequestBody byte[] image) {
+    public ResponseEntity<UserDTO> set_profile_img(@RequestParam String id, @RequestParam("profilePicture") MultipartFile image) {
+        System.out.println("Setting profile image");
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
-        existingUser.setImage(image);
+        try {
+            existingUser.setImage(image.getBytes());
+        } catch (IOException e) {
+            return ResponseEntity.status(Response.SC_INTERNAL_SERVER_ERROR).body(null);
+        }
         userRepository.save(existingUser);
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), existingUser.getImage()));
+        String ret_img = Base64.getEncoder().encodeToString(existingUser.getImage());
+        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img));
     }
 
 }

@@ -7,16 +7,17 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private boolean isAdmin;
-    private byte[] image;
+    private String image;
 
     public UserDTO() {}
 
-    public UserDTO(String id, String email, String firstName, String lastName, boolean isAdmin, byte[] image) {
+    public UserDTO(String id, String email, String firstName, String lastName, boolean isAdmin, String image) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.isAdmin = isAdmin;
+        this.image = image;
     }
 
     public String getId() {
@@ -39,7 +40,7 @@ public class UserDTO {
         return isAdmin;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 }

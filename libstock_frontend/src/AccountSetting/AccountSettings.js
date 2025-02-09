@@ -31,8 +31,8 @@ function UserSettings() {
                     });
 
                     // If the user has a profile picture, use it; otherwise, use the default `user-icon.png`
-                    if (response.data.profilePicture) {
-                        setPreviewImage(response.data.profilePicture);
+                    if (response.data.image) {
+                        setPreviewImage(`data:image/png;base64,${response.data.image}`);
                     }
                 }
             } catch (error) {
@@ -62,7 +62,8 @@ function UserSettings() {
         formData.append("profilePicture", profilePicture);
 
         try {
-            const response = await axios.post("http://localhost:8080/user/set_profile_img", formData, {
+            const userId = localStorage.getItem("userId");
+            const response = await axios.post(`http://localhost:8080/user/set_profile_img?id=${userId}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
