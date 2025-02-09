@@ -5,6 +5,6 @@ import com.example.libstock_backend.Models.Card;
 import java.util.List;
 
 public interface CardRepository extends MongoRepository<Card, String> {
-    List<Card> findByUserEmail(String userEmail);
+    List<Card> findByUserId(String userId);
     Card findByCardNumber(int cardNumber);
 }
