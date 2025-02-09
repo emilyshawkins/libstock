@@ -22,7 +22,7 @@ import com.example.libstock_backend.Repositories.WishlistItemRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/wishlist_items")
+@RequestMapping("/wishlist")
 public class WishlistItemController {
     
     @Autowired
