@@ -1,5 +1,8 @@
 package com.example.libstock_backend.Controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.libstock_backend.Models.Author;
+import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.BookAuthor;
+import com.example.libstock_backend.Repositories.AuthorRepository;
 import com.example.libstock_backend.Repositories.BookAuthorRepository;
+import com.example.libstock_backend.Repositories.BookRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -22,6 +29,10 @@ public class BookAuthorController {
 
     @Autowired
     BookAuthorRepository bookauthorRepository;
+    @Autowired
+    BookRepository bookRepository;
+    @Autowired
+    AuthorRepository authorRepository;
     
     @PostMapping("/create")
     public ResponseEntity<BookAuthor> create_bookauthor(@RequestBody BookAuthor bookAuthor) {
@@ -62,5 +73,31 @@ public class BookAuthorController {
         }
         bookauthorRepository.delete(existingBookAuthor);
         return ResponseEntity.ok(existingBookAuthor);
+    }
+
+    @GetMapping("/get_books_by_author")
+    public ResponseEntity<Iterable<Book>> get_books_by_author(@RequestParam String authorId) {
+        Iterable<BookAuthor> bookauthors = bookauthorRepository.findByAuthorId(authorId);
+        List<Book> books = new ArrayList<>();
+        for (BookAuthor bookauthor : bookauthors) {
+            Book book = bookRepository.findById(bookauthor.getBookId()).orElse(null);
+            if (book != null) {
+                books.add(book);
+            }
+        }
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/get_authors_by_book")
+    public ResponseEntity<Iterable<Author>> get_authors_by_book(@RequestParam String bookId) {
+        Iterable<BookAuthor> bookauthors = bookauthorRepository.findByBookId(bookId);
+        List<Author> authors = new ArrayList<>();
+        for (BookAuthor bookauthor : bookauthors) {
+            Author author = authorRepository.findById(bookauthor.getAuthorId()).orElse(null);
+            if (author != null) {
+                authors.add(author);
+            }
+        }
+        return ResponseEntity.ok(authors);
     }
 }
