@@ -14,7 +14,6 @@ import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import AdminInventory from "./AdminHomePage/AdminInventory/AdminInventory"; // Import AdminInventory
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import UserSettings
-import AddBook from "./AdminHomePage/AdminInventory/AddBook"; // Import AddBook
 
 function App() {
   return (
@@ -28,7 +27,9 @@ function MainContent() {
   const location = useLocation(); // Get the current route path
 
   // Show Navbar ONLY on "/", "/signin", and "/signup"
-  const isNavbarVisible = ["/", "/signin", "/signup"].includes(location.pathname);
+  const isNavbarVisible = ["/", "/signin", "/signup"].includes(
+    location.pathname
+  );
 
   // Show Topbar and Sidebar on ALL pages EXCEPT "/", "/signin", "/signup"
   const isTopandSidebarVisible = !isNavbarVisible;
@@ -42,11 +43,14 @@ function MainContent() {
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
-        <Route path="/user/home" element={<UserHomePage />} />{" "} {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "} {/* Admin Home page */}
-        <Route path="/admin/inventory" element={<AdminInventory />} />{" "} {/* Admin Inventory */}
-        <Route path="/admin/inventory/add-book" element={<AddBook />} />{" "} {/* Admin Add a Book */}
-        <Route path="/user/settings" element={<AccountSettings />} />{" "} {/* Account Settings */}
+        <Route path="/user/home" element={<UserHomePage />} />{" "}
+        {/* User Home page */}
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
+        {/* Admin Home page */}
+        <Route path="/admin/inventory" element={<AdminInventory />} />{" "}
+        {/* Admin Inventory */}
+        <Route path="/user/settings" element={<AccountSettings />} />{" "}
+        {/* Account Settings */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>
