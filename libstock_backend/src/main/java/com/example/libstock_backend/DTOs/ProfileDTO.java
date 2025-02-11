@@ -4,16 +4,19 @@ public class ProfileDTO {
 
     private String id;
     private String email;
-    private String password;
+    private String currentPassword;
+    private String newPassword;
     private String firstName;
     private String lastName;
     private byte[] image;
 
     public ProfileDTO() {}
 
-    public ProfileDTO(String id, String email, String password, String firstName, String lastName, byte[] image) {
+    public ProfileDTO(String id, String email, String currentPassword, String newPassword, String firstName, String lastName, byte[] image) {
         this.id = id;
-        this.password = password;
+        this.email = email;
+        this.currentPassword = currentPassword;
+        this.newPassword = newPassword;
         this.firstName = firstName;
         this.lastName = lastName;
         this.image = image;
@@ -35,12 +38,20 @@ public class ProfileDTO {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getCurrentPassword() {
+        return currentPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public String getFirstName() {
