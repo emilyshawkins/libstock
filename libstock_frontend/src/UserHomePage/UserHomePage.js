@@ -1,10 +1,10 @@
 /* src/UserHomePage.js */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useNavigate } from 'react-router-dom';
+import {data, useNavigate } from 'react-router-dom';
 import './UserHomePage.css';
 
-function HomePage() {
+function UserHomePage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [borrowedItems, setBorrowedItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
@@ -13,6 +13,32 @@ function HomePage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+    //     fetch("http://locahost:8080/user/get?id=userId", {
+    //         method: "POST",
+    //         crossDomain: true,
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             Accept: "appilaction/json",
+    //             "Access-Control-Allow-Origin":"*",
+    //         },
+    //         body: JSON.stringify({
+    //             token: window.localStorage.getItem("token"),
+    //         }),    
+    //     })
+    //         .then((res) => res.json())
+    //         .then((data)=>{
+    //             console.log(data, "UserInfo");
+    //             if(data.data.userType == "Admin"){
+    //                 setAdmin(true);
+    //             }
+    //         setUserInfo(data.data);
+    //         if(data.data.userType == "token epired"){
+    //             alert("token expired login again");
+    //             window.localStorage.clear();
+    //             navigate("signin");
+    //         }
+    //     });
+    // }, []);
         async function fetchUserData() {
             setLoading(true);
             try {
@@ -61,6 +87,7 @@ function HomePage() {
 
     return (
         <div className="home-container">
+             {/* admin ? <AdminHomePage/ > :<UserHomePage userInfo={userInfo}/>; */}
             <div className="search-bar">
                 <input
                     type="text"
@@ -94,5 +121,5 @@ function HomePage() {
     );
 }
 
-export default HomePage;
+export default UserHomePage;
 

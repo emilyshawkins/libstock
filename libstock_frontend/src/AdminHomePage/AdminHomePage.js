@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./AdminHomePage.css";
 
-function HomePage() {
+function AdminHomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [borrowedItems, setBorrowedItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -129,4 +129,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default AdminHomePage;

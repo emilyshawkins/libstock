@@ -93,9 +93,7 @@ function UserSettings() {
             alert("User ID not found.");
             return;
         }
-
         let payload = { id: userId };
-
         if (field === "email") {
             payload.email = userData.email;
         } else if (field === "name") {
@@ -107,7 +105,7 @@ function UserSettings() {
         }
 
         try {
-            const response = await axios.patch(`http://localhost:8080/user/update?id=${userId}`, payload, {
+            const response = await axios.post("http://localhost:8080/user/update", payload, {
                 headers: { "Content-Type": "application/json" },
             });
 
@@ -172,7 +170,6 @@ function UserSettings() {
                 </label>
                 {selectedSetting === "password" && (
                     <div className="accordion-content">
-                        <input type="password" name="currentPassword" placeholder="Current Password" onChange={handleInputChange} />
                         <input type="password" name="newPassword" placeholder="New Password" onChange={handleInputChange} />
                         <button onClick={() => handleUpdate("password")}>Update Password</button>
                     </div>
