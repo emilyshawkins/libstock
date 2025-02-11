@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY; // Access API key from .env
 
 const AdminInventory = () => {
-  const [books, setBooks] = useState([]);
+  const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -17,15 +17,15 @@ const AdminInventory = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/book/get-all");
-      setBooks(response.data);
+      const response = await axios.get("http://localhost:8080/book/get_all");
+      setDatabaseBooks(response.data);
     } catch (error) {
       console.error("Error fetching books", error);
     }
   };
 
   const handleBookAdded = (newBook) => {
-    setBooks((prevBooks) => [...prevBooks, newBook]);
+    setDatabaseBooks((prevBooks) => [...prevBooks, newBook]); // Update database list
   };
 
   const searchBooks = async () => {
@@ -39,9 +39,9 @@ const AdminInventory = () => {
       );
 
       if (response.data.items) {
-        setBooks(response.data.items.slice(0, 5)); // Show top 5 results
+        setSearchResults(response.data.items.slice(0, 5)); // Show top 5 results
       } else {
-        setBooks([]);
+        setSearchResults([]);
       }
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -49,10 +49,12 @@ const AdminInventory = () => {
   };
 
   const addBookToDatabase = async (book) => {
+    if (!book.volumeInfo) return; // Prevent undefined errors
+
     const bookData = {
       isbn: book.volumeInfo.industryIdentifiers?.[0]?.identifier || "Unknown",
       title: book.volumeInfo.title,
-      summary: "No description available",
+      summary: book.volumeInfo.description || "No description available",
       publicationDate: book.volumeInfo.publishedDate || "Unknown", // Default timestamp format
       price: 50, // Default price
       purchaseable: true,
@@ -104,7 +106,7 @@ const AdminInventory = () => {
 
           {/* Display search results */}
           <div className="book-results">
-            {books.map((book) => {
+            {searchResults.map((book) => {
               const volumeInfo = book.volumeInfo; // Shortcut for readability
               return (
                 <div key={book.id} className="book-card">
@@ -135,6 +137,36 @@ const AdminInventory = () => {
                 </div>
               );
             })}
+          </div>
+          <AddBook onBookAdded={handleBookAdded} />
+
+          {/* Display all books from the database */}
+          <div className="book-list">
+            <h2>Books in Database</h2>
+            {databaseBooks.length > 0 ? (
+              <div className="book-grid">
+                {databaseBooks.map((book) => (
+                  <div key={book.isbn} className="book-card">
+                    <h3>{book.title}</h3>
+                    <p>
+                      <strong>Author:</strong> {book.author || "Unknown Author"}
+                    </p>
+                    <p>
+                      <strong>ISBN:</strong> {book.isbn}
+                    </p>
+                    <p>
+                      <strong>Publisher:</strong>{" "}
+                      {book.publisher || "Unknown Publisher"}
+                    </p>
+                    <p>
+                      <strong>Publication Date:</strong> {book.publicationDate}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No books in the database.</p>
+            )}
           </div>
         </div>
         {/* PAGE CONTAINER */}
