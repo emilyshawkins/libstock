@@ -10,6 +10,13 @@ const AdminInventory = () => {
   const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedBook, setSelectedBook] = useState(null); // Stores book selected for adding
+  const [bookDetails, setBookDetails] = useState({
+    price: "",
+    count: "",
+    purchaseable: false,
+    numCheckedOut: "",
+  });
 
   useEffect(() => {
     fetchBooks();
@@ -26,6 +33,24 @@ const AdminInventory = () => {
 
   const handleBookAdded = (newBook) => {
     setDatabaseBooks((prevBooks) => [...prevBooks, newBook]); // Update database list
+  };
+
+  const handleAddBookClick = (book) => {
+    setSelectedBook(book); // Store the book being added
+    setBookDetails({
+      price: "",
+      count: "",
+      purchaseable: false,
+      numCheckedOut: "",
+    });
+  };
+
+  const handleBookDetailChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setBookDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const searchBooks = async () => {
@@ -48,19 +73,25 @@ const AdminInventory = () => {
     }
   };
 
-  const addBookToDatabase = async (book) => {
-    if (!book.volumeInfo) return; // Prevent undefined errors
+  const confirmAddBook = async () => {
+    if (!selectedBook?.volumeInfo) return; // Prevent undefined errors
 
     const bookData = {
-      isbn: book.volumeInfo.industryIdentifiers?.[0]?.identifier || "Unknown",
-      title: book.volumeInfo.title,
-      summary: book.volumeInfo.description || "No description available",
-      publicationDate: book.volumeInfo.publishedDate || "Unknown", // Default timestamp format
-      price: 50, // Default price
-      purchaseable: true,
-      count: 50,
-      numCheckedOut: 1,
+      isbn:
+        selectedBook.volumeInfo.industryIdentifiers?.[0]?.identifier ||
+        "Unknown",
+      title: selectedBook.volumeInfo.title,
+      summary:
+        selectedBook.volumeInfo.description || "No description available",
+      publicationDate:
+        selectedBook.volumeInfo.publishedDate ||
+        "No publication date available",
+      price: bookDetails.price,
+      purchaseable: bookDetails.purchaseable,
+      count: bookDetails.count,
+      numCheckedOut: bookDetails.numCheckedOut,
     };
+
     try {
       const response = await axios.post(
         "http://localhost:8080/book/create",
@@ -71,6 +102,7 @@ const AdminInventory = () => {
       if (response.status === 200) {
         alert("Book added successfully!");
         handleBookAdded(bookData); // Update UI
+        setSelectedBook(null); // Clear selection after adding
       }
     } catch (error) {
       console.error("Error adding book to database:", error);
@@ -79,105 +111,139 @@ const AdminInventory = () => {
   };
 
   return (
-    <div id="main-container" className="main-container nav-effect-1">
-      {/* MAIN CONTENT WRAPPER */}
-      <div className="main clearfix">
-        {/* HEADER */}
-        <header id="header" className="page-header">
-          <div className="page-header-container row">
-            <div className="menu-search">
-              {/* Main Navigation */}
-              <div className="main-navigation">
-                <a href="#">Menu</a>
+    <div id="main-container" className="main-container">
+      <header className="page-header">
+        <h1>Admin Inventory</h1>
+      </header>
+
+      <div className="search-container">
+        <h2>Search Books</h2>
+        <input
+          type="text"
+          placeholder="Search by title or author..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={searchBooks}>Search</button>
+
+        {/* Display search results */}
+        <div className="book-results">
+          <h3>Search Results</h3>
+          {searchResults.map((book) => {
+            if (!book.volumeInfo) return null; // Prevent undefined volumeInfo
+
+            const volumeInfo = book.volumeInfo;
+            return (
+              <div key={book.id} className="book-card">
+                <img
+                  src={volumeInfo.imageLinks?.thumbnail || "placeholder.jpg"}
+                  alt={volumeInfo.title || "No Title"}
+                />
+                <h3>{volumeInfo.title || "No Title"}</h3>
+                <p>
+                  <strong>Author:</strong>{" "}
+                  {volumeInfo.authors?.join(", ") || "Unknown Author"}
+                </p>
+                <p>
+                  <strong>ISBN:</strong>{" "}
+                  {volumeInfo.industryIdentifiers?.[0]?.identifier || "N/A"}
+                </p>
+                <p>
+                  <strong>Publisher:</strong>{" "}
+                  {volumeInfo.publisher || "Unknown Publisher"}
+                </p>
+                <p>
+                  <strong>Publication Date:</strong>{" "}
+                  {volumeInfo.publishedDate || "2024-05-02T00:00:00.000+00:00"}
+                </p>
+                <button onClick={() => handleAddBookClick(book)}>
+                  Add to Database
+                </button>
               </div>
-            </div>
-          </div>
-        </header>
-
-        <div className="search-container">
-          <h2>Search Books</h2>
-          <input
-            type="text"
-            placeholder="Search by title or author..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button onClick={searchBooks}>Search</button>
-
-          {/* Display search results */}
-          <div className="book-results">
-            {searchResults.map((book) => {
-              const volumeInfo = book.volumeInfo; // Shortcut for readability
-              return (
-                <div key={book.id} className="book-card">
-                  <img
-                    src={volumeInfo.imageLinks?.thumbnail || "placeholder.jpg"}
-                    alt={volumeInfo.title}
-                  />
-                  <h3>{volumeInfo.title}</h3>
-                  <p>
-                    <strong>Author:</strong>{" "}
-                    {volumeInfo.authors?.join(", ") || "Unknown Author"}
-                  </p>
-                  <p>
-                    <strong>ISBN:</strong>{" "}
-                    {volumeInfo.industryIdentifiers?.[0]?.identifier || "N/A"}
-                  </p>
-                  <p>
-                    <strong>Publisher:</strong>{" "}
-                    {volumeInfo.publisher || "Unknown Publisher"}
-                  </p>
-                  <p>
-                    <strong>Publication Date:</strong>{" "}
-                    {volumeInfo.publishedDate || "Unknown Date"}
-                  </p>
-                  <button onClick={() => addBookToDatabase(book)}>
-                    Add to Database
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-          <AddBook onBookAdded={handleBookAdded} />
-
-          {/* Display all books from the database */}
-          <div className="book-list">
-            <h2>Books in Database</h2>
-            {databaseBooks.length > 0 ? (
-              <div className="book-grid">
-                {databaseBooks.map((book) => (
-                  <div key={book.isbn} className="book-card">
-                    <h3>{book.title}</h3>
-                    <p>
-                      <strong>Author:</strong> {book.author || "Unknown Author"}
-                    </p>
-                    <p>
-                      <strong>ISBN:</strong> {book.isbn}
-                    </p>
-                    <p>
-                      <strong>Publisher:</strong>{" "}
-                      {book.publisher || "Unknown Publisher"}
-                    </p>
-                    <p>
-                      <strong>Publication Date:</strong> {book.publicationDate}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>No books in the database.</p>
-            )}
-          </div>
+            );
+          })}
         </div>
-        {/* PAGE CONTAINER */}
       </div>
-      {/* /main */}
 
-      <div className="main-overlay">
-        <div className="overlay-full"></div>
+      {/* Display form to input book details before adding */}
+      {selectedBook && (
+        <div className="add-book-form">
+          <h2>Enter Book Details</h2>
+          <label>
+            Price:{" "}
+            <input
+              type="number"
+              name="price"
+              value={bookDetails.price}
+              onChange={handleBookDetailChange}
+              required
+            />
+          </label>
+          <label>
+            Count:{" "}
+            <input
+              type="number"
+              name="count"
+              value={bookDetails.count}
+              onChange={handleBookDetailChange}
+              required
+            />
+          </label>
+          <label>
+            Number Checked Out:{" "}
+            <input
+              type="number"
+              name="numCheckedOut"
+              value={bookDetails.numCheckedOut}
+              onChange={handleBookDetailChange}
+              required
+            />
+          </label>
+          <label>
+            Purchaseable:
+            <input
+              type="checkbox"
+              name="purchaseable"
+              checked={bookDetails.purchaseable}
+              onChange={handleBookDetailChange}
+            />
+          </label>
+          <button onClick={confirmAddBook}>Confirm Add</button>
+          <button onClick={() => setSelectedBook(null)}>Cancel</button>
+        </div>
+      )}
+
+      <AddBook onBookAdded={handleBookAdded} />
+
+      {/* Display all books from the database */}
+      <div className="book-list">
+        <h2>Books in Database</h2>
+        {databaseBooks.length > 0 ? (
+          <div className="book-grid">
+            {databaseBooks.map((book) => (
+              <div key={book.isbn} className="book-card">
+                <h3>{book.title}</h3>
+                <p>
+                  <strong>Author:</strong> {book.author || "Unknown Author"}
+                </p>
+                <p>
+                  <strong>ISBN:</strong> {book.isbn}
+                </p>
+                <p>
+                  <strong>Publisher:</strong>{" "}
+                  {book.publisher || "Unknown Publisher"}
+                </p>
+                <p>
+                  <strong>Publication Date:</strong> {book.publicationDate}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No books in the database.</p>
+        )}
       </div>
     </div>
   );
 };
-
 export default AdminInventory;
