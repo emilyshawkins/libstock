@@ -107,7 +107,7 @@ function UserSettings() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8080/user/update", payload, {
+            const response = await axios.patch(`http://localhost:8080/user/update?id=${userId}`, payload, {
                 headers: { "Content-Type": "application/json" },
             });
 
