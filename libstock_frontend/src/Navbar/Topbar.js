@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Component, useState, useEffect } from "react";
 import {useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Topbar.css"; // Ensure correct styles
@@ -37,10 +37,10 @@ function Topbar() {
     const handleSettingsClick = () => {
         navigate("/user/settings"); 
     };
-
+    
     const handleLogout = () => {
-        localStorage.removeItem("userId");
-        navigate("/signin");
+        window.localStorage.clear();
+        navigate("signin");
     };
 
     return (

@@ -41,12 +41,18 @@ function SignInPage() {
                 // Store user ID and token in localStorage
                 localStorage.setItem("userId", id);
                 localStorage.setItem("userName", name);
+                localStorage.setItem("isAdmin", isAdmin);
                 if (token) {
                     localStorage.setItem("token", token);
                 }
                 // Redirect to the homepage upon successful login
-                navigate("/user/home");
-            } else {
+                if (isAdmin) {
+                    navigate("/admin/home");
+                } else {
+                    navigate("/user/home");
+                }
+            }
+            else {
                 console.error("No user ID found in response");
             }
 
