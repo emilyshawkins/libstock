@@ -9,11 +9,13 @@ function UserSettings() {
         email: "",
         firstName: "",
         lastName: "",
+        currentPassword:"",
+        newPassword:"",
     });
 
     // Profile Picture State
     const [profilePicture, setProfilePicture] = useState(null);
-    const [previewImage, setPreviewImage] = useState("/user-icon.png"); // Default profile image
+    const [previewImage, setPreviewImage] = useState("/user-icon.png"); // Default profile image is user-icon img
 
     useEffect(() => {
         // Fetch user info (name, email, profile picture)
@@ -28,6 +30,8 @@ function UserSettings() {
                         firstName: response.data.firstName || "Unknown",
                         lastName: response.data.lastName || "",
                         email: response.data.email || "No email available",
+                        currentPassword:"",
+                        newPassword:"",
                     });
 
                     // If the user has a profile picture, use it; otherwise, use the default `user-icon.png`
@@ -78,13 +82,47 @@ function UserSettings() {
         }
     };
 
+    const handleInputChange = (event) => {
+        setUserData({ ...userData, [event.target.name]: event.target.value });
+    };
+
+    // Handle Update Request
+    const handleUpdate = async (field) => {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+            alert("User ID not found.");
+            return;
+        }
+
+        let payload = { id: userId };
+
+        if (field === "email") {
+            payload.email = userData.email;
+        } else if (field === "name") {
+            payload.firstName = userData.firstName;
+            payload.lastName = userData.lastName;
+        } else if (field === "password") {
+            payload.currentPassword = userData.currentPassword;
+            payload.newPassword = userData.newPassword;
+        }
+
+        try {
+            const response = await axios.post("http://localhost:8080/user/update", payload, {
+                headers: { "Content-Type": "application/json" },
+            });
+
+            alert(response.data.message || "Update successful!");
+        } catch (error) {
+            alert(error.response?.data?.message || "An error occurred. Please try again.");
+        }
+    };
+
     return (
         <div className="settings-container">
             {/* User Profile Section */}
             <div className="profile-section">
                 <div className="profile-avatar">
                     <img src={previewImage} alt="Profile" className="profile-preview" />
-                    
                     <label htmlFor="file-upload" className="edit-avatar">
                         <img src="/pencil.png" alt="edit" className="edit" />
                     </label>
@@ -105,44 +143,48 @@ function UserSettings() {
 
             {/* Account Settings */}
             <div className="accordion">
+                {/* Change Email */}
                 <label className="accordion-label" onClick={() => setSelectedSetting("email")}>
                     <span>Change Email</span>
                 </label>
                 {selectedSetting === "email" && (
                     <div className="accordion-content">
-                        <input type="email" placeholder="New Email" />
-                        <button>Update Email</button>
+                        <input type="email" name="email" placeholder="New Email" value={userData.email} onChange={handleInputChange} />
+                        <button onClick={() => handleUpdate("email")}>Update Email</button>
                     </div>
                 )}
 
+                {/* Change Name */}
                 <label className="accordion-label" onClick={() => setSelectedSetting("name")}>
                     <span>Change Name</span>
                 </label>
                 {selectedSetting === "name" && (
                     <div className="accordion-content">
-                        <input type="text" placeholder="First Name" />
-                        <input type="text" placeholder="Last Name" />
-                        <button>Update Name</button>
-                    </div>
+                    <input type="text" name="firstName" placeholder="First Name" value={userData.firstName} onChange={handleInputChange} />
+                    <input type="text" name="lastName" placeholder="Last Name" value={userData.lastName} onChange={handleInputChange} />
+                    <button onClick={() => handleUpdate("name")}>Update Name</button>
+                </div>
                 )}
 
+                {/* Change Password */}
                 <label className="accordion-label" onClick={() => setSelectedSetting("password")}>
                     <span>Change Password</span>
                 </label>
                 {selectedSetting === "password" && (
                     <div className="accordion-content">
-                        <input type="password" placeholder="Current Password" />
-                        <input type="password" placeholder="New Password" />
-                        <button>Update Password</button>
+                        <input type="password" name="currentPassword" placeholder="Current Password" onChange={handleInputChange} />
+                        <input type="password" name="newPassword" placeholder="New Password" onChange={handleInputChange} />
+                        <button onClick={() => handleUpdate("password")}>Update Password</button>
                     </div>
                 )}
 
+                {/* Delete Account */}
                 <label className="accordion-label delete-label" onClick={() => setSelectedSetting("delete")}>
                     <span>Delete Account</span>
                 </label>
                 {selectedSetting === "delete" && (
                     <div className="accordion-content">
-                        <button className="delete-button">Delete My Account</button>
+                        <button className="delete-button" onClick={() => handleUpdate("delete")}>Delete My Account</button>
                     </div>
                 )}
             </div>
