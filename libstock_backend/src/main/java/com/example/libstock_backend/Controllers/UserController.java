@@ -141,7 +141,6 @@ public class UserController {
 
     @PostMapping("/set_profile_img")
     public ResponseEntity<UserDTO> set_profile_img(@RequestParam String id, @RequestParam("profilePicture") MultipartFile image) {
-        System.out.println("Setting profile image");
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
