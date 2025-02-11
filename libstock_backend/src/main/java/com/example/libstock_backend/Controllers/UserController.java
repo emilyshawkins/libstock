@@ -114,8 +114,9 @@ public class UserController {
         if (profile.getLastName() != null) {
             existingUser.setLastName(profile.getLastName());
         }
-        if (profile.getPassword() != null) {
-            existingUser.setPassword(profile.getPassword());
+        if (profile.getCurrentPassword() != null && profile.getNewPassword() != null) {
+            existingUser.getPassword().equals(profile.getCurrentPassword());
+            existingUser.setPassword(profile.getNewPassword());
         }
 
         userRepository.save(existingUser);
