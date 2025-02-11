@@ -10,6 +10,7 @@ function UserHomePage() {
     const [filteredItems, setFilteredItems] = useState([]);
     const [userInfo, setUserInfo] = useState({ firstName: '', lastName: '', email: '' });
     const [loading, setLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
