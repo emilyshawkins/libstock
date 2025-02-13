@@ -5,7 +5,9 @@ import "./AdminHomePage.css";
 
 const AdminHomePage = () => {
   const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
-
+  const [filteredBooks, setFilteredBooks] = useState([]); // Books after filtering
+  const [searchQuery, setSearchQuery] = useState('');
+  
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -14,6 +16,8 @@ const AdminHomePage = () => {
     try {
       const response = await axios.get("http://localhost:8080/book/get_all");
       setDatabaseBooks(response.data);
+      setFilteredBooks(response.data); // Initialize filtered books
+
     } catch (error) {
       console.error("Error fetching books", error);
     }
@@ -25,15 +29,25 @@ const AdminHomePage = () => {
       setDatabaseBooks((prevBooks) =>
         prevBooks.filter((book) => book.id !== id)
       );
+      setFilteredBooks((prevBooks) =>
+        prevBooks.filter((book) => book.id !== id)
+      );
     } catch (error) {
       console.error("Error deleting book", error);
     }
   };
 
-  const filteredBooks = databaseBooks.filter((book) =>
-    book.title.toLowerCase()
-  );
+  // Handle Search Input
+  const handleSearchChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = databaseBooks.filter((book) =>
+      book.title.toLowerCase().includes(query)
+    );
+    setFilteredBooks(filtered);
+  };
 
+  // Organizing books alphabetically
   const booksByLetter = filteredBooks.reduce((acc, book) => {
     const firstLetter = book.title[0].toUpperCase();
     if (!acc[firstLetter]) acc[firstLetter] = [];
@@ -45,19 +59,18 @@ const AdminHomePage = () => {
     <div className="home-container">
       <h1>Welcome to Your Dashboard</h1>
       <div className="main-content">
-        {/* <div className="search-bar">
+        <div className="search-bar">
           <input
             type="text"
-            placeholder="Search items..."
+            placeholder="Search books..."
             value={searchQuery}
+            onChange={handleSearchChange}
           />
-        </div> */}
+        </div>
         <div className="book-list">
           <h2>Books in Database</h2>
-          <span className="book-count">
-            Total Books: {filteredBooks.length}
-          </span>
-          {databaseBooks.length > 0 ? (
+          <span className="book-count">Total Books: {filteredBooks.length}</span>
+          {filteredBooks.length > 0 ? (
             Object.keys(booksByLetter)
               .sort()
               .map((letter) => (
@@ -67,24 +80,11 @@ const AdminHomePage = () => {
                     {booksByLetter[letter].map((book) => (
                       <div key={book.isbn} className="book-card">
                         <h3>{book.title}</h3>
-                        <p>
-                          <strong>Author:</strong>{" "}
-                          {book.author || "Unknown Author"}
-                        </p>
-                        <p>
-                          <strong>ISBN:</strong> {book.isbn}
-                        </p>
-                        <p>
-                          <strong>Publisher:</strong>{" "}
-                          {book.publisher || "Unknown Publisher"}
-                        </p>
-                        <p>
-                          <strong>Publication Date:</strong>{" "}
-                          {book.publicationDate}
-                        </p>
-                        <button onClick={() => removeBook(book.id)}>
-                          Remove
-                        </button>
+                        <p><strong>Author:</strong> {book.author || "Unknown Author"}</p>
+                        <p><strong>ISBN:</strong> {book.isbn}</p>
+                        <p><strong>Publisher:</strong> {book.publisher || "Unknown Publisher"}</p>
+                        <p><strong>Publication Date:</strong> {book.publicationDate}</p>
+                        <button onClick={() => removeBook(book.id)}>Remove</button>
                       </div>
                     ))}
                   </div>
