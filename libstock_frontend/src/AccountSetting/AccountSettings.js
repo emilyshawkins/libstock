@@ -17,6 +17,8 @@ function UserSettings() {
     // Profile Picture State
     const [profilePicture, setProfilePicture] = useState(null);
     const [previewImage, setPreviewImage] = useState("/user-icon.png"); // Default profile image
+    const [isImageOpen, setIsImageOpen] = useState(false); // State to track full-screen view
+
 
     useEffect(() => {
         async function fetchUserData() {
@@ -55,7 +57,6 @@ function UserSettings() {
         }
     };
 
-    // Upload Profile Picture using PATCH instead of POST
     const handleUploadProfilePicture = async () => {
         if (!profilePicture) {
             alert("Please select a profile picture.");
@@ -124,7 +125,13 @@ function UserSettings() {
             {/* User Profile Section */}
             <div className="profile-section">
                 <div className="profile-avatar">
-                    <img src={previewImage} alt="Profile" className="profile-preview" />
+                    <img 
+                        src={previewImage} 
+                        alt="Profile" 
+                        className="profile-preview" 
+                        onClick={() => setIsImageOpen(true)} // Click to open full-screen
+                        style={{ cursor: "pointer" }} 
+                    />
                     <label htmlFor="file-upload" className="edit-avatar">
                         <img src="/pencil.png" alt="edit" className="edit" />
                     </label>
@@ -136,6 +143,14 @@ function UserSettings() {
                     Update Profile Picture
                 </button>
             </div>
+
+            {isImageOpen && (
+                <div className="fullscreen-overlay" onClick={() => setIsImageOpen(false)}>
+                    <div className="fullscreen-content">
+                        <img src={previewImage} alt="Full Profile" className="fullscreen-image" />
+                    </div>
+                </div>
+            )}
 
             {/* Account Settings */}
             <div className="accordion">

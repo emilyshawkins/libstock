@@ -1,3 +1,4 @@
+/* src/Navbar/Sidebar.js */
 import React from "react";
 import { Link,useNavigate } from 'react-router-dom';  
 import "./Sidebar.css";
@@ -24,9 +25,6 @@ function Sidebar() {
                 </button>
                 <button onClick={() => navigate("/user/favorite")} className="left-bar-button">
                     Favorite
-                </button>
-                <button onClick={() => navigate("/user/inventory")} className="left-bar-button">
-                    Inventory Setting
                 </button>
             </div>
         </div>
