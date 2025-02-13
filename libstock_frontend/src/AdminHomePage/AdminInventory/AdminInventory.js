@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminInventory.css";
-import AddBook from "./AddBook";
-import { Link } from "react-router-dom";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY; // Access API key from .env
 
@@ -64,7 +62,7 @@ const AdminInventory = () => {
       );
 
       if (response.data.items) {
-        setSearchResults(response.data.items.slice(0, 5)); // Show top 5 results
+        setSearchResults(response.data.items.slice(0, 5)); // Show top 6 results
       } else {
         setSearchResults([]);
       }
@@ -75,7 +73,15 @@ const AdminInventory = () => {
 
   const confirmAddBook = async () => {
     if (!selectedBook?.volumeInfo) return; // Prevent undefined errors
-
+    // Validate input fields before adding the book
+    if (
+      bookDetails.price === "" ||
+      bookDetails.count === "" ||
+      bookDetails.numCheckedOut === ""
+    ) {
+      alert("Please fill in all fields before adding the book.");
+      return;
+    }
     const bookData = {
       isbn:
         selectedBook.volumeInfo.industryIdentifiers?.[0]?.identifier ||
@@ -111,20 +117,24 @@ const AdminInventory = () => {
   };
 
   return (
-    <div id="main-container" className="main-container">
+    <div className="book-inventory-container">
+      {/* Left Sidebar */}
       <header className="page-header">
         <h1>Admin Inventory</h1>
       </header>
-
-      <div className="search-container">
-        <h2>Search Books</h2>
-        <input
-          type="text"
-          placeholder="Search by title or author..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button onClick={searchBooks}>Search</button>
+      {/* Main Content */}
+      <div className="main-content">
+        <div className="search-bar">
+          <h2>Search Books</h2>
+          <input
+            type="text"
+            placeholder="Search by title or author..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {/* <span className="book-count">Total Books: {filteredBooks.length}</span> Count total books in database */}
+          <button onClick={searchBooks}>Search</button>
+        </div>
 
         {/* Display search results */}
         <div className="book-results">
@@ -163,85 +173,83 @@ const AdminInventory = () => {
             );
           })}
         </div>
-      </div>
 
-      {/* Display form to input book details before adding */}
-      {selectedBook && (
-        <div className="add-book-form">
-          <h2>Enter Book Details</h2>
-          <label>
-            Price:{" "}
-            <input
-              type="number"
-              name="price"
-              value={bookDetails.price}
-              onChange={handleBookDetailChange}
-              required
-            />
-          </label>
-          <label>
-            Count:{" "}
-            <input
-              type="number"
-              name="count"
-              value={bookDetails.count}
-              onChange={handleBookDetailChange}
-              required
-            />
-          </label>
-          <label>
-            Number Checked Out:{" "}
-            <input
-              type="number"
-              name="numCheckedOut"
-              value={bookDetails.numCheckedOut}
-              onChange={handleBookDetailChange}
-              required
-            />
-          </label>
-          <label>
-            Purchaseable:
-            <input
-              type="checkbox"
-              name="purchaseable"
-              checked={bookDetails.purchaseable}
-              onChange={handleBookDetailChange}
-            />
-          </label>
-          <button onClick={confirmAddBook}>Confirm Add</button>
-          <button onClick={() => setSelectedBook(null)}>Cancel</button>
-        </div>
-      )}
-
-      <AddBook onBookAdded={handleBookAdded} />
-
-      {/* Display all books from the database */}
-      <div className="book-list">
-        <h2>Books in Database</h2>
-        {databaseBooks.length > 0 ? (
-          <div className="book-grid">
-            {databaseBooks.map((book) => (
-              <div key={book.isbn} className="book-card">
-                <h3>{book.title}</h3>
-                <p>
-                  <strong>Author:</strong> {book.author || "Unknown Author"}
-                </p>
-                <p>
-                  <strong>ISBN:</strong> {book.isbn}
-                </p>
-                <p>
-                  <strong>Publisher:</strong>{" "}
-                  {book.publisher || "Unknown Publisher"}
-                </p>
-                <p>
-                  <strong>Publication Date:</strong> {book.publicationDate}
-                </p>
-              </div>
-            ))}
+        {/* Display form to input book details before adding */}
+        {selectedBook && (
+          <div className="add-book-form">
+            <h2>Enter Book Details</h2>
+            <label>
+              Price:{" "}
+              <input
+                type="number"
+                name="price"
+                value={bookDetails.price}
+                onChange={handleBookDetailChange}
+                required
+              />
+            </label>
+            <label>
+              Count:{" "}
+              <input
+                type="number"
+                name="count"
+                value={bookDetails.count}
+                onChange={handleBookDetailChange}
+                required
+              />
+            </label>
+            <label>
+              Number Checked Out:{" "}
+              <input
+                type="number"
+                name="numCheckedOut"
+                value={bookDetails.numCheckedOut}
+                onChange={handleBookDetailChange}
+                required
+              />
+            </label>
+            <label>
+              Purchaseable:
+              <input
+                type="checkbox"
+                name="purchaseable"
+                checked={bookDetails.purchaseable}
+                onChange={handleBookDetailChange}
+              />
+            </label>
+            <button onClick={confirmAddBook}>Confirm Add</button>
+            <button onClick={() => setSelectedBook(null)}>Cancel</button>
           </div>
-        ) : (
-          <p>No books in the database.</p>
         )}
+
+        {/* Display all books from the database */}
+        <div className="book-list">
+          <h2>Books in Database</h2>
+          {databaseBooks.length > 0 ? (
+            <div className="book-grid">
+              {databaseBooks.map((book) => (
+                <div key={book.isbn} className="book-card">
+                  <h3>{book.title}</h3>
+                  <p>
+                    <strong>Author:</strong> {book.author || "Unknown Author"}
+                  </p>
+                  <p>
+                    <strong>ISBN:</strong> {book.isbn}
+                  </p>
+                  <p>
+                    <strong>Publisher:</strong>{" "}
+                    {book.publisher || "Unknown Publisher"}
+                  </p>
+                  <p>
+                    <strong>Publication Date:</strong> {book.publicationDate}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No books in the database.</p>
+          )}
+        </div>
       </div>
     </div>
   );

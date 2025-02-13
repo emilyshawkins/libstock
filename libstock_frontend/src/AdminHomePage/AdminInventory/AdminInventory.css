@@ -3,12 +3,6 @@
   margin-top: 20px;
 }
 
-input {
-  padding: 8px;
-  width: 300px;
-  margin-right: 10px;
-}
-
 button {
   padding: 8px 15px;
   cursor: pointer;
@@ -23,6 +17,12 @@ button {
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 20px;
+}
+
+.book-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .book-card {

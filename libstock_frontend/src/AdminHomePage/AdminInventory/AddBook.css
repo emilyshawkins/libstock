@@ -1,7 +1,6 @@
-/* .left-bar {
-  display: none;
+@media (max-width: 1024px) and (min-width: 768px) {
+  .left-bar,
+  .top-bar {
+    display: none; /* Hide left and top bars on iPad-sized screens */
+  }
 }
-
-.top-bar {
-  display: none;
-} */

@@ -13,6 +13,7 @@ import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import AdminInventory from "./AdminHomePage/AdminInventory/AdminInventory"; // Import AdminInventory
+import AddBook from "./AdminHomePage/AdminInventory/AddBook"; // Import AdminInventory
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import UserSettings
 
 function App() {
@@ -49,6 +50,8 @@ function MainContent() {
         {/* Admin Home page */}
         <Route path="/admin/inventory" element={<AdminInventory />} />{" "}
         {/* Admin Inventory */}
+        <Route path="/admin/add-book" element={<AddBook />} />{" "}
+        {/* Admin Add Book */}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
