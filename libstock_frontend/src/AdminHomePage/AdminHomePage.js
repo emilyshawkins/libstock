@@ -43,6 +43,9 @@ const AdminHomePage = () => {
             value={searchQuery}
           />
         </div>
+        <div className="content">
+          <p>Manage your borrowed items and account here.</p>
+        </div>
         <div className="book-list">
           <h2>Books in Database</h2>
           {databaseBooks.length > 0 ? (
@@ -78,9 +81,6 @@ const AdminHomePage = () => {
           ) : (
             <p>No books in the database.</p>
           )}
-        </div>
-        <div className="content">
-          <p>Manage your borrowed items and account here.</p>
         </div>
       </div>
     </div>

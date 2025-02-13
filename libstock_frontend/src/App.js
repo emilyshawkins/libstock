@@ -12,8 +12,8 @@ import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
-import AdminInventory from "./AdminHomePage/AdminInventory/AdminInventory"; // Import AdminInventory
-import AddBook from "./AdminHomePage/AdminInventory/AddBook"; // Import AdminInventory
+import AdminInventory from "./AdminInventory/AdminInventory"; // Import AdminInventory
+import AddBook from "./AdminInventory/AddBook"; // Import AdminInventory
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import UserSettings
 
 function App() {
