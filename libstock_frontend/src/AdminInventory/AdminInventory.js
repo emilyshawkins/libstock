@@ -232,44 +232,6 @@ const AdminInventory = () => {
             <button onClick={() => setSelectedBook(null)}>Cancel</button>
           </div>
         )}
-
-        {/* Display all books from the database */}
-        <div className="book-list">
-          <h2>Books in Database</h2>
-          {databaseBooks.length > 0 ? (
-            Object.keys(booksByLetter)
-              .sort()
-              .map((letter) => (
-                <div key={letter} className="book-section">
-                  <h2 className="section-title">{letter}</h2>
-                  <div className="book-grid">
-                    {booksByLetter[letter].map((book) => (
-                      <div key={book.isbn} className="book-card">
-                        <h3>{book.title}</h3>
-                        <p>
-                          <strong>Author:</strong>{" "}
-                          {book.author || "Unknown Author"}
-                        </p>
-                        <p>
-                          <strong>ISBN:</strong> {book.isbn}
-                        </p>
-                        <p>
-                          <strong>Publisher:</strong>{" "}
-                          {book.publisher || "Unknown Publisher"}
-                        </p>
-                        <p>
-                          <strong>Publication Date:</strong>{" "}
-                          {book.publicationDate}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))
-          ) : (
-            <p>No books in the database.</p>
-          )}
-        </div>
       </div>
     </div>
   );
