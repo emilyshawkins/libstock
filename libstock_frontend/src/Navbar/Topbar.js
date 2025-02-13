@@ -8,25 +8,36 @@ function Topbar() {
     const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "" });
     const navigate = useNavigate();
 
+    // Profile Picture State
+    const [previewImage, setPreviewImage] = useState("/user-icon.png"); // Default profile image is user-icon img
+    
+
     useEffect(() => {
+        // Fetch user info (name, email, profile picture)
         async function fetchUserData() {
             try {
                 const userId = localStorage.getItem("userId");
                 if (!userId) return;
-
+                
                 const response = await axios.get(`http://localhost:8080/user/get?id=${userId}`);
                 if (response.data) {
                     setUserInfo({
                         firstName: response.data.firstName || "Unknown",
                         lastName: response.data.lastName || "",
-                        email: response.data.email || "No email available"
+                        email: response.data.email || "No email available",
+                        currentPassword:"",
+                        newPassword:"",
                     });
+
+                    // If the user has a profile picture, use it; otherwise, use the default `user-icon.png`
+                    if (response.data.image) {
+                        setPreviewImage(`data:image/png;base64,${response.data.image}`);
+                    }
                 }
             } catch (error) {
-                console.error("Error fetching user info:", error);
+                console.error("Error fetching user data:", error);
             }
         }
-
         fetchUserData();
     }, []);
 
