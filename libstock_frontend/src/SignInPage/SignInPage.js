@@ -18,13 +18,11 @@ function SignInPage() {
         e.preventDefault();
         setLoading(true);
         setErrorMessage("");
-
         if (!email || !password) {
             setErrorMessage("Email and password are required.");
             setLoading(false);
             return;
         }
-
         try {
             const response = await axios.post(
                 "http://localhost:8080/user/login",

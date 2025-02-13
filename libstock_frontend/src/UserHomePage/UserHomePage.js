@@ -1,7 +1,7 @@
 /* src/UserHomePage.js */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {data, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import './UserHomePage.css';
 
 function UserHomePage() {
@@ -89,6 +89,7 @@ function UserHomePage() {
     return (
         <div className="home-container">
              {/* admin ? <AdminHomePage/ > :<UserHomePage userInfo={userInfo}/>; */}
+             <h1>Welcome to Your Dashboard</h1>
             <div className="search-bar">
                 <input
                     type="text"

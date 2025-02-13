@@ -7,6 +7,7 @@ import "./AdminHomePage.css";
 const AdminHomePage = () => {
   const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAdmin, setIsAdmin] = useState(true);
 
   useEffect(() => {
     fetchBooks();
@@ -34,7 +35,6 @@ const AdminHomePage = () => {
   return (
     <div className="home-container">
       <h1>Welcome to Your Dashboard</h1>
-      <div className="top-bar"></div>
       <div className="main-content">
         <div className="search-bar">
           <input

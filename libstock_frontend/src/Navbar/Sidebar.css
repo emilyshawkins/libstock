@@ -48,3 +48,9 @@
     background-color: #2b404a;
     font-weight: bold;
 }
+
+/* Ensure content does not overlap with Sidebar */
+.main-content {
+    margin-left: 260px; /* Pushes content to the right so it does not overlap with Sidebar */
+    padding: 20px;
+}
