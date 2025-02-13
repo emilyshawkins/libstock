@@ -4,129 +4,87 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./AdminHomePage.css";
 
-function AdminHomePage() {
+const AdminHomePage = () => {
+  const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
   const [searchQuery, setSearchQuery] = useState("");
-  const [borrowedItems, setBorrowedItems] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Fetch borrowed items from the server when the component mounts
   useEffect(() => {
-    async function fetchBorrowedItems() {
-      try {
-        const response = await axios.get("http://localhost:3000/admin/home");
-        setBorrowedItems(response.data);
-        setFilteredItems(response.data);
-      } catch (error) {
-        console.error("Error fetching borrowed items:", error);
-      }
-    }
-    fetchBorrowedItems();
+    fetchBooks();
   }, []);
 
-  // Handle search input change
-  const handleSearchChange = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-    const filtered = borrowedItems.filter((item) =>
-      item.name.toLowerCase().includes(query)
-    );
-    setFilteredItems(filtered);
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/book/get_all");
+      setDatabaseBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching books", error);
+    }
   };
+  const filteredBooks = databaseBooks.filter((book) =>
+    book.title.toLowerCase()
+  );
 
-  // Handle item management (e.g., return/renew an item)
-  const handleManageItem = (itemId) => {
-    // Example: Send a request to the server to manage the item
-    console.log(`Managing item with ID: ${itemId}`);
-  };
-
-  // Handle dropdown toggle
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  // Handle logout
-  const handleLogout = () => {
-    console.log("Logging out...");
-    // Perform logout logic here
-  };
+  const booksByLetter = filteredBooks.reduce((acc, book) => {
+    const firstLetter = book.title[0].toUpperCase();
+    if (!acc[firstLetter]) acc[firstLetter] = [];
+    acc[firstLetter].push(book);
+    return acc;
+  }, {});
 
   return (
     <div className="home-container">
       <h1>Welcome to Your Dashboard</h1>
-      <div className="top-bar">
-        <div className="notification-icon">
-          <img src="/notification-icon.png" alt="Notifications" />
-        </div>
-        <div className="user-icon-container">
-          <img
-            src="/user-icon.png"
-            alt="User Account"
-            className="user-icon"
-            onClick={toggleDropdown}
-          />
-          {isDropdownOpen && (
-            <div className="dropdown-menu">
-              <h2>User Name </h2>
-              <p> Email@gmail.com </p>
-              <Link to="/account-settings" className="dropdown-item">
-                Account Settings
-              </Link>
-              <Link to="/signin" className="dropdown-item">
-                Log Out
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
+      <div className="top-bar"></div>
       <div className="main-content">
-        <div className="left-bar">
-          <div className="logo-container">
-            {/* Wrap logo with Link for navigation */}
-            <Link to="/">
-              <img src="/logo.png" alt="Logo" className="logo" />
-            </Link>
-            <h1 className="site-title">LibStock</h1>
-          </div>
-          <button className="left-bar-button">Bestseller</button>
-          <button className="left-bar-button">Collection</button>
-          <button className="left-bar-button">Wishlist</button>
-          <button className="left-bar-button">Favorite</button>
-          <button className="left-bar-button">Inventory Setting</button>
-        </div>
         <div className="search-bar">
           <input
             type="text"
             placeholder="Search items..."
             value={searchQuery}
-            onChange={handleSearchChange}
           />
+        </div>
+        <div className="book-list">
+          <h2>Books in Database</h2>
+          {databaseBooks.length > 0 ? (
+            Object.keys(booksByLetter)
+              .sort()
+              .map((letter) => (
+                <div key={letter} className="book-section">
+                  <h2 className="section-title">{letter}</h2>
+                  <div className="book-grid">
+                    {booksByLetter[letter].map((book) => (
+                      <div key={book.isbn} className="book-card">
+                        <h3>{book.title}</h3>
+                        <p>
+                          <strong>Author:</strong>{" "}
+                          {book.author || "Unknown Author"}
+                        </p>
+                        <p>
+                          <strong>ISBN:</strong> {book.isbn}
+                        </p>
+                        <p>
+                          <strong>Publisher:</strong>{" "}
+                          {book.publisher || "Unknown Publisher"}
+                        </p>
+                        <p>
+                          <strong>Publication Date:</strong>{" "}
+                          {book.publicationDate}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+          ) : (
+            <p>No books in the database.</p>
+          )}
         </div>
         <div className="content">
           <p>Manage your borrowed items and account here.</p>
         </div>
       </div>
-      <div className="items-list">
-        {filteredItems.length > 0 ? (
-          filteredItems.map((item) => (
-            <div key={item.id} className="item-card">
-              <h3>{item.name}</h3>
-              <p>{item.description}</p>
-              <p>Due Date: {item.dueDate}</p>
-              <button
-                onClick={() => handleManageItem(item.id)}
-                className="manage-button"
-              >
-                Manage
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>No items found</p>
-        )}
-      </div>
     </div>
   );
-}
+};
 
 export default AdminHomePage;
