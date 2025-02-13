@@ -24,7 +24,7 @@ function Sidebar() {
                     Wishlist
                 </button>
                 <button onClick={() => navigate("/user/favorite")} className="left-bar-button">
-                    Favorite
+                    Favorite Items
                 </button>
             </div>
         </div>

@@ -20,12 +20,6 @@ function Sidebar() {
                 <button onClick={() => navigate("/admin/collection")} className="left-bar-button">
                     Collection
                 </button>
-                <button onClick={() => navigate("/admin/wishlist")} className="left-bar-button">
-                    Wishlist
-                </button>
-                <button onClick={() => navigate("/admin/favorite")} className="left-bar-button">
-                    Favorite
-                </button>
                 <button onClick={() => navigate("/admin/inventory")} className="left-bar-button">
                     Inventory Setting
                 </button>

@@ -15,6 +15,7 @@ import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import AdminInventory from "./AdminInventory/AdminInventory"; // Import AdminInventory
 import AddBook from "./AdminInventory/AddBook"; // Import AdminInventory
+import FavPage from "./FavPage/FavPage"; //Import Favourite Page
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import AccountSettings
 
 function App() {
@@ -62,6 +63,7 @@ function MainContent() {
         <Route path="/admin/home" element={<AdminHomePage />} /> {/* Admin Home page */}
         <Route path="/admin/inventory" element={<AdminInventory />} /> {/* Admin Inventory */}
         <Route path="/admin/add-book" element={<AddBook />} /> {/* Admin Add Book */}
+        <Route path="/user/favorite" element={<FavPage />} />
         <Route path="/user/settings" element={<AccountSettings />} /> {/* Account Settings */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>

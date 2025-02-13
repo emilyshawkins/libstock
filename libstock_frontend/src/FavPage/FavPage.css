@@ -1,0 +1,86 @@
+/* src/FavoritePage.css */
+.favorite-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: #476778;
+}
+
+.favorite-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.favorite-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-card h3 {
+    margin: 0;
+    color: #476778;
+}
+
+.favorite-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.favorite-actions button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.favorite-actions .remove-btn {
+    background-color: #d9534f;
+    color: white;
+}
+
+.favorite-actions .remove-btn:hover {
+    background-color: #c9302c;
+}
+
+/* Edit Mode */
+.edit-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-container input,
+.edit-container textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-container button {
+    background-color: #476778;
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-container button:hover {
+    background-color: #35505d;
+}
