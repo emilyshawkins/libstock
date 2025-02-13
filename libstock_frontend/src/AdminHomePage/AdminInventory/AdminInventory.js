@@ -116,6 +116,17 @@ const AdminInventory = () => {
     }
   };
 
+  const filteredBooks = databaseBooks.filter((book) =>
+    book.title.toLowerCase()
+  );
+
+  const booksByLetter = filteredBooks.reduce((acc, book) => {
+    const firstLetter = book.title[0].toUpperCase();
+    if (!acc[firstLetter]) acc[firstLetter] = [];
+    acc[firstLetter].push(book);
+    return acc;
+  }, {});
+
   return (
     <div className="book-inventory-container">
       {/* Left Sidebar */}
@@ -135,7 +146,7 @@ const AdminInventory = () => {
           {/* <span className="book-count">Total Books: {filteredBooks.length}</span> Count total books in database */}
           <button onClick={searchBooks}>Search</button>
         </div>
-
+        <span className="book-count">Total Books: {filteredBooks.length}</span>
         {/* Display search results */}
         <div className="book-results">
           <h3>Search Results</h3>

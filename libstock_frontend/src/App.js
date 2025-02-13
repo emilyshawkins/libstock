@@ -51,7 +51,7 @@ function MainContent() {
         <Route path="/admin/inventory" element={<AdminInventory />} />{" "}
         {/* Admin Inventory */}
         <Route path="/admin/add-book" element={<AddBook />} />{" "}
-        {/* Admin Add Book */}
+        {/* Admin Add Book Manually*/}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
