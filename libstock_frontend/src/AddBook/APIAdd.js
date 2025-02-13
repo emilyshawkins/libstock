@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./AdminInventory.css";
+import "./APIAdd.css";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY; // Access API key from .env
 
 const AdminInventory = () => {
-  const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null); // Stores book selected for adding
@@ -15,23 +14,6 @@ const AdminInventory = () => {
     purchaseable: false,
     numCheckedOut: "",
   });
-
-  useEffect(() => {
-    fetchBooks();
-  }, []);
-
-  const fetchBooks = async () => {
-    try {
-      const response = await axios.get("http://localhost:8080/book/get_all");
-      setDatabaseBooks(response.data);
-    } catch (error) {
-      console.error("Error fetching books", error);
-    }
-  };
-
-  const handleBookAdded = (newBook) => {
-    setDatabaseBooks((prevBooks) => [...prevBooks, newBook]); // Update database list
-  };
 
   const handleAddBookClick = (book) => {
     setSelectedBook(book); // Store the book being added
@@ -62,7 +44,7 @@ const AdminInventory = () => {
       );
 
       if (response.data.items) {
-        setSearchResults(response.data.items.slice(0, 5)); // Show top 6 results
+        setSearchResults(response.data.items.slice(0, 6)); // Show top 6 results
       } else {
         setSearchResults([]);
       }
@@ -106,8 +88,7 @@ const AdminInventory = () => {
       );
 
       if (response.status === 200) {
-        alert("Book added successfully!");
-        handleBookAdded(bookData); // Update UI
+        alert("Book added to your library successfully!");
         setSelectedBook(null); // Clear selection after adding
       }
     } catch (error) {
@@ -115,17 +96,6 @@ const AdminInventory = () => {
       alert("Failed to add book.");
     }
   };
-
-  const filteredBooks = databaseBooks.filter((book) =>
-    book.title.toLowerCase()
-  );
-
-  const booksByLetter = filteredBooks.reduce((acc, book) => {
-    const firstLetter = book.title[0].toUpperCase();
-    if (!acc[firstLetter]) acc[firstLetter] = [];
-    acc[firstLetter].push(book);
-    return acc;
-  }, {});
 
   return (
     <div className="book-inventory-container">
@@ -143,10 +113,8 @@ const AdminInventory = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          {/* <span className="book-count">Total Books: {filteredBooks.length}</span> Count total books in database */}
           <button onClick={searchBooks}>Search</button>
         </div>
-        <span className="book-count">Total Books: {filteredBooks.length}</span>
         {/* Display search results */}
         <div className="book-results">
           <h3>Search Results</h3>

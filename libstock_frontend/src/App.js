@@ -13,8 +13,8 @@ import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
-import AdminInventory from "./AdminInventory/AdminInventory"; // Import AdminInventory
-import AddBook from "./AdminInventory/AddBook"; // Import AdminInventory
+import APIAdd from "./AddBook/APIAdd"; // Import AddBook
+import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import AccountSettings
 
 function App() {
@@ -29,15 +29,17 @@ function MainContent() {
   const location = useLocation(); // Get the current route path
 
   // Show Navbar ONLY on "/", "/signin", and "/signup"
-  const isNavbarVisible = ["/", "/signin", "/signup"].includes(location.pathname);
-  
+  const isNavbarVisible = ["/", "/signin", "/signup"].includes(
+    location.pathname
+  );
+
   // Show AdminSidebar ONLY on "/admin/*" routes
   const isAdminSidebar = location.pathname.startsWith("/admin");
 
-  // Show Sidebar on all pages except "/", "/signin", "/signup", and path start with "/admin" 
+  // Show Sidebar on all pages except "/", "/signin", "/signup", and path start with "/admin"
   const isTopbarVisible = !isNavbarVisible;
 
-  // Show Sidebar on all pages except "/", "/signin", "/signup", and path start with "/admin" 
+  // Show Sidebar on all pages except "/", "/signin", "/signup", and path start with "/admin"
   const isSidebarVisible = !isNavbarVisible && !isAdminSidebar;
 
   return (
@@ -58,11 +60,16 @@ function MainContent() {
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
-        <Route path="/user/home" element={<UserHomePage />} /> {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} /> {/* Admin Home page */}
-        <Route path="/admin/inventory" element={<AdminInventory />} /> {/* Admin Inventory */}
-        <Route path="/admin/add-book" element={<AddBook />} /> {/* Admin Add Book */}
-        <Route path="/user/settings" element={<AccountSettings />} /> {/* Account Settings */}
+        <Route path="/user/home" element={<UserHomePage />} />{" "}
+        {/* User Home page */}
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
+        {/* Admin Home page */}
+        <Route path="/admin/add-book" element={<APIAdd />} />{" "}
+        {/* Admin Add Book */}
+        <Route path="/admin/manual-add" element={<ManualAdd />} />{" "}
+        {/* Admin Add Book Manually */}
+        <Route path="/user/settings" element={<AccountSettings />} />{" "}
+        {/* Account Settings */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>
