@@ -75,7 +75,6 @@
     color: white;
 }
 
-/* Ensure content is pushed below Topbar */
-.main-content {
+.home-container{
     margin-top: 70px; /* Pushes content down to avoid being hidden behind the Topbar */
 }

@@ -1,12 +1,12 @@
 // src/AdminHomePage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "./AdminHomePage.css";
 
 const AdminHomePage = () => {
   const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
   const [searchQuery, setSearchQuery] = useState("");
-  const [isAdmin, setIsAdmin] = useState(true);
 
   useEffect(() => {
     fetchBooks();

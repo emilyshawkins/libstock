@@ -49,8 +49,7 @@
     font-weight: bold;
 }
 
-/* Ensure content does not overlap with Sidebar */
-.main-content {
-    margin-left: 260px; /* Pushes content to the right so it does not overlap with Sidebar */
+.home-container {
+    margin-left: 70px; /* Pushes content down to avoid being hidden behind the Sidebar */
     padding: 20px;
 }
