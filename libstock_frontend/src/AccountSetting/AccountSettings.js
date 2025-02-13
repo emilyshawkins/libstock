@@ -5,7 +5,7 @@ import "./AccountSettings.css";
 
 function UserSettings() {
     const [selectedSetting, setSelectedSetting] = useState(null);
-    const [userData, setUserData] = useState({
+    const [userData, setUserInfo] = useState({
         email: "",
         firstName: "",
         lastName: "",
@@ -26,7 +26,7 @@ function UserSettings() {
                 
                 const response = await axios.get(`http://localhost:8080/user/get?id=${userId}`);
                 if (response.data) {
-                    setUserData({
+                    setUserInfo({
                         firstName: response.data.firstName || "Unknown",
                         lastName: response.data.lastName || "",
                         email: response.data.email || "No email available",
@@ -83,7 +83,7 @@ function UserSettings() {
     };
 
     const handleInputChange = (event) => {
-        setUserData({ ...userData, [event.target.name]: event.target.value });
+        setUserInfo({ ...userData, [event.target.name]: event.target.value });
     };
 
     // Handle Update Request
