@@ -1,5 +1,6 @@
-import React, { Component, useState, useEffect } from "react";
-import {useNavigate } from "react-router-dom";
+/* src/Navbar/Topbar.js */
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Topbar.css"; // Ensure correct styles
 
@@ -8,30 +9,26 @@ function Topbar() {
     const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "" });
     const navigate = useNavigate();
 
-    // Profile Picture State
-    const [previewImage, setPreviewImage] = useState("/user-icon.png"); // Default profile image is user-icon img
-    
+    // Profile Picture State (Default: user-icon.png)
+    const [previewImage, setPreviewImage] = useState("/user-icon.png");
 
     useEffect(() => {
-        // Fetch user info (name, email, profile picture)
         async function fetchUserData() {
             try {
                 const userId = localStorage.getItem("userId");
                 if (!userId) return;
-                
+
                 const response = await axios.get(`http://localhost:8080/user/get?id=${userId}`);
                 if (response.data) {
                     setUserInfo({
                         firstName: response.data.firstName || "Unknown",
                         lastName: response.data.lastName || "",
                         email: response.data.email || "No email available",
-                        currentPassword:"",
-                        newPassword:"",
                     });
 
-                    // If the user has a profile picture, use it; otherwise, use the default `user-icon.png`
-                    if (response.data.image) {
-                        setPreviewImage(`data:image/png;base64,${response.data.image}`);
+                    // If the user has uploaded a profile image, display it; otherwise, use default image
+                    if (response.data.profilePicture) {
+                        setPreviewImage(`data:image/png;base64,${response.data.profilePicture}`);
                     }
                 }
             } catch (error) {
@@ -46,12 +43,12 @@ function Topbar() {
     };
 
     const handleSettingsClick = () => {
-        navigate("/user/settings"); 
+        navigate("/user/settings");
     };
-    
+
     const handleLogout = () => {
         window.localStorage.clear();
-        navigate("signin");
+        navigate("/signin");
     };
 
     return (
@@ -61,8 +58,8 @@ function Topbar() {
             </div>
             <div className="user-icon-container">
                 <img
-                    src="/user-icon.png"
-                    alt="User Account"
+                    src={previewImage}
+                    alt="User Avatar"
                     className="user-icon"
                     onClick={toggleDropdown}
                 />
