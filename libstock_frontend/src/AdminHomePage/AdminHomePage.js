@@ -1,12 +1,10 @@
 // src/AdminHomePage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import "./AdminHomePage.css";
 
 const AdminHomePage = () => {
   const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
-  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchBooks();
@@ -20,6 +18,18 @@ const AdminHomePage = () => {
       console.error("Error fetching books", error);
     }
   };
+
+  const removeBook = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/book/delete?id=${id}`);
+      setDatabaseBooks((prevBooks) =>
+        prevBooks.filter((book) => book.id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting book", error);
+    }
+  };
+
   const filteredBooks = databaseBooks.filter((book) =>
     book.title.toLowerCase()
   );
@@ -34,19 +44,20 @@ const AdminHomePage = () => {
   return (
     <div className="home-container">
       <h1>Welcome to Your Dashboard</h1>
+      <div className="top-bar"></div>
       <div className="main-content">
-        <div className="search-bar">
+        {/* <div className="search-bar">
           <input
             type="text"
             placeholder="Search items..."
             value={searchQuery}
           />
-        </div>
-        <div className="content">
-          <p>Manage your borrowed items and account here.</p>
-        </div>
+        </div> */}
         <div className="book-list">
           <h2>Books in Database</h2>
+          <span className="book-count">
+            Total Books: {filteredBooks.length}
+          </span>
           {databaseBooks.length > 0 ? (
             Object.keys(booksByLetter)
               .sort()
@@ -72,6 +83,9 @@ const AdminHomePage = () => {
                           <strong>Publication Date:</strong>{" "}
                           {book.publicationDate}
                         </p>
+                        <button onClick={() => removeBook(book.id)}>
+                          Remove
+                        </button>
                       </div>
                     ))}
                   </div>
