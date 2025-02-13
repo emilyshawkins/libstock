@@ -14,8 +14,8 @@ function Sidebar() {
                 <h1 className="site-title">LibStock</h1>
             </div> 
             <div className="left-bar-container">
-                <button onClick={() => navigate("/user/bestseller")} className="left-bar-button">
-                    Bestseller
+                <button onClick={() => navigate("/user/home")} className="left-bar-button">
+                    Dashboard
                 </button>
                 <button onClick={() => navigate("/user/collection")} className="left-bar-button">
                     Collection

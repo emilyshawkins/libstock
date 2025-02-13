@@ -14,8 +14,8 @@ function Sidebar() {
                 <h1 className="site-title">LibStock</h1>
             </div> 
             <div className="left-bar-container">
-                <button onClick={() => navigate("/admin/bestseller")} className="left-bar-button">
-                    Bestseller
+                <button onClick={() => navigate("/admin/home")} className="left-bar-button">
+                    Dashboard
                 </button>
                 <button onClick={() => navigate("/admin/collection")} className="left-bar-button">
                     Collection
@@ -25,9 +25,6 @@ function Sidebar() {
                 </button>
                 <button onClick={() => navigate("/admin/favorite")} className="left-bar-button">
                     Favorite
-                </button>
-                <button onClick={() => navigate("/admin/dashboard")} className="left-bar-button">
-                    Dashboard
                 </button>
                 <button onClick={() => navigate("/admin/inventory")} className="left-bar-button">
                     Inventory Setting
