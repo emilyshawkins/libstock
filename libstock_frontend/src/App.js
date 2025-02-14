@@ -61,23 +61,15 @@ function MainContent() {
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
-        <Route path="/user/home" element={<UserHomePage />} />{" "}
-        {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
-        {/* Admin Home page */}
+        <Route path="/user/home" element={<UserHomePage />} />{" "} {/* User Home page */}
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "} {/* Admin Home page */}
         <Route path="/user/favorite" element={<FavPage />} />
-        <Route path="/user/settings" element={<AccountSettings />} />{" "}
-        {/* Account Settings */}
-        <Route path="/user/home" element={<UserHomePage />} />{" "}
-        {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
-        {/* Admin Home page */}
-        <Route path="/admin/add-book" element={<APIAdd />} />{" "}
-        {/* Admin Add Book */}
-        <Route path="/admin/manual-add" element={<ManualAdd />} />{" "}
-        {/* Admin Add Book Manually */}
-        <Route path="/user/settings" element={<AccountSettings />} />{" "}
-        {/* Account Settings */}
+        <Route path="/user/settings" element={<AccountSettings />} />{" "} {/* Account Settings */}
+        <Route path="/user/home" element={<UserHomePage />} />{" "} {/* User Home page */}
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "} {/* Admin Home page */}
+        <Route path="/admin/add-book" element={<APIAdd />} />{" "} {/* Admin Add Book */}
+        <Route path="/admin/manual-add" element={<ManualAdd />} />{" "} {/* Admin Add Book Manually */}
+        <Route path="/user/settings" element={<AccountSettings />} />{" "} {/* Account Settings */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>
