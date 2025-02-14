@@ -13,8 +13,6 @@ import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
-import AdminInventory from "./AdminInventory/AdminInventory"; // Import AdminInventory
-import AddBook from "./AdminInventory/AddBook"; // Import AdminInventory
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
@@ -63,12 +61,13 @@ function MainContent() {
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
-        <Route path="/user/home" element={<UserHomePage />} /> {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} /> {/* Admin Home page */}
-        <Route path="/admin/inventory" element={<AdminInventory />} /> {/* Admin Inventory */}
-        <Route path="/admin/add-book" element={<AddBook />} /> {/* Admin Add Book */}
+        <Route path="/user/home" element={<UserHomePage />} />{" "}
+        {/* User Home page */}
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
+        {/* Admin Home page */}
         <Route path="/user/favorite" element={<FavPage />} />
-        <Route path="/user/settings" element={<AccountSettings />} /> {/* Account Settings */}
+        <Route path="/user/settings" element={<AccountSettings />} />{" "}
+        {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
