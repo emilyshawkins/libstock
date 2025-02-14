@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./APIAdd.css";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY; // Access API key from .env
@@ -11,16 +12,17 @@ const AdminInventory = () => {
   const [bookDetails, setBookDetails] = useState({
     price: "",
     count: "",
-    purchaseable: false,
+    purchasable: false,
     numCheckedOut: "",
   });
+  const navigate = useNavigate();
 
   const handleAddBookClick = (book) => {
     setSelectedBook(book); // Store the book being added
     setBookDetails({
       price: "",
       count: "",
-      purchaseable: false,
+      purchasable: false,
       numCheckedOut: "",
     });
   };
@@ -74,8 +76,9 @@ const AdminInventory = () => {
       publicationDate:
         selectedBook.volumeInfo.publishedDate ||
         "No publication date available",
+      publisher: selectedBook.volumeInfo.publisher || "Unknown Publisher",
       price: bookDetails.price,
-      purchaseable: bookDetails.purchaseable,
+      purchasable: bookDetails.purchasable,
       count: bookDetails.count,
       numCheckedOut: bookDetails.numCheckedOut,
     };
@@ -114,6 +117,12 @@ const AdminInventory = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button onClick={searchBooks}>Search</button>
+          <button
+            onClick={() => navigate("/admin/manual-add")}
+            className="manual-add-button"
+          >
+            Manual Add
+          </button>
         </div>
         {/* Display search results */}
         <div className="book-results">
@@ -188,11 +197,11 @@ const AdminInventory = () => {
               />
             </label>
             <label>
-              Purchaseable:
+              Purchasable:
               <input
                 type="checkbox"
-                name="purchaseable"
-                checked={bookDetails.purchaseable}
+                name="purchasable"
+                checked={bookDetails.purchasable}
                 onChange={handleBookDetailChange}
               />
             </label>

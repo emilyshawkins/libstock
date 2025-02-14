@@ -9,7 +9,7 @@ function AddBook() {
   const [summary, setSummary] = useState("");
   const [publicationDate, setPublicationDate] = useState("");
   const [price, setPrice] = useState("");
-  const [purchaseable, setPurchaseable] = useState(false);
+  const [purchasable, setpurchasable] = useState(false);
   const [count, setCount] = useState("");
   const [numCheckedOut, setNumCheckedOut] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,7 +46,7 @@ function AddBook() {
           summary,
           publicationDate,
           price,
-          purchaseable,
+          purchasable,
           count,
           numCheckedOut,
         },
@@ -121,10 +121,10 @@ function AddBook() {
           <label>
             <input
               type="checkbox"
-              checked={purchaseable}
-              onChange={(e) => setPurchaseable(e.target.checked)}
+              checked={purchasable}
+              onChange={(e) => setpurchasable(e.target.checked)}
             />
-            Purchaseable
+            Purchasable
           </label>
         </div>
         <div className="input-group">
