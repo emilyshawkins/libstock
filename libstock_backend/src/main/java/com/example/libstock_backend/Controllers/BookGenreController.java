@@ -24,6 +24,9 @@ public class BookGenreController {
 
     @PostMapping("/create")
     public ResponseEntity<BookGenre> create_bookgenre(@RequestBody BookGenre bookGenre) {
+        if (bookGenre.getGenreId() == null || bookGenre.getBookId() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         BookGenre existingBookGenre = bookgenreRepository.findByGenreIdAndBookId(bookGenre.getGenreId(), bookGenre.getBookId());
         if (existingBookGenre != null) {
             return ResponseEntity.badRequest().body(null);
