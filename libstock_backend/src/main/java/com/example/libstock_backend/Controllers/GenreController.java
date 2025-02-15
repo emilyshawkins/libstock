@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.libstock_backend.Models.Genre;
+import com.example.libstock_backend.Repositories.BookGenreRepository;
 import com.example.libstock_backend.Repositories.GenreRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -22,9 +23,14 @@ public class GenreController {
 
     @Autowired
     GenreRepository genreRepository; 
+    @Autowired
+    BookGenreRepository bookGenreRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Genre> create_genre(@RequestBody Genre genre) {
+        if (genre.getName() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         Genre existingGenre = genreRepository.findByName(genre.getName());
         if (existingGenre != null) {
             return ResponseEntity.badRequest().body(null);
@@ -58,6 +64,7 @@ public class GenreController {
         if (existingGenre == null) {
             return ResponseEntity.notFound().build();
         }
+        bookGenreRepository.deleteAllByGenreId(id);
         genreRepository.delete(existingGenre);
         return ResponseEntity.ok(existingGenre);
     }
