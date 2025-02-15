@@ -31,6 +31,9 @@ public class FavoriteController {
 
     @PostMapping("/create")
     public ResponseEntity<Favorite> create_favorite(@RequestBody Favorite favorite) {
+        if (favorite.getUserId() == null || favorite.getBookId() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         Favorite existingFavorite = favoriteRepository.findByUserIdAndBookId(favorite.getUserId(), favorite.getBookId());
         if (existingFavorite != null) {
             return ResponseEntity.badRequest().body(null);
