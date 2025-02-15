@@ -18,7 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.libstock_backend.Models.Book;
+import com.example.libstock_backend.Repositories.BookAuthorRepository;
+import com.example.libstock_backend.Repositories.BookGenreRepository;
 import com.example.libstock_backend.Repositories.BookRepository;
+import com.example.libstock_backend.Repositories.CheckoutRepository;
+import com.example.libstock_backend.Repositories.FavoriteRepository;
+import com.example.libstock_backend.Repositories.QueueRepository;
+import com.example.libstock_backend.Repositories.RatingRepository;
+import com.example.libstock_backend.Repositories.WishlistItemRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -27,12 +34,33 @@ public class BookController {
 
     @Autowired
     BookRepository BookRepository;
+    @Autowired
+    BookAuthorRepository BookAuthorRepository;
+    @Autowired
+    BookGenreRepository BookGenreRepository;
+    @Autowired
+    CheckoutRepository CheckoutRepository;
+    @Autowired
+    FavoriteRepository FavoriteRepository;
+    @Autowired
+    QueueRepository QueueRepository;
+    @Autowired
+    RatingRepository RatingRepository;
+    @Autowired
+    WishlistItemRepository WishlistItemRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Book> create_book(@RequestBody Book book) {
+        if (book.getISBN() == null || book.getTitle() == null || book.getSummary() == null || book.getPublicationDate() == null || book.getPrice() == null || book.getPurchaseable() == null || book.getCover() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         Book existingBook = BookRepository.findByISBN(book.getISBN());
         if (existingBook != null) {
             return ResponseEntity.badRequest().body(null);
+        }
+        if (book.getCount() < 0 || book.getNumCheckedOut() < 0) {
+            book.setCount(0);
+            book.setNumCheckedOut(0);
         }
         BookRepository.save(book);
         return ResponseEntity.ok(book); 
@@ -72,6 +100,13 @@ public class BookController {
         if (existingBook == null) {
             return ResponseEntity.notFound().build();
         }
+        BookAuthorRepository.deleteAllByBookId(id);
+        BookGenreRepository.deleteAllByBookId(id);
+        CheckoutRepository.deleteAllByBookId(id);
+        FavoriteRepository.deleteAllByBookId(id);
+        QueueRepository.deleteAllByBookId(id);
+        RatingRepository.deleteAllByBookId(id);
+        WishlistItemRepository.deleteAllByBookId(id);
         BookRepository.delete(existingBook);
         return ResponseEntity.ok(existingBook);
     }

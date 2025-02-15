@@ -8,5 +8,6 @@ public interface BookGenreRepository extends MongoRepository<BookGenre, String> 
     List<BookGenre> findByBookId(String bookId); // Find all genres of a book
     List<BookGenre> findByGenreId(String genreId); // Find all books of a genre
     BookGenre findByGenreIdAndBookId(String genreId, String bookId); // Find a book of a genre
+    void deleteAllByBookId(String bookId); // Delete all genres of a book
     
 }
