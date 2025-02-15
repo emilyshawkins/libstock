@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.Checkout;
 import com.example.libstock_backend.Models.Notification;
+import com.example.libstock_backend.Models.Queue;
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.CheckoutRepository;
 import com.example.libstock_backend.Repositories.NotificationRepository;
+import com.example.libstock_backend.Repositories.QueueRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -33,14 +35,22 @@ public class CheckoutController {
     BookRepository bookRepository;
     @Autowired
     NotificationRepository notificationRepository;
+    @Autowired
+    QueueRepository queueRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Checkout> create_checkout(@RequestBody Checkout checkout) {
-        if (checkout.getUserId() == null || checkout.getBookId() == null) {
+        if (checkout.getUserId() == null || checkout.getBookId() == null) { // Check if user and book are provided
             return ResponseEntity.badRequest().body(null);
         }
         Checkout existingCheckout = checkoutRepository.findByUserIdAndBookId(checkout.getUserId(), checkout.getBookId());
-        if (existingCheckout != null) {
+        if (existingCheckout != null) { // Check if user already has the book checked out
+            return ResponseEntity.badRequest().body(null);
+        }
+        Book book = bookRepository.findById(checkout.getBookId()).orElse(null);
+        if (queueRepository.countByBookId(checkout.getBookId()) > 0 || book.getCount() == 0) { // Check if there is a queue for the book
+            Queue queue = new Queue(checkout.getUserId(), checkout.getBookId(), queueRepository.countByBookId(checkout.getBookId()) + 1);
+            queueRepository.save(queue);
             return ResponseEntity.badRequest().body(null);
         }
 
@@ -54,6 +64,9 @@ public class CheckoutController {
         checkout.setStatus("Checked Out");
         checkout.setCheckoutDate(checkoutDate);
         checkout.setDueDate(dueDate);
+
+        book.setCount(book.getCount() - 1);
+        bookRepository.save(book);
 
         checkoutRepository.save(checkout);
         return ResponseEntity.ok(checkout); 
@@ -105,6 +118,10 @@ public class CheckoutController {
         if (existingCheckout == null) {
             return ResponseEntity.notFound().build();
         }
+
+        Book book = bookRepository.findById(existingCheckout.getBookId()).orElse(null);
+        book.setCount(book.getCount() + 1);
+        bookRepository.save(book);
 
         existingCheckout.setStatus("Returned");
         checkoutRepository.save(existingCheckout);

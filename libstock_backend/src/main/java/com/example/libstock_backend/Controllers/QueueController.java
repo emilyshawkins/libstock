@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.libstock_backend.Models.Queue;
+import com.example.libstock_backend.Repositories.CheckoutRepository;
 import com.example.libstock_backend.Repositories.QueueRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -22,9 +23,14 @@ public class QueueController {
     
     @Autowired
     QueueRepository queueRepository;
+    @Autowired
+    CheckoutRepository checkoutRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Queue> create_queue(@RequestBody Queue queue) {
+        if (queue.getUserId() == null || queue.getBookId() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         Queue existingQueue = queueRepository.findByUserIdAndBookId(queue.getUserId(), queue.getBookId());
         if (existingQueue != null) {
             return ResponseEntity.badRequest().body(null);
@@ -67,4 +73,9 @@ public class QueueController {
         queueRepository.delete(existingQueue);
         return ResponseEntity.ok(existingQueue);
     }
+
+    // @GetMapping("/update_positions")
+    // public ResponseEntity<String> update_positions(@RequestParam String bookId) {
+        
+    // }
 }
