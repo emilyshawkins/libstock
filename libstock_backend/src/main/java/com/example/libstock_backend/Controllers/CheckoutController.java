@@ -28,11 +28,15 @@ public class CheckoutController {
 
     @PostMapping("/create")
     public ResponseEntity<Checkout> create_checkout(@RequestBody Checkout checkout) {
+        if (checkout.getUserId() == null || checkout.getBookId() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         Checkout existingCheckout = checkoutRepository.findByUserIdAndBookId(checkout.getUserId(), checkout.getBookId());
         if (existingCheckout != null) {
             return ResponseEntity.badRequest().body(null);
         }
 
+        // Set due date to 14 days from checkout date
         Date checkoutDate = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(checkoutDate);
@@ -80,4 +84,58 @@ public class CheckoutController {
         checkoutRepository.delete(existingCheckout);
         return ResponseEntity.ok(existingCheckout);
     }
+
+    @GetMapping("/get_all_by_user")
+    public ResponseEntity<Iterable<Checkout>> get_all_checkouts(@RequestParam String userId) {
+        Iterable<Checkout> checkouts = checkoutRepository.findByUserId(userId);
+        return ResponseEntity.ok(checkouts);
+    }
+
+    @GetMapping("/return")
+    public ResponseEntity<Checkout> return_book(@RequestParam String id) {
+        Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
+        if (existingCheckout == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existingCheckout.setStatus("Returned");
+        checkoutRepository.save(existingCheckout);
+        return ResponseEntity.ok(existingCheckout);
+    }
+
+    @GetMapping("/check_due_date")
+    public ResponseEntity<Checkout> check_due_date(@RequestParam String id) {
+        Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
+        if (existingCheckout == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Date currentDate = new Date();
+        if (currentDate.after(existingCheckout.getDueDate())) {
+            existingCheckout.setStatus("Overdue");
+            checkoutRepository.save(existingCheckout);
+        }
+
+        return ResponseEntity.ok(existingCheckout);
+    }
+
+    @GetMapping("/renew")
+    public ResponseEntity<Checkout> renew_checkout(@RequestParam String id) {
+        Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
+        if (existingCheckout == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Set due date to 14 days from current date
+        Date currentDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        c.add(Calendar.DATE, 14);
+        Date dueDate = c.getTime();
+
+        existingCheckout.setDueDate(dueDate);
+        checkoutRepository.save(existingCheckout);
+        return ResponseEntity.ok(existingCheckout);
+    }
+
 }
