@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.Checkout;
+import com.example.libstock_backend.Models.Notification;
+import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.CheckoutRepository;
+import com.example.libstock_backend.Repositories.NotificationRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -25,6 +29,10 @@ public class CheckoutController {
     
     @Autowired
     CheckoutRepository checkoutRepository;
+    @Autowired
+    BookRepository bookRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Checkout> create_checkout(@RequestBody Checkout checkout) {
@@ -114,6 +122,13 @@ public class CheckoutController {
         if (currentDate.after(existingCheckout.getDueDate())) {
             existingCheckout.setStatus("Overdue");
             checkoutRepository.save(existingCheckout);
+
+            // Create notification for user
+            Book book = bookRepository.findById(existingCheckout.getBookId()).orElse(null);
+            Notification notification = new Notification(existingCheckout.getUserId(), new Date(), 
+                                                         "Book " + book.getTitle() + " is overdue", 
+                                                         false);
+            notificationRepository.save(notification);
         }
 
         return ResponseEntity.ok(existingCheckout);

@@ -1,5 +1,7 @@
 package com.example.libstock_backend.Controllers;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +28,11 @@ public class NotificationController {
 
     @PostMapping("/create")
     public ResponseEntity<Notification> create_notification(@RequestBody Notification notification) {
+        if(notification.getUserId() == null || notification.getMessage() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        notification.setDate(new Date(0));
+        notification.setRead(false);
         notificationRepository.save(notification);
         return ResponseEntity.ok(notification);
     }
