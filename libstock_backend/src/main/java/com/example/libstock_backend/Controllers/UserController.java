@@ -33,47 +33,70 @@ public class UserController {
 
     @PostMapping("/admin_signup")
     public ResponseEntity<UserDTO> create_admin(@RequestBody User user) {
-        User existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser != null) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if email already in use
+
+        if (user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null || user.getPassword() == null) {
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are missing
         }
-        user.setAdmin(true);
-        user.setImage(null);
+        else if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("") || user.getPassword().equals("")) {
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are empty
+        }
+        else {
+            User existingUser = userRepository.findByEmail(user.getEmail()); // Check if email is already in use
+            if (existingUser != null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            user.setAdmin(false);
+            user.setImage(null);
+        }
         userRepository.save(user);
         return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null)); // 200 OK if account creation successful
     }
 
     @PostMapping("/user_signup")
     public ResponseEntity<UserDTO> create_user(@RequestBody User user) {
-        User existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser != null) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if email already in use
+        
+        if (user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null || user.getPassword() == null) {
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are missing
         }
-        user.setAdmin(false);
-        user.setImage(null);
+        else if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("") || user.getPassword().equals("")) {
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are empty
+        }
+        else {
+            User existingUser = userRepository.findByEmail(user.getEmail()); // Check if email is already in use
+            if (existingUser != null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            user.setAdmin(false);
+            user.setImage(null);
+        }
         userRepository.save(user);
         return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null)); // 200 OK if account creation successful
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO user) {
-        System.out.println("Logging in");
-        System.out.println(user.getEmail());
-        System.out.println(user.getPassword());
-        User existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
-            return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null); // 401 Unauthorized if email not found or password incorrect
-        }
 
-        String ret_img;
-        if (existingUser.getImage() != null) {
-            ret_img = Base64.getEncoder().encodeToString(existingUser.getImage());
+        if (user.getEmail() == null || user.getPassword() == null) {
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are missing
+        }
+        else if (user.getEmail().equals("") || user.getPassword().equals("")) {
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are empty
         }
         else {
-            ret_img = null;
+            User existingUser = userRepository.findByEmail(user.getEmail());
+            if (existingUser == null) {
+                return ResponseEntity.status(Response.SC_NOT_FOUND).body(null); // 404 Not Found if user does not exist
+            }
+            else if (!existingUser.getPassword().equals(user.getPassword())) {
+                return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null); // 401 Unauthorized if password is incorrect
+            }
+    
+            String ret_img = (existingUser.getImage() != null) ? Base64.getEncoder().encodeToString(existingUser.getImage()) : null;
+
+            return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img)); // 200 OK if login successful
+
         }
-        
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img)); // 200 OK if login successful
+               
     }
 
     @GetMapping("/get")
@@ -82,52 +105,51 @@ public class UserController {
         if (existingUser == null) {
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
-        String ret_img;
-        if (existingUser.getImage() != null) {
-            ret_img = Base64.getEncoder().encodeToString(existingUser.getImage());
-        }
-        else {
-            ret_img = null;
-        }
+        String ret_img = (existingUser.getImage() != null) ? Base64.getEncoder().encodeToString(existingUser.getImage()) : null;
+
         return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img));
     }
 
     @PatchMapping("/update")
     public ResponseEntity<UserDTO> update(@RequestBody ProfileDTO profile) {
-        User existingUser = userRepository.findById(profile.getId()).orElse(null);
-        if (existingUser == null) {
-            return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
+        if (profile.getId() == null) {
+            return ResponseEntity.status(Response.SC_BAD_REQUEST).body(null);
         }
-
-        // Check if email is being changed and if so, check if it is already in use
-        if (profile.getEmail() != null) {
-            User duplicateUser = userRepository.findByEmail(profile.getEmail());
-            if (duplicateUser != null) {
-                return ResponseEntity.status(Response.SC_CONFLICT).body(null);
-            }
-            existingUser.setEmail(profile.getEmail());
-            
-        }
-        if (profile.getFirstName() != null) {
-            existingUser.setFirstName(profile.getFirstName());
-        }
-        if (profile.getLastName() != null) {
-            existingUser.setLastName(profile.getLastName());
-        }
-        if (profile.getCurrentPassword() != null && profile.getNewPassword() != null) {
-            existingUser.getPassword().equals(profile.getCurrentPassword());
-            existingUser.setPassword(profile.getNewPassword());
-        }
-
-        userRepository.save(existingUser);
-        String ret_img;
-        if (existingUser.getImage() != null) {
-            ret_img = Base64.getEncoder().encodeToString(existingUser.getImage());
+        else if (profile.getId().equals("")) {
+            return ResponseEntity.status(Response.SC_BAD_REQUEST).body(null);
         }
         else {
-            ret_img = null;
-        }
-        return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img));
+            User existingUser = userRepository.findById(profile.getId()).orElse(null);
+            if (existingUser == null) {
+                return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
+            }
+
+            // Check if email is being changed and if so, check if it is already in use
+            if (profile.getEmail() != null) {
+                User duplicateUser = userRepository.findByEmail(profile.getEmail());
+                if (duplicateUser != null) {
+                    return ResponseEntity.status(Response.SC_CONFLICT).body(null);
+                }
+                existingUser.setEmail(profile.getEmail());
+                
+            }
+            if (profile.getFirstName() != null) {
+                existingUser.setFirstName(profile.getFirstName());
+            }
+            if (profile.getLastName() != null) {
+                existingUser.setLastName(profile.getLastName());
+            }
+            if (profile.getCurrentPassword() != null && profile.getNewPassword() != null) {
+                existingUser.getPassword().equals(profile.getCurrentPassword());
+                existingUser.setPassword(profile.getNewPassword());
+            }
+
+            userRepository.save(existingUser);
+            
+            String ret_img = (existingUser.getImage() != null) ? Base64.getEncoder().encodeToString(existingUser.getImage()) : null;
+
+            return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img));
+       }
     }
     
     @DeleteMapping("/delete")

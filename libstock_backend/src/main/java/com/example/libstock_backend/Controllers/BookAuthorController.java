@@ -36,6 +36,9 @@ public class BookAuthorController {
     
     @PostMapping("/create")
     public ResponseEntity<BookAuthor> create_bookauthor(@RequestBody BookAuthor bookAuthor) {
+        if (bookAuthor.getAuthorId() == null || bookAuthor.getBookId() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         BookAuthor existingBookAuthor = bookauthorRepository.findByAuthorIdAndBookId(bookAuthor.getAuthorId(), bookAuthor.getBookId());
         if (existingBookAuthor != null) {
             return ResponseEntity.badRequest().body(null);

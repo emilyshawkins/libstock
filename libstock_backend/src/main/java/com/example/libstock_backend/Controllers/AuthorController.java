@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.libstock_backend.Models.Author;
 import com.example.libstock_backend.Repositories.AuthorRepository;
+import com.example.libstock_backend.Repositories.BookAuthorRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -22,11 +23,21 @@ public class AuthorController {
 
     @Autowired
     AuthorRepository authorRepository;
+    @Autowired
+    BookAuthorRepository bookAuthorRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Author> create_author(@RequestBody Author author) {
-        authorRepository.save(author);
-        return ResponseEntity.ok(author);
+        if (author.getFirstName() == null || author.getLastName() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        else if (author.getFirstName().equals("") || author.getLastName().equals("")) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        else {
+            authorRepository.save(author);
+            return ResponseEntity.ok(author);
+        }
     }
 
     @GetMapping("/read")
@@ -56,6 +67,9 @@ public class AuthorController {
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
+
+        bookAuthorRepository.deleteAllByAuthorId(id);
+
         authorRepository.delete(author);
         return ResponseEntity.ok(author);
     }
