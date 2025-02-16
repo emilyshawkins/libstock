@@ -4,14 +4,21 @@ import axios from "axios";
 import "./AdminHomePage.css";
 
 const AdminHomePage = () => {
-  const [databaseBooks, setDatabaseBooks] = useState([]); // Books in DB
-  const [filteredBooks, setFilteredBooks] = useState([]); // Books after filtering
+  // State for storing all books from the database
+  const [databaseBooks, setDatabaseBooks] = useState([]);
+
+  // State for storing books after filtering (for search functionality)
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
+  // State for search input
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Fetch books from the backend when the component mounts
   useEffect(() => {
     fetchBooks();
   }, []);
 
+  // Fetch all books from the database
   const fetchBooks = async () => {
     try {
       const response = await axios.get("http://localhost:8080/book/get_all");
@@ -22,9 +29,12 @@ const AdminHomePage = () => {
     }
   };
 
+  // Remove a book from the database
   const removeBook = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/book/delete?id=${id}`);
+
+      // Update state to remove the deleted book
       setDatabaseBooks((prevBooks) =>
         prevBooks.filter((book) => book.id !== id)
       );
@@ -36,10 +46,12 @@ const AdminHomePage = () => {
     }
   };
 
-  // Handle Search Input
+  // Handle search input and filter books
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
+
+    // Filter books that match the search query
     const filtered = databaseBooks.filter((book) =>
       book.title.toLowerCase().includes(query)
     );
@@ -48,8 +60,8 @@ const AdminHomePage = () => {
 
   // Organizing books alphabetically
   const booksByLetter = filteredBooks.reduce((acc, book) => {
-    const firstLetter = book.title[0].toUpperCase();
-    if (!acc[firstLetter]) acc[firstLetter] = [];
+    const firstLetter = book.title[0].toUpperCase(); // Get first letter of title
+    if (!acc[firstLetter]) acc[firstLetter] = []; // Initialize array if empty
     acc[firstLetter].push(book);
     return acc;
   }, {});
@@ -57,7 +69,9 @@ const AdminHomePage = () => {
   return (
     <div className="home-container">
       <h1>Welcome to Your Dashboard</h1>
+
       <div className="main-content">
+        {/* Search bar for filtering books */}
         <div className="search-bar">
           <input
             type="text"
@@ -66,14 +80,17 @@ const AdminHomePage = () => {
             onChange={handleSearchChange}
           />
         </div>
+
+        {/* Display books in the database */}
         <div className="book-list">
           <h2>Books in Database</h2>
           <span className="book-count">
             Total Books: {filteredBooks.length}
           </span>
+
           {filteredBooks.length > 0 ? (
             Object.keys(booksByLetter)
-              .sort()
+              .sort() // Sort alphabetically
               .map((letter) => (
                 <div key={letter} className="book-section">
                   <h2 className="section-title">{letter}</h2>

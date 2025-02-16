@@ -6,19 +6,24 @@ import "./APIAdd.css";
 const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY; // Access API key from .env
 
 const AdminInventory = () => {
+  // State for search input and search results
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedBook, setSelectedBook] = useState(null); // Stores book selected for adding
+
+  // Stores selected book details for adding to the database
+  const [selectedBook, setSelectedBook] = useState(null);
   const [bookDetails, setBookDetails] = useState({
     price: "",
     count: "",
     purchasable: false,
     numCheckedOut: "",
   });
+
   const navigate = useNavigate();
 
+  // Handles selecting a book from search results
   const handleAddBookClick = (book) => {
-    setSelectedBook(book); // Store the book being added
+    setSelectedBook(book);
     setBookDetails({
       price: "",
       count: "",
@@ -27,6 +32,7 @@ const AdminInventory = () => {
     });
   };
 
+  // Handles changes in the book details input form
   const handleBookDetailChange = (e) => {
     const { name, value, type, checked } = e.target;
     setBookDetails((prevDetails) => ({
@@ -35,6 +41,7 @@ const AdminInventory = () => {
     }));
   };
 
+  // Searches for books using the Google Books API
   const searchBooks = async () => {
     if (!searchQuery.trim()) return;
 
@@ -55,8 +62,10 @@ const AdminInventory = () => {
     }
   };
 
+  // Handles adding a book to the database
   const confirmAddBook = async () => {
-    if (!selectedBook?.volumeInfo) return; // Prevent undefined errors
+    if (!selectedBook?.volumeInfo) return; // Prevents undefined errors
+
     // Validate input fields before adding the book
     if (
       bookDetails.price === "" ||
@@ -66,6 +75,8 @@ const AdminInventory = () => {
       alert("Please fill in all fields before adding the book.");
       return;
     }
+
+    // Prepare book data
     const bookData = {
       isbn:
         selectedBook.volumeInfo.industryIdentifiers?.[0]?.identifier ||
@@ -102,10 +113,11 @@ const AdminInventory = () => {
 
   return (
     <div className="book-inventory-container">
-      {/* Left Sidebar */}
+      {/* Page Header */}
       <header className="page-header">
         <h1>Admin Inventory</h1>
       </header>
+
       {/* Main Content */}
       <div className="main-content">
         <div className="search-bar">
@@ -124,11 +136,12 @@ const AdminInventory = () => {
             Manual Add
           </button>
         </div>
+
         {/* Display search results */}
         <div className="book-results">
           <h3>Search Results</h3>
           {searchResults.map((book) => {
-            if (!book.volumeInfo) return null; // Prevent undefined volumeInfo
+            if (!book.volumeInfo) return null; // Prevents undefined volumeInfo
 
             const volumeInfo = book.volumeInfo;
             return (
@@ -173,6 +186,7 @@ const AdminInventory = () => {
                 name="price"
                 value={bookDetails.price}
                 onChange={handleBookDetailChange}
+                placeholder="Enter price"
                 required
               />
             </label>
@@ -183,6 +197,7 @@ const AdminInventory = () => {
                 name="count"
                 value={bookDetails.count}
                 onChange={handleBookDetailChange}
+                placeholder="Enter total count"
                 required
               />
             </label>
@@ -193,17 +208,18 @@ const AdminInventory = () => {
                 name="numCheckedOut"
                 value={bookDetails.numCheckedOut}
                 onChange={handleBookDetailChange}
+                placeholder="Enter number checked out"
                 required
               />
             </label>
-            <label>
-              Purchasable:
+            <label className="purchasable-group">
               <input
                 type="checkbox"
                 name="purchasable"
                 checked={bookDetails.purchasable}
                 onChange={handleBookDetailChange}
               />
+              Purchasable
             </label>
             <button onClick={confirmAddBook}>Confirm Add</button>
             <button onClick={() => setSelectedBook(null)}>Cancel</button>
@@ -213,4 +229,5 @@ const AdminInventory = () => {
     </div>
   );
 };
+
 export default AdminInventory;
