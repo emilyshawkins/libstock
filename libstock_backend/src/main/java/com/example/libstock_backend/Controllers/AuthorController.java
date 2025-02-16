@@ -27,8 +27,9 @@ public class AuthorController {
     BookAuthorRepository bookAuthorRepository;
 
     @PostMapping("/create")
+    // Create a new author
     public ResponseEntity<Author> create_author(@RequestBody Author author) {
-        if (author.getFirstName() == null || author.getLastName() == null) {
+        if (author.getFirstName() == null || author.getLastName() == null) { // Check if the first name or last name is null
             return ResponseEntity.badRequest().body(null);
         }
         else if (author.getFirstName().equals("") || author.getLastName().equals("")) {
@@ -41,6 +42,7 @@ public class AuthorController {
     }
 
     @GetMapping("/read")
+    // Read an author
     public ResponseEntity<Author> read_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
         if (author == null) {
@@ -50,6 +52,7 @@ public class AuthorController {
     }
 
     @PatchMapping("/update")
+    // Update an author
     public ResponseEntity<Author> update_author(@RequestBody Author author) {
         Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
         if (existingAuthor == null) {
@@ -62,6 +65,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("/delete")
+    // Delete an author
     public ResponseEntity<Author> delete_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
         if (author == null) {
@@ -75,6 +79,7 @@ public class AuthorController {
     }
 
     @GetMapping("/get_all")
+    // Get all authors
     public ResponseEntity<Iterable<Author>> get_all_authors() {
         Iterable<Author> authors = authorRepository.findAll();
         return ResponseEntity.ok(authors);

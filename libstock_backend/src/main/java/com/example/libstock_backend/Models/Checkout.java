@@ -9,12 +9,12 @@ public class Checkout {
     @Id
     private String id;
 
-    private String userId;
-    private String bookId;
+    private String userId; // ID of the user
+    private String bookId; // ID of the book
     
-    private Date checkoutDate;
-    private Date dueDate;
-    private String status;
+    private Date checkoutDate; // Date of checkout
+    private Date dueDate; // Due date of the book
+    private String status; // Status of the checkout
 
     public Checkout() {}
 

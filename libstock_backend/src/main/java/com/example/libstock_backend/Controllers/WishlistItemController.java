@@ -31,6 +31,7 @@ public class WishlistItemController {
     private BookRepository bookRepository;
 
     @PostMapping("/create")
+    // Create a new wishlist item
     public ResponseEntity<WishlistItem> create_wishlist_item(@RequestBody WishlistItem wishlistItem) {
         if (wishlistItem.getUserId() == null || wishlistItem.getBookId() == null) {
             return ResponseEntity.badRequest().body(null);
@@ -44,6 +45,7 @@ public class WishlistItemController {
     }
 
     @GetMapping("/read")
+    // Read a wishlist item by id
     public ResponseEntity<WishlistItem> read_wishlist_item(@RequestParam String id) {
         WishlistItem wishlistItem = wishlistItemRepository.findById(id).orElse(null);
         if (wishlistItem == null) {
@@ -53,6 +55,7 @@ public class WishlistItemController {
     }
 
     @PatchMapping("/update")
+    // Update a wishlist item
     public ResponseEntity<WishlistItem> update_wishlist_item(@RequestBody WishlistItem wishlistItem) {
         WishlistItem existingWishlistItem = wishlistItemRepository.findById(wishlistItem.getId()).orElse(null);
         if (existingWishlistItem == null) {
@@ -65,6 +68,7 @@ public class WishlistItemController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a wishlist item by id
     public ResponseEntity<WishlistItem> delete_wishlist_item(@RequestParam String id) {
         WishlistItem wishlistItem = wishlistItemRepository.findById(id).orElse(null);
         if (wishlistItem == null) {
@@ -75,6 +79,7 @@ public class WishlistItemController {
     }
 
     @GetMapping("/get_all")
+    // Get all wishlist items
     public ResponseEntity<Iterable<Book>> get_all_wishlist_items(@RequestParam String userId) {
         Iterable<WishlistItem> wishlistItems = wishlistItemRepository.findByUserId(userId);
         List<Book> books = new ArrayList<>();

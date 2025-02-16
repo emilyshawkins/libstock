@@ -30,6 +30,7 @@ public class FavoriteController {
     BookRepository bookRepository;
 
     @PostMapping("/create")
+    // Create a new favorite
     public ResponseEntity<Favorite> create_favorite(@RequestBody Favorite favorite) {
         if (favorite.getUserId() == null || favorite.getBookId() == null) {
             return ResponseEntity.badRequest().body(null);
@@ -43,6 +44,7 @@ public class FavoriteController {
     }
 
     @GetMapping("/read")
+    // Read a favorite
     public ResponseEntity<Favorite> read_favorite(@RequestParam String id) {
         Favorite favorite = favoriteRepository.findById(id).orElse(null);
         if (favorite == null) {
@@ -52,6 +54,7 @@ public class FavoriteController {
     }
 
     @PatchMapping("/update")
+    // Update a favorite
     public ResponseEntity<Favorite> update_favorite(@RequestBody Favorite favorite) {
         Favorite existingFavorite = favoriteRepository.findById(favorite.getId()).orElse(null);
         if (existingFavorite == null) {
@@ -62,6 +65,7 @@ public class FavoriteController {
     }
 
     @PostMapping("/delete")
+    // Delete a favorite
     public ResponseEntity<Favorite> delete_favorite(@RequestParam String id) {
         Favorite favorite = favoriteRepository.findById(id).orElse(null);
         if (favorite == null) {
@@ -72,10 +76,11 @@ public class FavoriteController {
     }
 
     @GetMapping("/get_favorites_by_user")
+    // Get all favorites by user
     public ResponseEntity<Iterable<Book>> get_favorites_by_user(@RequestParam String userId) {
         Iterable<Favorite> favorites = favoriteRepository.findByUserId(userId);
         List<Book> books = new ArrayList<>();
-        for (Favorite favorite : favorites) {
+        for (Favorite favorite : favorites) { // Get all books from favorites
             Book book = bookRepository.findById(favorite.getBookId()).orElse(null);
             if (book != null) {
                 books.add(book);

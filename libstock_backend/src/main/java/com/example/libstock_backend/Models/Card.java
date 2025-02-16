@@ -11,11 +11,11 @@ public class Card {
     @Id
     private String id;
 
-    private String userId;
+    private String userId; // ID of the user
 
-    private int cardNumber;
-    private int cvv;
-    private YearMonth expirationDate;
+    private int cardNumber; // Card number
+    private int cvv; // Card verification value
+    private YearMonth expirationDate; // Expiration date of the card
 
     public Card() {}
 

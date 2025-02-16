@@ -27,10 +27,12 @@ public class NotificationController {
     NotificationRepository notificationRepository;
 
     @PostMapping("/create")
+    // Create a new notification
     public ResponseEntity<Notification> create_notification(@RequestBody Notification notification) {
         if(notification.getUserId() == null || notification.getMessage() == null) {
             return ResponseEntity.badRequest().build();
         }
+        // Set the date to the current date and read to false
         notification.setDate(new Date(0));
         notification.setRead(false);
         notificationRepository.save(notification);
@@ -38,6 +40,7 @@ public class NotificationController {
     }
 
     @GetMapping("/read")
+    // Read a notification by id
     public ResponseEntity<Notification> read_notification(@RequestParam String id) {
         Notification notification = notificationRepository.findById(id).orElse(null);
         if (notification == null) {
@@ -48,6 +51,7 @@ public class NotificationController {
     }
 
     @PatchMapping("/update")
+    // Update a notification
     public ResponseEntity<Notification> update_notification(@RequestBody Notification notification) {
         Notification existingNotification = notificationRepository.findById(notification.getId()).orElse(null);
         if (existingNotification == null) {
@@ -59,6 +63,7 @@ public class NotificationController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a notification
     public ResponseEntity<Notification> delete_notification(@RequestParam String id) {
         Notification notification = notificationRepository.findById(id).orElse(null);
         if (notification == null) {
@@ -69,6 +74,7 @@ public class NotificationController {
     }
 
     @GetMapping("/get_all")
+    // Get all notifications for a user
     public ResponseEntity<Iterable<Notification>> get_all(@RequestParam String userId) {
         Iterable<Notification> notifications = notificationRepository.findByUserId(userId);
         return ResponseEntity.ok(notifications);

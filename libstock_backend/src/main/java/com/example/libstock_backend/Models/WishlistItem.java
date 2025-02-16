@@ -9,8 +9,8 @@ public class WishlistItem {
     @Id
     private String id;
 
-    private String userId;
-    private String BookId;
+    private String userId; // ID of the user
+    private String BookId; // ID of the book
 
     public WishlistItem() {}
 

@@ -32,6 +32,7 @@ public class UserController {
     UserRepository userRepository;
 
     @PostMapping("/admin_signup")
+    // Create a new admin
     public ResponseEntity<UserDTO> create_admin(@RequestBody User user) {
 
         if (user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null || user.getPassword() == null) {
@@ -53,6 +54,7 @@ public class UserController {
     }
 
     @PostMapping("/user_signup")
+    // Create a new user
     public ResponseEntity<UserDTO> create_user(@RequestBody User user) {
         
         if (user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null || user.getPassword() == null) {
@@ -74,6 +76,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    // Login
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO user) {
 
         if (user.getEmail() == null || user.getPassword() == null) {
@@ -90,7 +93,7 @@ public class UserController {
             else if (!existingUser.getPassword().equals(user.getPassword())) {
                 return ResponseEntity.status(Response.SC_UNAUTHORIZED).body(null); // 401 Unauthorized if password is incorrect
             }
-    
+            // Convert image to base64 string
             String ret_img = (existingUser.getImage() != null) ? Base64.getEncoder().encodeToString(existingUser.getImage()) : null;
 
             return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img)); // 200 OK if login successful
@@ -100,9 +103,10 @@ public class UserController {
     }
 
     @GetMapping("/get")
+    // Get a user by id
     public ResponseEntity<UserDTO> get(@RequestParam String id) {
         User existingUser = userRepository.findById(id).orElse(null);
-        if (existingUser == null) {
+        if (existingUser == null) { // 404 Not Found if user does not exist
             return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
         }
         String ret_img = (existingUser.getImage() != null) ? Base64.getEncoder().encodeToString(existingUser.getImage()) : null;
@@ -111,6 +115,7 @@ public class UserController {
     }
 
     @PatchMapping("/update")
+    // Update a user
     public ResponseEntity<UserDTO> update(@RequestBody ProfileDTO profile) {
         if (profile.getId() == null) {
             return ResponseEntity.status(Response.SC_BAD_REQUEST).body(null);
@@ -139,7 +144,7 @@ public class UserController {
             if (profile.getLastName() != null) {
                 existingUser.setLastName(profile.getLastName());
             }
-            if (profile.getCurrentPassword() != null && profile.getNewPassword() != null) {
+            if (profile.getCurrentPassword() != null && profile.getNewPassword() != null) { // Change password
                 existingUser.getPassword().equals(profile.getCurrentPassword());
                 existingUser.setPassword(profile.getNewPassword());
             }
@@ -153,6 +158,7 @@ public class UserController {
     }
     
     @DeleteMapping("/delete")
+    // Delete a user
     public ResponseEntity<UserDTO> delete(@RequestParam String id) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
@@ -163,6 +169,7 @@ public class UserController {
     }
 
     @PostMapping("/set_profile_img")
+    // Set a user's profile image
     public ResponseEntity<UserDTO> set_profile_img(@RequestParam String id, @RequestParam("profilePicture") MultipartFile image) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {

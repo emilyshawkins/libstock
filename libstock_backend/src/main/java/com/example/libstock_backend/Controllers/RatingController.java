@@ -24,6 +24,7 @@ public class RatingController {
     RatingRepository ratingRepository;
 
     @PostMapping("/create")
+    // Create a new rating
     public ResponseEntity<Rating> create_rating(@RequestBody Rating rating) {
         if (rating.getUserId() == null || rating.getBookId() == null) {
             return ResponseEntity.badRequest().body(null);
@@ -37,6 +38,7 @@ public class RatingController {
     }
 
     @GetMapping("/read")
+    // Read a rating by id
     public ResponseEntity<Rating> read_rating(@RequestParam String id) {
         Rating rating = ratingRepository.findById(id).orElse(null);
         if (rating == null) {
@@ -46,6 +48,7 @@ public class RatingController {
     }
 
     @PatchMapping("/update")
+    // Update a rating
     public ResponseEntity<Rating> update_rating(@RequestBody Rating rating) {
         Rating existingRating = ratingRepository.findById(rating.getId()).orElse(null);
         if (existingRating == null) {
@@ -58,6 +61,7 @@ public class RatingController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a rating
     public ResponseEntity<Rating> delete_rating(@RequestParam String id) {
         Rating rating = ratingRepository.findById(id).orElse(null);
         if (rating == null) {
@@ -68,12 +72,14 @@ public class RatingController {
     }
 
     @GetMapping("get_ratings_by_user")
+    // Get all ratings for a user
     public ResponseEntity<Iterable<Rating>> get_ratings_by_user(@RequestParam String userId) {
         Iterable<Rating> ratings = ratingRepository.findByUserId(userId);
         return ResponseEntity.ok(ratings);
     }
 
     @GetMapping("get_ratings_by_book")
+    // Get all ratings for a book
     public ResponseEntity<Iterable<Rating>> get_ratings_by_book(@RequestParam String bookId) {
         Iterable<Rating> ratings = ratingRepository.findByBookId(bookId);
         return ResponseEntity.ok(ratings);

@@ -3,13 +3,14 @@ package com.example.libstock_backend.Models;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
+// BookGenre model
 @Document(collection = "book_genres")
 public class BookGenre {
     @Id
     private String id;
 
-    private String genreId;
-    private String bookId;
+    private String genreId; // ID of the genre
+    private String bookId; //   ID of the book
 
     public BookGenre() {}
 

@@ -33,12 +33,13 @@ public class QueueController {
     BookRepository bookRepository;
 
     @PostMapping("/create")
+    // Create a new queue
     public ResponseEntity<Queue> create_queue(@RequestBody Queue queue) {
         if (queue.getUserId() == null || queue.getBookId() == null) {
             return ResponseEntity.badRequest().body(null);
         }
         Queue existingQueue = queueRepository.findByUserIdAndBookId(queue.getUserId(), queue.getBookId());
-        if (existingQueue != null) {
+        if (existingQueue != null) { // Check if the user is already in the queue
             return ResponseEntity.badRequest().body(null);
         }
         int position = queueRepository.countByBookId(queue.getBookId()) + 1;
@@ -48,6 +49,7 @@ public class QueueController {
     }
 
     @GetMapping("/read")
+    // Read a queue by id
     public ResponseEntity<Queue> read_queue(@RequestParam String id) {
         Queue existingQueue = queueRepository.findById(id).orElse(null);
         if (existingQueue == null) {
@@ -57,6 +59,7 @@ public class QueueController {
     }
 
     @PatchMapping("/update")
+    // Update a queue
     public ResponseEntity<Queue> update_queue(@RequestParam String id) {
         Queue existingQueue = queueRepository.findById(id).orElse(null);
         if (existingQueue == null) {
@@ -71,6 +74,7 @@ public class QueueController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a queue
     public ResponseEntity<Queue> delete_queue(@RequestParam String id) {
         Queue existingQueue = queueRepository.findById(id).orElse(null);
         if (existingQueue == null) {
@@ -81,6 +85,7 @@ public class QueueController {
     }
 
     @GetMapping("/update_positions")
+    // Update the positions of the users in the queue
     public ResponseEntity<String> update_positions(@RequestParam String bookId) {
         Book book = bookRepository.findById(bookId).orElse(null);
         if (book.getCount() > 0) { // Check if there are books available

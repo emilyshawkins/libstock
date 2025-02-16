@@ -5,20 +5,21 @@ import java.math.BigDecimal;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+// Book model
 @Document(collection = "books")
 public class Book {
     @Id
     private String id;
 
-    private String ISBN;
-    private String title;
-    private String summary;
-    private String publicationDate;
-    private BigDecimal price;
-    private Boolean purchaseable;
-    private int count;
-    private int numCheckedOut;
-    private byte[] cover;
+    private String ISBN; // International Standard Book Number
+    private String title; // Title of the book
+    private String summary; // Summary of the book
+    private String publicationDate; // Publication date of the book
+    private BigDecimal price; // Price of the book
+    private Boolean purchaseable; // Whether the book is purchaseable
+    private int count; // Number of copies of the book
+    private int numCheckedOut; // Number of copies of the book that are checked out
+    private byte[] cover; // Cover image of the book
 
     public Book() {}
 

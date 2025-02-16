@@ -50,6 +50,7 @@ public class BookController {
     WishlistItemRepository WishlistItemRepository;
 
     @PostMapping("/create")
+    // Create a new book
     public ResponseEntity<Book> create_book(@RequestBody Book book) {
         if (book.getISBN() == null || book.getTitle() == null || book.getSummary() == null || book.getPublicationDate() == null || book.getPrice() == null || book.getPurchaseable() == null || book.getCover() == null) {
             return ResponseEntity.badRequest().body(null);
@@ -58,7 +59,7 @@ public class BookController {
         if (existingBook != null) {
             return ResponseEntity.badRequest().body(null);
         }
-        if (book.getCount() < 0 || book.getNumCheckedOut() < 0) {
+        if (book.getCount() < 0 || book.getNumCheckedOut() < 0) { // Check if the count or numCheckedOut is less than 0
             book.setCount(0);
             book.setNumCheckedOut(0);
         }
@@ -67,6 +68,7 @@ public class BookController {
     }
 
     @GetMapping("/read")
+    // Read a book
     public ResponseEntity<Book> read_book(@RequestParam String id) {
         Book book = BookRepository.findById(id).orElse(null);
         if (book == null) {
@@ -76,6 +78,7 @@ public class BookController {
     }
 
     @PatchMapping("/update")
+    // Update a book
     public ResponseEntity<Book> update_book(@RequestBody Book book) {
         Book existingBook = BookRepository.findById(book.getId()).orElse(null);
         if (existingBook == null) {
@@ -95,12 +98,14 @@ public class BookController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a book
     public ResponseEntity<Book> delete_book(@RequestParam String id) {
         Book existingBook = BookRepository.findById(id).orElse(null);
         if (existingBook == null) {
             return ResponseEntity.notFound().build();
         }
-        BookAuthorRepository.deleteAllByBookId(id);
+        // Delete all related entities
+        BookAuthorRepository.deleteAllByBookId(id); 
         BookGenreRepository.deleteAllByBookId(id);
         CheckoutRepository.deleteAllByBookId(id);
         FavoriteRepository.deleteAllByBookId(id);
@@ -112,11 +117,13 @@ public class BookController {
     }
 
     @GetMapping("/get_all")
+    // Get all books
     public ResponseEntity<Iterable<Book>> get_all() {
         return ResponseEntity.ok(BookRepository.findAll());
     }
 
     @PostMapping("/set_cover")
+    // Set the cover of a book
     public ResponseEntity<String> set_cover(@RequestParam String id, @RequestParam("cover") MultipartFile cover) {
         Book existingBook = BookRepository.findById(id).orElse(null);
         if (existingBook == null) {
@@ -134,6 +141,7 @@ public class BookController {
     }
 
     @GetMapping("/get_cover")
+    // Get the cover of a book
     public ResponseEntity<String> get_cover(@RequestParam String id) {
         Book existingBook = BookRepository.findById(id).orElse(null);
         if (existingBook == null) {

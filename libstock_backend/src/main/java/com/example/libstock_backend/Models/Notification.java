@@ -12,9 +12,9 @@ public class Notification {
 
     private String userId; // user that the notification is for
 
-    private Date date;
-    private String message;
-    private boolean read;
+    private Date date; // date of the notification
+    private String message; // message of the notification
+    private boolean read; // whether the notification has been read
 
     public Notification() {}
 

@@ -27,6 +27,7 @@ public class GenreController {
     BookGenreRepository bookGenreRepository;
 
     @PostMapping("/create")
+    // Create a new genre
     public ResponseEntity<Genre> create_genre(@RequestBody Genre genre) {
         if (genre.getName() == null) {
             return ResponseEntity.badRequest().body(null);
@@ -40,6 +41,7 @@ public class GenreController {
     }
 
     @GetMapping("/read")
+    // Read a genre by id
     public ResponseEntity<Genre> read_genre(@RequestParam String id) {
         Genre existingGenre = genreRepository.findById(id).orElse(null);
         if (existingGenre == null) {
@@ -49,6 +51,7 @@ public class GenreController {
     }
 
     @PatchMapping("/update")
+    // Update a genre
     public ResponseEntity<Genre> update_genre(@RequestBody Genre genre) {
         Genre existingGenre = genreRepository.findById(genre.getId()).orElse(null);
         if (existingGenre == null) {
@@ -59,6 +62,7 @@ public class GenreController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a genre
     public ResponseEntity<Genre> delete_genre(@RequestParam String id) {
         Genre existingGenre = genreRepository.findById(id).orElse(null);
         if (existingGenre == null) {
@@ -70,6 +74,7 @@ public class GenreController {
     }
 
     @GetMapping("/get_all")
+    // Get all genres
     public ResponseEntity<Iterable<Genre>> get_all_genres() {
         return ResponseEntity.ok(genreRepository.findAll());
     }

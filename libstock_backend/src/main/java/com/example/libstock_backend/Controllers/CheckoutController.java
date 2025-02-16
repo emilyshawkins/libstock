@@ -39,6 +39,7 @@ public class CheckoutController {
     QueueRepository queueRepository;
 
     @PostMapping("/create")
+    // Create a new checkout
     public ResponseEntity<Checkout> create_checkout(@RequestBody Checkout checkout) {
         if (checkout.getUserId() == null || checkout.getBookId() == null) { // Check if user and book are provided
             return ResponseEntity.badRequest().body(null);
@@ -73,6 +74,7 @@ public class CheckoutController {
     }
 
     @GetMapping("/read")
+    // Read a checkout
     public ResponseEntity<Checkout> read_checkout(@RequestParam String id) {
         Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
         if (existingCheckout == null) {
@@ -82,6 +84,7 @@ public class CheckoutController {
     }
 
     @PatchMapping("/update")
+    // Update a checkout
     public ResponseEntity<Checkout> update_checkout(@RequestBody Checkout checkout) {
         Checkout existingCheckout = checkoutRepository.findById(checkout.getId()).orElse(null);
         if (existingCheckout == null) {
@@ -97,6 +100,7 @@ public class CheckoutController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a checkout
     public ResponseEntity<Checkout> delete_checkout(@RequestParam String id) {
         Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
         if (existingCheckout == null) {
@@ -107,12 +111,14 @@ public class CheckoutController {
     }
 
     @GetMapping("/get_all_by_user")
+    // Get all checkouts by user
     public ResponseEntity<Iterable<Checkout>> get_all_checkouts(@RequestParam String userId) {
         Iterable<Checkout> checkouts = checkoutRepository.findByUserId(userId);
         return ResponseEntity.ok(checkouts);
     }
 
     @GetMapping("/return")
+    // Return a book
     public ResponseEntity<Checkout> return_book(@RequestParam String id) {
         Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
         if (existingCheckout == null) {
@@ -123,12 +129,13 @@ public class CheckoutController {
         book.setCount(book.getCount() + 1);
         bookRepository.save(book);
 
-        existingCheckout.setStatus("Returned");
+        existingCheckout.setStatus("Returned"); // Set status to returned
         checkoutRepository.save(existingCheckout);
         return ResponseEntity.ok(existingCheckout);
     }
 
     @GetMapping("/check_due_date")
+    // Check if a book is overdue
     public ResponseEntity<Checkout> check_due_date(@RequestParam String id) {
         Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
         if (existingCheckout == null) {
@@ -152,6 +159,7 @@ public class CheckoutController {
     }
 
     @GetMapping("/renew")
+    // Renew a checkout
     public ResponseEntity<Checkout> renew_checkout(@RequestParam String id) {
         Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
         if (existingCheckout == null) {
