@@ -1,8 +1,9 @@
+// Brandon Gascon - modified, removed crossorigin, added PreAuthorization for admin methods //
 package com.example.libstock_backend.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize; // used to authorize use of certain methods only for admins //
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.libstock_backend.Models.Author;
 import com.example.libstock_backend.Repositories.AuthorRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/author")
 public class AuthorController {
@@ -24,6 +24,7 @@ public class AuthorController {
     AuthorRepository authorRepository;
 
     @PostMapping("/create")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Author> create_author(@RequestBody Author author) {
         Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
         if (existingAuthor != null) {
@@ -43,6 +44,7 @@ public class AuthorController {
     }
 
     @PatchMapping("/update")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Author> update_author(@RequestBody Author author) {
         Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
         if (existingAuthor == null) {
@@ -55,6 +57,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Author> delete_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
         if (author == null) {

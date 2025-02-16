@@ -1,8 +1,8 @@
+// Brandon Gascon - modified, removed crossorigin, added PreAuthorization for admin methods //
 package com.example.libstock_backend.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize; // used to authorize use of certain methods only for admins //
 
 import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Repositories.BookRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -24,6 +24,7 @@ public class BookController {
     BookRepository BookRepository;
 
     @PostMapping("/create")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Book> create_book(@RequestBody Book book) {
         Book existingBook = BookRepository.findByISBN(book.getISBN());
         if (existingBook != null) {
@@ -43,6 +44,7 @@ public class BookController {
     }
 
     @PatchMapping("/update")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Book> update_book(@RequestBody Book book) {
         Book existingBook = BookRepository.findById(book.getId()).orElse(null);
         if (existingBook == null) {
@@ -61,6 +63,7 @@ public class BookController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Book> delete_book(@RequestParam String id) {
         Book existingBook = BookRepository.findById(id).orElse(null);
         if (existingBook == null) {

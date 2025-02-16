@@ -1,3 +1,4 @@
+// Brandon Gascon - modified, removed crossorigin, added PreAuthorization for admin methods //
 package com.example.libstock_backend.Controllers;
 
 import java.util.Calendar;
@@ -5,7 +6,6 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize; // used to authorize use of certain methods only for admins //
 
 import com.example.libstock_backend.Models.Checkout;
 import com.example.libstock_backend.Repositories.CheckoutRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/checkout")
 public class CheckoutController {

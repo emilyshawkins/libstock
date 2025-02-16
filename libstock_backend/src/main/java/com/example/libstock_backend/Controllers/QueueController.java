@@ -1,8 +1,8 @@
+// Brandon Gascon - modified, removed crossorigin, added PreAuthorization for admin methods //
 package com.example.libstock_backend.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize; // used to authorize use of certain methods only for admins //
 
 import com.example.libstock_backend.Models.Queue;
 import com.example.libstock_backend.Repositories.QueueRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/queue")
 public class QueueController {
@@ -24,6 +24,7 @@ public class QueueController {
     QueueRepository queueRepository;
 
     @PostMapping("/create")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Queue> create_queue(@RequestBody Queue queue) {
         Queue existingQueue = queueRepository.findByUserEmailAndISBN(queue.getUserEmail(), queue.getISBN());
         if (existingQueue != null) {
@@ -45,6 +46,7 @@ public class QueueController {
     }
 
     @PatchMapping("/update")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Queue> update_queue(@RequestParam String id) {
         Queue existingQueue = queueRepository.findById(id).orElse(null);
         if (existingQueue == null) {
@@ -56,6 +58,7 @@ public class QueueController {
     }
 
     @DeleteMapping("/delete")
+    @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Queue> delete_queue(@RequestParam String id) {
         Queue existingQueue = queueRepository.findById(id).orElse(null);
         if (existingQueue == null) {
