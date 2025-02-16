@@ -25,6 +25,9 @@ public class RatingController {
 
     @PostMapping("/create")
     public ResponseEntity<Rating> create_rating(@RequestBody Rating rating) {
+        if (rating.getUserId() == null || rating.getBookId() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         Rating existingRating = ratingRepository.findByUserIdAndBookId(rating.getUserId(), rating.getBookId());
         if (existingRating != null) {
             return ResponseEntity.badRequest().body(null);

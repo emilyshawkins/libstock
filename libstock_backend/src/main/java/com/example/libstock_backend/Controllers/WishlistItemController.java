@@ -32,6 +32,9 @@ public class WishlistItemController {
 
     @PostMapping("/create")
     public ResponseEntity<WishlistItem> create_wishlist_item(@RequestBody WishlistItem wishlistItem) {
+        if (wishlistItem.getUserId() == null || wishlistItem.getBookId() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         WishlistItem existingWishlistItem = wishlistItemRepository.findByUserIdAndBookId(wishlistItem.getUserId(), wishlistItem.getBookId());
         if (existingWishlistItem != null) {
             return null;
