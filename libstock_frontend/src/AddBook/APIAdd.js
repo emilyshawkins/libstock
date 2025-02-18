@@ -95,15 +95,38 @@ const AdminInventory = () => {
     };
 
     try {
-      const response = await axios.post(
+      const bookResponse = await axios.post(
         "http://localhost:8080/book/create",
         bookData,
         { headers: { "Content-Type": "application/json" } }
       );
 
-      if (response.status === 200) {
-        alert("Book added to your library successfully!");
-        setSelectedBook(null); // Clear selection after adding
+      if (bookResponse.status === 200) {
+        const bookId = bookResponse.data.id;
+        if (selectedBook.volumeInfo.authors) {
+          for (const authorName of selectedBook.volumeInfo.authors) {
+            const [firstName, ...lastNameArr] = authorName.split(" ");
+            const lastName = lastNameArr.join(" ") || "";
+            const authorResponse = await axios.post(
+              "http://localhost:8080/author/create",
+              { firstName, lastName },
+              { headers: { "Content-Type": "application/json" } }
+            );
+            if (authorResponse.status === 200) {
+              const authorId = authorResponse.data.id;
+
+              // Step 3: Link book with author
+              await axios.post(
+                "http://localhost:8080/bookauthor/create",
+                { authorId, bookId },
+                { headers: { "Content-Type": "application/json" } }
+              );
+            }
+          }
+        }
+
+        alert("Book and author(s) added successfully!");
+        setSelectedBook(null);
       }
     } catch (error) {
       console.error("Error adding book to database:", error);

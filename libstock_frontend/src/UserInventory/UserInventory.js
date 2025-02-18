@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./AdminHomePage.css";
 
 const AdminHomePage = () => {
   // State for storing books from the database
