@@ -1,13 +1,11 @@
-/* ./SignInPage/ForgotPass.js */
+/* ./SignInPage/ResetPass.js */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import "./ForgotPass.css";
+import "./ResetPass.css";
 
-function ForgotPass() {
-    const [email, setEmail] = useState("");
-    const [step, setStep] = useState(1); // Step 1: Enter Email, Step 2: Reset Password
+function ResetPass() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -15,32 +13,20 @@ function ForgotPass() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Verify Email Exists
-    const handleEmailSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMessage("");
+    // Retrieve user ID from localStorage
+    const userId = localStorage.getItem("userId");
 
-        try {
-            const response = await axios.post("http://localhost:8080/user/forgot-password", { email });
-            
-            if (response.data.success) {
-                setStep(2); // if email exists, send an email to verify and link to reset password
-            } else {
-                setMessage("Email not found.");
-            }
-        } catch (error) {
-            setMessage(error.response?.data?.message || "Error checking email.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    //Reset Password
+    // Reset Password
     const handlePasswordSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage("");
+
+        if (!userId) {
+            setMessage("User ID is missing. Please log in again.");
+            setLoading(false);
+            return;
+        }
 
         if (newPassword !== confirmPassword) {
             setMessage("Passwords do not match!");
@@ -49,13 +35,16 @@ function ForgotPass() {
         }
 
         try {
-            const response = await axios.patch("http://localhost:8080/user/reset_password", { email, newPassword });
+            const response = await axios.patch("http://localhost:8080/user/reset-password", { 
+                id: userId, 
+                newPassword 
+            });
 
             if (response.data.success) {
                 alert("Password reset successful! You can sign in now!");
                 navigate("/signin");
             } else {
-                setMessage("Failed to reset password.");
+                setMessage("Failed to reset password. Please try again.");
             }
         } catch (error) {
             setMessage(error.response?.data?.message || "Error resetting password.");
@@ -65,62 +54,44 @@ function ForgotPass() {
     };
 
     return (
-        <div className="forgot-container">
-            <h2>Forgot Password</h2>
-
+        <div className="reset-container">
+            <h2>Reset Password</h2>
             {message && <p className="error-message">{message}</p>}
-
-            {step === 1 ? (
-                <form onSubmit={handleEmailSubmit} className="forgot-form">
-                    <label htmlFor="email">Enter your email:</label>
+            <form onSubmit={handlePasswordSubmit} className="reset-form">
+                <label htmlFor="newPassword">New Password:</label>
+                <div className="password-container">
                     <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        type={showPassword ? "text" : "password"}
+                        id="newPassword"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
                         required
                     />
-                    <button type="submit" className="submit-button" disabled={loading}>
-                        {loading ? "Checking..." : "Verify Email"}
-                    </button>
-                </form>
-            ) : (
-                <form onSubmit={handlePasswordSubmit} className="forgot-form">
-                    <label htmlFor="newPassword">New Password:</label>
-                    <div className="password-container">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            id="newPassword"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
-                        <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                    </div>
+                    <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                </div>
 
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
-                    <div className="password-container">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            id="confirmPassword"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                        <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                    </div>
+                <label htmlFor="confirmPassword">Confirm Password:</label>
+                <div className="password-container">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        id="confirmPassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                    <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </span>
+                </div>
 
-                    <button type="submit" className="submit-button" disabled={loading}>
-                        {loading ? "Resetting..." : "Reset Password"}
-                    </button>
-                </form>
-            )}
+                <button type="submit" className="submit-button" disabled={loading}>
+                    {loading ? "Resetting..." : "Reset Password"}
+                </button>
+            </form>
         </div>
     );
 }
 
-export default ForgotPass;
+export default ResetPass;
