@@ -10,6 +10,7 @@ import Sidebar from "./Navbar/Sidebar"; // Import Sidebar
 import Topbar from "./Navbar/Topbar"; // Import Topbar
 import AdminSidebar from "./Navbar/AdminSidebar"; // Import AdminSidebar
 import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
+import ForgotPass from "./SignInPage/ForgotPass"; //Import ForgotPass
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
@@ -29,8 +30,8 @@ function App() {
 function MainContent() {
   const location = useLocation(); // Get the current route path
 
-  // Show Navbar ONLY on "/", "/signin", and "/signup"
-  const isNavbarVisible = ["/", "/signin", "/signup"].includes(
+  // Show Navbar ONLY on "/", "/signin", "/signup", and "/forgot-password"
+  const isNavbarVisible = ["/", "/signin", "/signup", "/forgot-password"].includes(
     location.pathname
   );
 
@@ -60,6 +61,7 @@ function MainContent() {
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
+        <Route path="/forgot-password" element={<ForgotPass/>} /> {/* Forgot Password Page*/}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
         <Route path="/user/home" element={<UserHomePage />} />{" "} {/* User Home page */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "} {/* Admin Home page */}

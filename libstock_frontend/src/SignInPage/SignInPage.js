@@ -100,6 +100,11 @@ function SignInPage() {
                     />
                     <label>Remember Me</label>
                 </div>
+                <div className="forgot-password">
+                    <span>
+                        <Link to="/forgot-password">Forgot Password?</Link>
+                    </span>
+                </div>
                 <button type="submit" className="signin-button" disabled={loading}>
                     {loading ? "Signing In..." : "Sign In"}
                 </button>

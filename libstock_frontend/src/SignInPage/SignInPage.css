@@ -91,6 +91,21 @@ h2 {
     cursor: not-allowed;
 }
 
+.forgot-password span {
+    font-size: 16px;
+    color: #476778;
+}
+.forgot-password a {
+    color: #476778;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.forgot-password a:hover {
+    color: #35505d;
+}
+
 .signup-link span {
     font-size: 16px;
     color: #476778;
@@ -106,6 +121,8 @@ h2 {
 .signup-link a:hover {
     color: #35505d;
 }
+
+
 
 @media screen and (max-width: 768px) {
     .signin-container {

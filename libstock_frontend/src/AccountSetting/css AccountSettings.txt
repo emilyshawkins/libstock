@@ -1,0 +1,157 @@
+/* src/AccountSetting.css */
+.settings-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Profile Section */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.profile-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #476778;
+}
+
+/* Fullscreen overlay for viewing profile picture */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Fullscreen image content */
+.fullscreen-content {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.fullscreen-image {
+    max-width: 50%;
+    max-height: 100%;
+    border-radius: 10px;
+}
+
+/* Edit Profile Icon */
+.edit-avatar {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Edit Profile Icon */
+.edit-avatar {
+    position: absolute;
+    bottom: -10px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Pencil Icon */
+.edit-avatar .edit {
+    width: 10px;
+    height: 10px;
+    object-fit: contain;
+}
+
+.user-name {
+    font-size: 22px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.user-email {
+    font-size: 14px;
+    color: #555;
+}
+
+.update-profile-button {
+    background-color: #476778;
+    color: white;
+    padding: 8px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.update-profile-button:hover {
+    background-color: #35505d;
+}
+
+/* Accordion */
+.accordion-label {
+    display: block;
+    background-color: #476778;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.accordion-content {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-top: -5px;
+    border-radius: 0 0 5px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.delete-label {
+    background-color: #d9534f;
+}
+
+.delete-button {
+    background-color: #d9534f;
+    color: white;
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
