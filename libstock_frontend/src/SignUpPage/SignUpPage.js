@@ -69,7 +69,7 @@ function SignUpPage() {
     
     return (
         <div className="signup-container">
-            <h2>{isAdmin ? 'Create an Admin Account' : 'Create an User Account'}</h2>
+            <h1>{isAdmin ? 'Create an Admin Account' : 'Create an User Account'}</h1>
             <div className="toggle-role">
                 <input
                     type="checkbox"
@@ -128,7 +128,7 @@ function SignUpPage() {
                                         </span>
                                     </div>
                                 </div>
-                <button type="submit" className="signup-button">
+                <button type="submit" className="submit-button">
                     {isAdmin ? 'Sign Up as Admin' : 'Sign Up as User'}
                 </button>
                 <div className="signin-link">

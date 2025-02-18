@@ -32,7 +32,7 @@ function ForgotPass() {
 
     return (
         <div className="forgot-container">
-            <h2>Forgot Password</h2>
+            <h1>Forgot Password</h1>
             {message && <p className="error-message">{message}</p>}
                 <form onSubmit={handleEmailSubmit} className="forgot-form">
                     <label htmlFor="email">Enter your email:</label>

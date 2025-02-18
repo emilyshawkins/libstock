@@ -26,7 +26,7 @@ h2 {
 
 .input-group label {
     font-size: 18px;
-    color: #333;
+    color: #476778;
 }
 
 .input-group input {
@@ -66,14 +66,20 @@ h2 {
     color: #476778;
 }
 
+.remember-me-container label {
+    display: flex;
+    font-size: 15px;
+    color: #476778;
+}
+
 .remember-me-container input {
-    height: 20px;
+    height: 16px;
     width: auto;
     margin-right: 10px;
     color: #476778;
 }
 
-.signin-button {
+.submit-button {
     background-color: #476778;
     color: white;
     padding: 10px;
@@ -83,10 +89,10 @@ h2 {
     cursor: pointer;
 }
 
-.signin-button:hover {
+.submit-button:hover {
     background-color: #35505d;
 }
-.signin-button:disabled {
+.submit-button:disabled {
     background-color: #999;
     cursor: not-allowed;
 }

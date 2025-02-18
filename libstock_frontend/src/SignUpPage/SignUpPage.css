@@ -8,6 +8,10 @@
     color: #476778;
 }
 
+.toggle-role label {
+    color: #476778;
+}
+
 .toggle-role input {
     height: 50px;
     width: auto;
@@ -24,33 +28,12 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-    text-align: center;
-    color: #476778;
-}
-
 .signup-form {
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.input-group label {
-    font-size: 18px;
-    color: #333;
-}
-
-.input-group input {
-    padding: 10px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
 
 .signup-button {
     background-color: #476778;

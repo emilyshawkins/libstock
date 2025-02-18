@@ -64,7 +64,7 @@ function SignInPage() {
 
     return (
         <div className="signin-container">
-            <h2>Sign In</h2>
+            <h1>Sign In</h1>
             {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
             <form onSubmit={handleSubmit} className="signin-form">
                 <div className="input-group">
@@ -105,7 +105,7 @@ function SignInPage() {
                         <Link to="/forgot-password">Forgot Password?</Link>
                     </span>
                 </div>
-                <button type="submit" className="signin-button" disabled={loading}>
+                <button type="submit" className="submit-button" disabled={loading}>
                     {loading ? "Signing In..." : "Sign In"}
                 </button>
                 <div className="signup-link">
