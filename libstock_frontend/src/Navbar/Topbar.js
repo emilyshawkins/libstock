@@ -24,11 +24,19 @@ function Topbar() {
                         firstName: response.data.firstName || "Unknown",
                         lastName: response.data.lastName || "",
                         email: response.data.email || "No email available",
+                        isAdmin: response.data.isAdmin || false,
+                        currentPassword: "",
+                        newPassword: "",
                     });
-
-                    // If the user has uploaded a profile image, display it; otherwise, use default image
-                    if (response.data.profilePicture) {
-                        setPreviewImage(`data:image/png;base64,${response.data.profilePicture}`);
+                    if (response.data) {
+                        setUserInfo({
+                            firstName: response.data.firstName || "Unknown",
+                            lastName: response.data.lastName || "",
+                            email: response.data.email || "No email available",
+                        });
+                    }
+                    if (response.data.image) {
+                        setPreviewImage(`data:image/png;base64,${response.data.image}`);
                     }
                 }
             } catch (error) {
@@ -61,6 +69,7 @@ function Topbar() {
                     src={previewImage}
                     alt="User Avatar"
                     className="user-icon"
+                    style={{ cursor: "pointer" }}
                     onClick={toggleDropdown}
                 />
                 {isDropdownOpen && (

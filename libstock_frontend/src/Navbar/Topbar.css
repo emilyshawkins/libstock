@@ -14,20 +14,19 @@
 }
 
 /* User Icon Container */
-.user-icon-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-/* User Icon */
 .user-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
 }
+
+.user-icon:hover {
+    transform: scale(1.1);
+}
+
 
 /* Dropdown Menu */
 .dropdown-menu {
