@@ -85,10 +85,10 @@ function Topbar() {
                             <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
                             <p>{userInfo.email || ""}</p>
                         </div>
-                        <button className="dropdown-item" onClick={handleSettingsClick}>
+                        <button className="account-setting" onClick={handleSettingsClick}>
                             Account Settings
                         </button>
-                        <button className="dropdown-item logout-button" onClick={handleLogout}>
+                        <button className="log-out" onClick={handleLogout}>
                             Log Out
                         </button>
                     </div>

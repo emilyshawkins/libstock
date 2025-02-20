@@ -326,8 +326,7 @@ const UserHomePage = () => {
                       <button onClick={() => alert("renew")}>Renew</button>
                       <button onClick={() => alert("return")}>Return</button>
                       <button onClick={() => alert("Edit")}>Edit</button>
-                  </div>
-                  
+                      </div>
                     ))}
                   </div>
                 </div>
