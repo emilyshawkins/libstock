@@ -269,8 +269,11 @@ const AdminHomePage = () => {
                           <strong>Publication Date:</strong>{" "}
                           {book.publicationDate}
                         </p>
-                        <button onClick={() => alert("Check out")}>
-                          Check Out
+                        <button onClick={() => alert("renew")}>
+                          Renew 
+                        </button>
+                        <button onClick={() => alert("return")}>
+                          Return
                         </button>
                         <button onClick={() => alert("Edit")}>Edit</button>
                       </div>

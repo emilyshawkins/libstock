@@ -144,7 +144,7 @@ h2 {
 }
 
 /* Manage Button */
-.manage-button {
+/* .manage-button {
     background-color: #476778;
     color: white;
     padding: 8px 12px;
@@ -157,7 +157,7 @@ h2 {
 
 .manage-button:hover {
     background-color: #35505d;
-}
+} */
 
 @media screen and (max-width: 768px) {
     .home-container {

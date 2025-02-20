@@ -50,13 +50,20 @@ function Topbar() {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const closeDropdown = (callback) => {
+        setIsDropdownOpen(false);
+        callback();
+    };
+
     const handleSettingsClick = () => {
-        navigate("/user/settings");
+        closeDropdown(() => navigate("/user/settings"));
     };
 
     const handleLogout = () => {
-        window.localStorage.clear();
-        navigate("/signin");
+        closeDropdown(() => {
+            window.localStorage.clear();
+            navigate("/signin");
+        });
     };
 
     return (
