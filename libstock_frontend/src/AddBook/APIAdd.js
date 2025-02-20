@@ -100,17 +100,20 @@ const AdminInventory = () => {
     }
 
     // Extract author info from Google Books API
-    const authorFullName =
-      selectedBook.volumeInfo.authors?.[0] || "Unknown Author";
-    const [firstName, ...lastNameParts] = authorFullName.split(" ");
-    const lastName = lastNameParts.join(" ") || "Unknown";
+    const authors = selectedBook.volumeInfo.authors || ["Unknown Author"];
 
     try {
-      // Get existing author ID or create a new one
-      const authorId = await getOrCreateAuthor(firstName, lastName);
-      if (!authorId) {
-        alert("Failed to get or create author.");
-        return;
+      const authorIds = [];
+
+      // Loop through all authors and check/create them in the database
+      for (const authorFullName of authors) {
+        const [firstName, ...lastNameParts] = authorFullName.split(" ");
+        const lastName = lastNameParts.join(" ") || "Unknown";
+
+        const authorId = await getOrCreateAuthor(firstName, lastName);
+        if (authorId) {
+          authorIds.push(authorId);
+        }
       }
 
       // Prepare book data
@@ -142,11 +145,13 @@ const AdminInventory = () => {
         const bookId = bookResponse.data.id;
 
         // Link book to author
-        await axios.post(
-          "http://localhost:8080/bookauthor/create",
-          { authorId, bookId },
-          { headers: { "Content-Type": "application/json" } }
-        );
+        for (const authorId of authorIds) {
+          await axios.post(
+            "http://localhost:8080/bookauthor/create",
+            { authorId, bookId },
+            { headers: { "Content-Type": "application/json" } }
+          );
+        }
 
         alert("Book and author linked successfully!");
         setSelectedBook(null);

@@ -18,8 +18,8 @@ const AdminHomePage = () => {
   // Fetch books and authors when the component mounts
   useEffect(() => {
     const fetchData = async () => {
-      await fetchBooks(); // Wait for books to load
-      await fetchBookAuthors(); // Fetch authors only after books are available
+      const books = await fetchBooks(); // Wait for books to load
+      fetchBookAuthors(books); // Fetch authors only after books are available
     };
 
     fetchData();
@@ -31,41 +31,45 @@ const AdminHomePage = () => {
       const response = await axios.get("http://localhost:8080/book/get_all");
       setDatabaseBooks(response.data);
       setFilteredBooks(response.data);
-      // Fetch authors associated with books
+
+      // Call fetchBookAuthors after books are loaded
       fetchBookAuthors(response.data);
     } catch (error) {
       console.error("Error fetching books", error);
     }
   };
 
-  // Fetch book-author relationships and resolve author names
-  const fetchBookAuthors = async () => {
-    if (databaseBooks.length === 0) return; // Prevent running when books are empty
+  // Fetch all book-author relationships and resolve author names
+  const fetchBookAuthors = async (books) => {
+    if (!books || books.length === 0) return; // Prevent API call if no books exist
 
     try {
       const bookAuthorsMap = {}; // Store authors for each book
 
-      for (const book of databaseBooks) {
-        const response = await axios.get(
-          `http://localhost:8080/bookauthor/read?id=${book.id}`
-        );
-
-        if (response.data.authorId) {
+      for (const book of books) {
+        try {
+          // Fetch authors for the given book ID
           const authorResponse = await axios.get(
-            `http://localhost:8080/author/read?id=${response.data.authorId}`
+            `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${book.id}`
           );
 
-          const authorName = `${authorResponse.data.firstName} ${authorResponse.data.lastName}`;
-          if (!bookAuthorsMap[book.id]) {
-            bookAuthorsMap[book.id] = [];
+          if (authorResponse.data.length > 0) {
+            const authorNames = authorResponse.data.map(
+              (author) => `${author.firstName} ${author.lastName}`
+            );
+            bookAuthorsMap[book.id] = authorNames;
+          } else {
+            bookAuthorsMap[book.id] = ["Unknown Author"];
           }
-          bookAuthorsMap[book.id].push(authorName);
+        } catch (error) {
+          console.error(`Error fetching authors for book ${book.id}:`, error);
+          bookAuthorsMap[book.id] = ["Unknown Author"];
         }
       }
 
-      setBookAuthors(bookAuthorsMap); // Update state with book-author data
+      setBookAuthors(bookAuthorsMap); // Update state with book-author mapping
     } catch (error) {
-      console.error("🚨 Error fetching book authors:", error);
+      console.error("Error fetching book authors:", error);
     }
   };
 
