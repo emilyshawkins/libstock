@@ -25,6 +25,7 @@ const AdminInventory = () => {
       price: "",
       count: "",
       purchasable: false,
+      genre: "",
       numCheckedOut: "",
     });
   };

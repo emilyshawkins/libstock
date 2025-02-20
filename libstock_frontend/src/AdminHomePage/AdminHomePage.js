@@ -76,18 +76,15 @@ const AdminHomePage = () => {
   // Remove a book from the database
   const removeBook = async (bookId) => {
     try {
-      // Step 1: Fetch book-author relationships
+      // Step 1: Fetch all book-author relationships for the book
       const bookAuthorResponse = await axios.get(
-        `http://localhost:8080/bookauthor/read?id=${bookId}`
+        `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${bookId}`
       );
 
-      // Step 2: Delete associated book-author records
-      if (bookAuthorResponse.data) {
-        const bookAuthorEntries = Array.isArray(bookAuthorResponse.data)
-          ? bookAuthorResponse.data
-          : [bookAuthorResponse.data];
-
-        for (const entry of bookAuthorEntries) {
+      if (bookAuthorResponse.data.length > 0) {
+        // Step 2: Delete each book-author entry using bookauthorId
+        for (const entry of bookAuthorResponse.data) {
+          console.log(`Deleting book_author entry ID: ${entry.id}`); // Debugging
           await axios.delete(
             `http://localhost:8080/bookauthor/delete?id=${entry.id}`
           );
@@ -95,9 +92,10 @@ const AdminHomePage = () => {
       }
 
       // Step 3: Delete the book itself
+      console.log(`Deleting book ID: ${bookId}`);
       await axios.delete(`http://localhost:8080/book/delete?id=${bookId}`);
 
-      // Step 4: Update UI to remove the book from the state
+      // Step 4: Update UI after deletion
       setDatabaseBooks((prevBooks) =>
         prevBooks.filter((book) => book.id !== bookId)
       );
@@ -105,9 +103,9 @@ const AdminHomePage = () => {
         prevBooks.filter((book) => book.id !== bookId)
       );
 
-      alert("Book and its associated author link removed successfully!");
+      alert("Book and associated author relationships removed successfully!");
     } catch (error) {
-      console.error("Error deleting book and author link", error);
+      console.error("Error deleting book and author link:", error);
       alert("Failed to delete book.");
     }
   };
