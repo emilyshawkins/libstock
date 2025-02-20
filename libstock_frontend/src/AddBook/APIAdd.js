@@ -3,14 +3,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./APIAdd.css";
 
-const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY; // Access API key from .env
+const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
 
 const AdminInventory = () => {
-  // State for search input and search results
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
-  // Stores selected book details for adding to the database
   const [selectedBook, setSelectedBook] = useState(null);
   const [bookDetails, setBookDetails] = useState({
     price: "",
@@ -21,7 +18,7 @@ const AdminInventory = () => {
 
   const navigate = useNavigate();
 
-  // Handles selecting a book from search results
+  // Handles selecting a book
   const handleAddBookClick = (book) => {
     setSelectedBook(book);
     setBookDetails({
@@ -32,7 +29,7 @@ const AdminInventory = () => {
     });
   };
 
-  // Handles changes in the book details input form
+  // Handles input changes
   const handleBookDetailChange = (e) => {
     const { name, value, type, checked } = e.target;
     setBookDetails((prevDetails) => ({
@@ -41,7 +38,7 @@ const AdminInventory = () => {
     }));
   };
 
-  // Searches for books using the Google Books API
+  // Searches books from Google Books API
   const searchBooks = async () => {
     if (!searchQuery.trim()) return;
 
@@ -52,21 +49,47 @@ const AdminInventory = () => {
         )}&key=${API_KEY}`
       );
 
-      if (response.data.items) {
-        setSearchResults(response.data.items.slice(0, 6)); // Show top 6 results
-      } else {
-        setSearchResults([]);
-      }
+      setSearchResults(response.data.items?.slice(0, 6) || []);
     } catch (error) {
       console.error("Error fetching books:", error);
     }
   };
 
-  // Handles adding a book to the database
-  const confirmAddBook = async () => {
-    if (!selectedBook?.volumeInfo) return; // Prevents undefined errors
+  // **Check if an author exists, otherwise create one**
+  const getOrCreateAuthor = async (firstName, lastName) => {
+    try {
+      // Fetch all authors
+      const response = await axios.get("http://localhost:8080/author/get_all");
+      const authors = response.data;
 
-    // Validate input fields before adding the book
+      // Find author by first & last name
+      const existingAuthor = authors.find(
+        (author) =>
+          author.firstName.toLowerCase() === firstName.toLowerCase() &&
+          author.lastName.toLowerCase() === lastName.toLowerCase()
+      );
+
+      if (existingAuthor) {
+        return existingAuthor.id; // Return existing author ID
+      }
+
+      // Create a new author if not found
+      const newAuthorResponse = await axios.post(
+        "http://localhost:8080/author/create",
+        { firstName, lastName },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      return newAuthorResponse.data.id; // Return new author ID
+    } catch (error) {
+      console.error("Error checking/creating author:", error);
+      return null;
+    }
+  };
+
+  // **Add book to database and associate it with the author**
+  const confirmAddBook = async () => {
+    if (!selectedBook?.volumeInfo) return;
     if (
       bookDetails.price === "" ||
       bookDetails.count === "" ||
@@ -76,25 +99,39 @@ const AdminInventory = () => {
       return;
     }
 
-    // Prepare book data
-    const bookData = {
-      isbn:
-        selectedBook.volumeInfo.industryIdentifiers?.[0]?.identifier ||
-        "Unknown",
-      title: selectedBook.volumeInfo.title,
-      summary:
-        selectedBook.volumeInfo.description || "No description available",
-      publicationDate:
-        selectedBook.volumeInfo.publishedDate ||
-        "No publication date available",
-      publisher: selectedBook.volumeInfo.publisher || "Unknown Publisher",
-      price: bookDetails.price,
-      purchasable: bookDetails.purchasable,
-      count: bookDetails.count,
-      numCheckedOut: bookDetails.numCheckedOut,
-    };
+    // Extract author info from Google Books API
+    const authorFullName =
+      selectedBook.volumeInfo.authors?.[0] || "Unknown Author";
+    const [firstName, ...lastNameParts] = authorFullName.split(" ");
+    const lastName = lastNameParts.join(" ") || "Unknown";
 
     try {
+      // Get existing author ID or create a new one
+      const authorId = await getOrCreateAuthor(firstName, lastName);
+      if (!authorId) {
+        alert("Failed to get or create author.");
+        return;
+      }
+
+      // Prepare book data
+      const bookData = {
+        isbn:
+          selectedBook.volumeInfo.industryIdentifiers?.[0]?.identifier ||
+          "Unknown",
+        title: selectedBook.volumeInfo.title,
+        summary:
+          selectedBook.volumeInfo.description || "No description available",
+        publicationDate:
+          selectedBook.volumeInfo.publishedDate ||
+          "2024-05-02T00:00:00.000+00:00",
+        publisher: selectedBook.volumeInfo.publisher || "Unknown Publisher",
+        price: bookDetails.price,
+        purchasable: bookDetails.purchasable,
+        count: bookDetails.count,
+        numCheckedOut: bookDetails.numCheckedOut,
+      };
+
+      // Add book to database
       const bookResponse = await axios.post(
         "http://localhost:8080/book/create",
         bookData,
@@ -103,45 +140,29 @@ const AdminInventory = () => {
 
       if (bookResponse.status === 200) {
         const bookId = bookResponse.data.id;
-        if (selectedBook.volumeInfo.authors) {
-          for (const authorName of selectedBook.volumeInfo.authors) {
-            const [firstName, ...lastNameArr] = authorName.split(" ");
-            const lastName = lastNameArr.join(" ") || "";
-            const authorResponse = await axios.post(
-              "http://localhost:8080/author/create",
-              { firstName, lastName },
-              { headers: { "Content-Type": "application/json" } }
-            );
-            if (authorResponse.status === 200) {
-              const authorId = authorResponse.data.id;
 
-              // Step 3: Link book with author
-              await axios.post(
-                "http://localhost:8080/bookauthor/create",
-                { authorId, bookId },
-                { headers: { "Content-Type": "application/json" } }
-              );
-            }
-          }
-        }
+        // Link book to author
+        await axios.post(
+          "http://localhost:8080/bookauthor/create",
+          { authorId, bookId },
+          { headers: { "Content-Type": "application/json" } }
+        );
 
-        alert("Book and author(s) added successfully!");
+        alert("Book and author linked successfully!");
         setSelectedBook(null);
       }
     } catch (error) {
-      console.error("Error adding book to database:", error);
+      console.error("Error adding book and linking author:", error);
       alert("Failed to add book.");
     }
   };
 
   return (
     <div className="book-inventory-container">
-      {/* Page Header */}
       <header className="page-header">
         <h1>Admin Inventory</h1>
       </header>
 
-      {/* Main Content */}
       <div className="main-content">
         <div className="search-bar">
           <h2>Search Books</h2>
@@ -160,11 +181,10 @@ const AdminInventory = () => {
           </button>
         </div>
 
-        {/* Display search results */}
         <div className="book-results">
           <h3>Search Results</h3>
           {searchResults.map((book) => {
-            if (!book.volumeInfo) return null; // Prevents undefined volumeInfo
+            if (!book.volumeInfo) return null;
 
             const volumeInfo = book.volumeInfo;
             return (
@@ -198,7 +218,6 @@ const AdminInventory = () => {
           })}
         </div>
 
-        {/* Display form to input book details before adding */}
         {selectedBook && (
           <div className="add-book-form">
             <h2>Enter Book Details</h2>
@@ -209,7 +228,6 @@ const AdminInventory = () => {
                 name="price"
                 value={bookDetails.price}
                 onChange={handleBookDetailChange}
-                placeholder="Enter price"
                 required
               />
             </label>
@@ -220,7 +238,6 @@ const AdminInventory = () => {
                 name="count"
                 value={bookDetails.count}
                 onChange={handleBookDetailChange}
-                placeholder="Enter total count"
                 required
               />
             </label>
@@ -231,7 +248,6 @@ const AdminInventory = () => {
                 name="numCheckedOut"
                 value={bookDetails.numCheckedOut}
                 onChange={handleBookDetailChange}
-                placeholder="Enter number checked out"
                 required
               />
             </label>

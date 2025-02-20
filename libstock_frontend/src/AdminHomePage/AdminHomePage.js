@@ -17,8 +17,12 @@ const AdminHomePage = () => {
 
   // Fetch books and authors when the component mounts
   useEffect(() => {
-    fetchBooks();
-    fetchBookAuthors();
+    const fetchData = async () => {
+      await fetchBooks(); // Wait for books to load
+      await fetchBookAuthors(); // Fetch authors only after books are available
+    };
+
+    fetchData();
   }, []);
 
   // Fetch all books from the database
@@ -27,55 +31,80 @@ const AdminHomePage = () => {
       const response = await axios.get("http://localhost:8080/book/get_all");
       setDatabaseBooks(response.data);
       setFilteredBooks(response.data);
+      // Fetch authors associated with books
+      fetchBookAuthors(response.data);
     } catch (error) {
       console.error("Error fetching books", error);
     }
   };
 
-  // Fetch book-author relationships and store them
+  // Fetch book-author relationships and resolve author names
   const fetchBookAuthors = async () => {
+    if (databaseBooks.length === 0) return; // Prevent running when books are empty
+
     try {
-      const response = await axios.get(
-        "http://localhost:8080/bookauthor/read_all"
-      );
-      const bookAuthorMappings = response.data;
+      const bookAuthorsMap = {}; // Store authors for each book
 
-      const authorDetails = {};
-
-      // Fetch each author linked to a book
-      for (const mapping of bookAuthorMappings) {
-        const authorResponse = await axios.get(
-          `http://localhost:8080/author/read?id=${mapping.authorId}`
+      for (const book of databaseBooks) {
+        const response = await axios.get(
+          `http://localhost:8080/bookauthor/read?id=${book.id}`
         );
 
-        if (authorResponse.data) {
-          if (!authorDetails[mapping.bookId]) {
-            authorDetails[mapping.bookId] = [];
-          }
-          authorDetails[mapping.bookId].push(
-            `${authorResponse.data.firstName} ${authorResponse.data.lastName}`
+        if (response.data.authorId) {
+          const authorResponse = await axios.get(
+            `http://localhost:8080/author/read?id=${response.data.authorId}`
           );
+
+          const authorName = `${authorResponse.data.firstName} ${authorResponse.data.lastName}`;
+          if (!bookAuthorsMap[book.id]) {
+            bookAuthorsMap[book.id] = [];
+          }
+          bookAuthorsMap[book.id].push(authorName);
         }
       }
 
-      setBookAuthors(authorDetails);
+      setBookAuthors(bookAuthorsMap); // Update state with book-author data
     } catch (error) {
-      console.error("Error fetching book authors:", error);
+      console.error("🚨 Error fetching book authors:", error);
     }
   };
 
   // Remove a book from the database
-  const removeBook = async (id) => {
+  const removeBook = async (bookId) => {
     try {
-      await axios.delete(`http://localhost:8080/book/delete?id=${id}`);
+      // Step 1: Fetch book-author relationships
+      const bookAuthorResponse = await axios.get(
+        `http://localhost:8080/bookauthor/read?id=${bookId}`
+      );
+
+      // Step 2: Delete associated book-author records
+      if (bookAuthorResponse.data) {
+        const bookAuthorEntries = Array.isArray(bookAuthorResponse.data)
+          ? bookAuthorResponse.data
+          : [bookAuthorResponse.data];
+
+        for (const entry of bookAuthorEntries) {
+          await axios.delete(
+            `http://localhost:8080/bookauthor/delete?id=${entry.id}`
+          );
+        }
+      }
+
+      // Step 3: Delete the book itself
+      await axios.delete(`http://localhost:8080/book/delete?id=${bookId}`);
+
+      // Step 4: Update UI to remove the book from the state
       setDatabaseBooks((prevBooks) =>
-        prevBooks.filter((book) => book.id !== id)
+        prevBooks.filter((book) => book.id !== bookId)
       );
       setFilteredBooks((prevBooks) =>
-        prevBooks.filter((book) => book.id !== id)
+        prevBooks.filter((book) => book.id !== bookId)
       );
+
+      alert("Book and its associated author link removed successfully!");
     } catch (error) {
-      console.error("Error deleting book", error);
+      console.error("Error deleting book and author link", error);
+      alert("Failed to delete book.");
     }
   };
 
