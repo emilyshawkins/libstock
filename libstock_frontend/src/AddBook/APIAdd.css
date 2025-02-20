@@ -10,6 +10,11 @@ button {
   color: white;
   border: none;
   border-radius: 5px;
+  margin: 0 2.5px;
+}
+
+button:hover {
+  background-color: #35505d;
 }
 
 .book-results {
@@ -26,7 +31,7 @@ button {
 }
 
 .book-card {
-  width: 200px;
+  width: 300px;
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;

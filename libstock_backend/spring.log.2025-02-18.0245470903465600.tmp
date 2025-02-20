@@ -1,0 +1,1680 @@
+2025-02-18T11:12:33.471-08:00  INFO 13412 --- [libstock_backend] [main] c.e.l.LibstockBackendApplication         : Starting LibstockBackendApplication using Java 21.0.4 with PID 13412 (C:\Users\teres\OneDrive\Senier Project\libstock\libstock_backend\build\classes\java\main started by teres in C:\Users\teres\OneDrive\Senier Project\libstock\libstock_backend)
+2025-02-18T11:12:33.518-08:00  INFO 13412 --- [libstock_backend] [main] c.e.l.LibstockBackendApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-02-18T11:12:33.523-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.boot.SpringApplication               : Loading source class com.example.libstock_backend.LibstockBackendApplication
+2025-02-18T11:12:33.651-08:00 DEBUG 13412 --- [libstock_backend] [main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@18317edc
+2025-02-18T11:12:35.226-08:00  INFO 13412 --- [libstock_backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2025-02-18T11:12:35.273-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.example.libstock_backend'. Automatic @Repository and @Entity scanning is enabled.
+2025-02-18T11:12:35.427-08:00  INFO 13412 --- [libstock_backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 196 ms. Found 13 MongoDB repository interfaces.
+2025-02-18T11:12:36.497-08:00 DEBUG 13412 --- [libstock_backend] [main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\teres\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot\3.3.5\1a0d1dc425d445503bd01c9aa3683aaebc524e3b\spring-boot-3.3.5.jar
+2025-02-18T11:12:36.497-08:00 DEBUG 13412 --- [libstock_backend] [main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\teres\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot\3.3.5\1a0d1dc425d445503bd01c9aa3683aaebc524e3b\spring-boot-3.3.5.jar
+2025-02-18T11:12:36.497-08:00 DEBUG 13412 --- [libstock_backend] [main] .s.b.w.e.t.TomcatServletWebServerFactory : None of the document roots [src/main/webapp, public, static] point to a directory and will be ignored.
+2025-02-18T11:12:36.562-08:00  INFO 13412 --- [libstock_backend] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-02-18T11:12:36.602-08:00  INFO 13412 --- [libstock_backend] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-02-18T11:12:36.606-08:00  INFO 13412 --- [libstock_backend] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.31]
+2025-02-18T11:12:36.775-08:00  INFO 13412 --- [libstock_backend] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-02-18T11:12:36.783-08:00 DEBUG 13412 --- [libstock_backend] [main] w.s.c.ServletWebServerApplicationContext : Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+2025-02-18T11:12:36.783-08:00  INFO 13412 --- [libstock_backend] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3132 ms
+2025-02-18T11:12:36.808-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105
+2025-02-18T11:12:36.808-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: dispatcherServlet urls=[/]
+2025-02-18T11:12:36.873-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.b.w.s.f.OrderedRequestContextFilter  : Filter 'requestContextFilter' configured for use
+2025-02-18T11:12:36.878-08:00 DEBUG 13412 --- [libstock_backend] [main] s.b.w.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
+2025-02-18T11:12:36.878-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.b.w.s.f.OrderedFormContentFilter     : Filter 'formContentFilter' configured for use
+2025-02-18T11:12:37.153-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-srv-libstock.jrjr8.mongodb.net] org.mongodb.driver.cluster               : Adding discovered server libstock-shard-00-00.jrjr8.mongodb.net:27017 to client view of cluster
+2025-02-18T11:12:37.202-08:00  INFO 13412 --- [libstock_backend] [main] org.mongodb.driver.client                : MongoClient with metadata {"application": {"name": "LibStock"}, "driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "5.0.1"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/21.0.4+7-LTS"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=majority, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='alldevs', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@939ff41, com.mongodb.Jep395RecordCodecProvider@6e0e5dec, com.mongodb.KotlinCodecProvider@48a663e9]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=libstock.jrjr8.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-bkda7c-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='LibStock', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2025-02-18T11:12:37.220-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-srv-libstock.jrjr8.mongodb.net] org.mongodb.driver.cluster               : Adding discovered server libstock-shard-00-01.jrjr8.mongodb.net:27017 to client view of cluster
+2025-02-18T11:12:37.222-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-srv-libstock.jrjr8.mongodb.net] org.mongodb.driver.cluster               : Adding discovered server libstock-shard-00-02.jrjr8.mongodb.net:27017 to client view of cluster
+2025-02-18T11:12:38.106-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-00.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=libstock-shard-00-00.jrjr8.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=545307000, setName='atlas-bkda7c-shard-0', canonicalAddress=libstock-shard-00-00.jrjr8.mongodb.net:27017, hosts=[libstock-shard-00-02.jrjr8.mongodb.net:27017, libstock-shard-00-00.jrjr8.mongodb.net:27017, libstock-shard-00-01.jrjr8.mongodb.net:27017], passives=[], arbiters=[], primary='libstock-shard-00-02.jrjr8.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='use1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=163, topologyVersion=TopologyVersion{processId=67ad3c7b3c2f2b9c1fb8ec2c, counter=4}, lastWriteDate=Tue Feb 18 11:12:38 PST 2025, lastUpdateTimeNanos=64628918726400}
+2025-02-18T11:12:38.106-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-02.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=libstock-shard-00-02.jrjr8.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=545352100, setName='atlas-bkda7c-shard-0', canonicalAddress=libstock-shard-00-02.jrjr8.mongodb.net:27017, hosts=[libstock-shard-00-02.jrjr8.mongodb.net:27017, libstock-shard-00-00.jrjr8.mongodb.net:27017, libstock-shard-00-01.jrjr8.mongodb.net:27017], passives=[], arbiters=[], primary='libstock-shard-00-02.jrjr8.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='use1-az4'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000001ae, setVersion=163, topologyVersion=TopologyVersion{processId=67ad3bd3111aa8dac8fc20d8, counter=6}, lastWriteDate=Tue Feb 18 11:12:38 PST 2025, lastUpdateTimeNanos=64628918778000}
+2025-02-18T11:12:38.106-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-01.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=libstock-shard-00-01.jrjr8.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=545270000, setName='atlas-bkda7c-shard-0', canonicalAddress=libstock-shard-00-01.jrjr8.mongodb.net:27017, hosts=[libstock-shard-00-02.jrjr8.mongodb.net:27017, libstock-shard-00-00.jrjr8.mongodb.net:27017, libstock-shard-00-01.jrjr8.mongodb.net:27017], passives=[], arbiters=[], primary='libstock-shard-00-02.jrjr8.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='use1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=163, topologyVersion=TopologyVersion{processId=67ad3d8e1f0ef022477474f0, counter=3}, lastWriteDate=Tue Feb 18 11:12:38 PST 2025, lastUpdateTimeNanos=64628918738100}
+2025-02-18T11:12:38.106-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-02.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Discovered replica set primary libstock-shard-00-02.jrjr8.mongodb.net:27017 with max election id 7fffffff00000000000001ae and max set version 163
+2025-02-18T11:12:38.279-08:00 DEBUG 13412 --- [libstock_backend] [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 66 mappings in 'requestMappingHandlerMapping'
+2025-02-18T11:12:38.353-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-02-18T11:12:38.398-08:00 DEBUG 13412 --- [libstock_backend] [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-02-18T11:12:38.429-08:00 DEBUG 13412 --- [libstock_backend] [main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-02-18T11:12:38.524-08:00  INFO 13412 --- [libstock_backend] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-02-18T11:12:38.540-08:00 DEBUG 13412 --- [libstock_backend] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+
+============================
+CONDITIONS EVALUATION REPORT
+============================
+
+
+Positive matches:
+-----------------
+
+   AopAutoConfiguration matched:
+      - @ConditionalOnProperty (spring.aop.auto=true) matched (OnPropertyCondition)
+
+   AopAutoConfiguration.ClassProxyingConfiguration matched:
+      - @ConditionalOnMissingClass did not find unwanted class 'org.aspectj.weaver.Advice' (OnClassCondition)
+      - @ConditionalOnProperty (spring.aop.proxy-target-class=true) matched (OnPropertyCondition)
+
+   ApplicationAvailabilityAutoConfiguration#applicationAvailability matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.availability.ApplicationAvailability; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   DispatcherServletAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.web.servlet.DispatcherServlet' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.servlet.ServletRegistration' (OnClassCondition)
+      - Default DispatcherServlet did not find dispatcher servlet beans (DispatcherServletAutoConfiguration.DefaultDispatcherServletCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.servlet.ServletRegistration' (OnClassCondition)
+      - DispatcherServlet Registration did not find servlet registration bean (DispatcherServletAutoConfiguration.DispatcherServletRegistrationCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration#dispatcherServletRegistration matched:
+      - @ConditionalOnBean (names: dispatcherServlet types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found bean 'dispatcherServlet' (OnBeanCondition)
+
+   EmbeddedWebServerFactoryCustomizerAutoConfiguration matched:
+      - @ConditionalOnWebApplication (required) found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnWarDeployment the application is not deployed as a WAR file. (OnWarDeploymentCondition)
+
+   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched:
+      - @ConditionalOnClass found required classes 'org.apache.catalina.startup.Tomcat', 'org.apache.coyote.UpgradeProtocol' (OnClassCondition)
+
+   ErrorMvcAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   ErrorMvcAutoConfiguration#basicErrorController matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.web.servlet.error.ErrorController; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration#errorAttributes matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.web.servlet.error.ErrorAttributes; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.DefaultErrorViewResolverConfiguration#conventionErrorViewResolver matched:
+      - @ConditionalOnBean (types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) found bean 'dispatcherServlet'; @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration matched:
+      - @ConditionalOnProperty (server.error.whitelabel.enabled) matched (OnPropertyCondition)
+      - ErrorTemplate Missing did not find error template view (ErrorMvcAutoConfiguration.ErrorTemplateMissingCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#beanNameViewResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.BeanNameViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#defaultErrorView matched:
+      - @ConditionalOnMissingBean (names: error; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   GenericCacheConfiguration matched:
+      - Cache org.springframework.boot.autoconfigure.cache.GenericCacheConfiguration automatic cache type (CacheCondition)
+
+   HttpEncodingAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.web.filter.CharacterEncodingFilter' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnProperty (server.servlet.encoding.enabled) matched (OnPropertyCondition)
+
+   HttpEncodingAutoConfiguration#characterEncodingFilter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.filter.CharacterEncodingFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   HttpMessageConvertersAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.HttpMessageConverter' (OnClassCondition)
+      - NoneNestedConditions 0 matched 1 did not; NestedCondition on HttpMessageConvertersAutoConfiguration.NotReactiveWebApplicationCondition.ReactiveWebApplication did not find reactive web application classes (HttpMessageConvertersAutoConfiguration.NotReactiveWebApplicationCondition)
+
+   HttpMessageConvertersAutoConfiguration#messageConverters matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.http.HttpMessageConverters; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   HttpMessageConvertersAutoConfiguration.StringHttpMessageConverterConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.StringHttpMessageConverter' (OnClassCondition)
+
+   HttpMessageConvertersAutoConfiguration.StringHttpMessageConverterConfiguration#stringHttpMessageConverter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.StringHttpMessageConverter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'com.fasterxml.jackson.databind.ObjectMapper' (OnClassCondition)
+
+   JacksonAutoConfiguration.Jackson2ObjectMapperBuilderCustomizerConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.json.Jackson2ObjectMapperBuilder' (OnClassCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperBuilderConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.json.Jackson2ObjectMapperBuilder' (OnClassCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperBuilderConfiguration#jacksonObjectMapperBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.json.Jackson2ObjectMapperBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.json.Jackson2ObjectMapperBuilder' (OnClassCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperConfiguration#jacksonObjectMapper matched:
+      - @ConditionalOnMissingBean (types: com.fasterxml.jackson.databind.ObjectMapper; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration.ParameterNamesModuleConfiguration matched:
+      - @ConditionalOnClass found required class 'com.fasterxml.jackson.module.paramnames.ParameterNamesModule' (OnClassCondition)
+
+   JacksonAutoConfiguration.ParameterNamesModuleConfiguration#parameterNamesModule matched:
+      - @ConditionalOnMissingBean (types: com.fasterxml.jackson.module.paramnames.ParameterNamesModule; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonHttpMessageConvertersConfiguration.MappingJackson2HttpMessageConverterConfiguration matched:
+      - @ConditionalOnClass found required class 'com.fasterxml.jackson.databind.ObjectMapper' (OnClassCondition)
+      - @ConditionalOnProperty (spring.mvc.converters.preferred-json-mapper=jackson) matched (OnPropertyCondition)
+      - @ConditionalOnBean (types: com.fasterxml.jackson.databind.ObjectMapper; SearchStrategy: all) found bean 'jacksonObjectMapper' (OnBeanCondition)
+
+   JacksonHttpMessageConvertersConfiguration.MappingJackson2HttpMessageConverterConfiguration#mappingJackson2HttpMessageConverter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.json.MappingJackson2HttpMessageConverter ignored: org.springframework.hateoas.server.mvc.TypeConstrainedMappingJackson2HttpMessageConverter,org.springframework.data.rest.webmvc.alps.AlpsJsonHttpMessageConverter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   LifecycleAutoConfiguration#defaultLifecycleProcessor matched:
+      - @ConditionalOnMissingBean (names: lifecycleProcessor; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   MongoAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'com.mongodb.client.MongoClient' (OnClassCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.MongoDatabaseFactory; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoAutoConfiguration#mongo matched:
+      - @ConditionalOnMissingBean (types: com.mongodb.client.MongoClient; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoAutoConfiguration#mongoConnectionDetails matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.mongo.MongoConnectionDetails; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoAutoConfiguration.MongoClientSettingsConfiguration matched:
+      - @ConditionalOnMissingBean (types: com.mongodb.MongoClientSettings; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoDataAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'com.mongodb.client.MongoClient', 'org.springframework.data.mongodb.core.MongoTemplate' (OnClassCondition)
+
+   MongoDataConfiguration#mappingMongoConverter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.core.convert.MongoConverter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoDataConfiguration#mongoCustomConversions matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.core.convert.MongoCustomConversions; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoDataConfiguration#mongoManagedTypes matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.MongoManagedTypes; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoDataConfiguration#mongoMappingContext matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.core.mapping.MongoMappingContext; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoDatabaseFactoryConfiguration matched:
+      - @ConditionalOnSingleCandidate (types: com.mongodb.client.MongoClient; SearchStrategy: all) found a single bean 'mongo'; @ConditionalOnMissingBean (types: org.springframework.data.mongodb.MongoDatabaseFactory; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoDatabaseFactoryDependentConfiguration matched:
+      - @ConditionalOnBean (types: org.springframework.data.mongodb.MongoDatabaseFactory; SearchStrategy: all) found bean 'mongoDatabaseFactory' (OnBeanCondition)
+
+   MongoDatabaseFactoryDependentConfiguration#gridFsTemplate matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.gridfs.GridFsOperations; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoDatabaseFactoryDependentConfiguration#mongoTemplate matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.core.MongoOperations; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MongoRepositoriesAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'com.mongodb.client.MongoClient', 'org.springframework.data.mongodb.repository.MongoRepository' (OnClassCondition)
+      - @ConditionalOnRepositoryType configured type of 'AUTO' matched required type (OnRepositoryTypeCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.data.mongodb.repository.support.MongoRepositoryFactoryBean,org.springframework.data.mongodb.repository.config.MongoRepositoryConfigurationExtension; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MultipartAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.multipart.support.StandardServletMultipartResolver', 'jakarta.servlet.MultipartConfigElement' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnProperty (spring.servlet.multipart.enabled) matched (OnPropertyCondition)
+
+   MultipartAutoConfiguration#multipartConfigElement matched:
+      - @ConditionalOnMissingBean (types: jakarta.servlet.MultipartConfigElement; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MultipartAutoConfiguration#multipartResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.multipart.MultipartResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   NoOpCacheConfiguration matched:
+      - Cache org.springframework.boot.autoconfigure.cache.NoOpCacheConfiguration automatic cache type (CacheCondition)
+
+   PersistenceExceptionTranslationAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor' (OnClassCondition)
+
+   PersistenceExceptionTranslationAutoConfiguration#persistenceExceptionTranslationPostProcessor matched:
+      - @ConditionalOnProperty (spring.dao.exceptiontranslation.enabled) matched (OnPropertyCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   PropertyPlaceholderAutoConfiguration#propertySourcesPlaceholderConfigurer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.context.support.PropertySourcesPlaceholderConfigurer; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   RestClientAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.web.client.RestClient' (OnClassCondition)
+      - NoneNestedConditions 0 matched 1 did not; NestedCondition on NotReactiveWebApplicationCondition.ReactiveWebApplication did not find reactive web application classes (NotReactiveWebApplicationCondition)
+
+   RestClientAutoConfiguration#httpMessageConvertersRestClientCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.web.client.HttpMessageConvertersRestClientCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   RestClientAutoConfiguration#restClientBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.client.RestClient$Builder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   RestClientAutoConfiguration#restClientBuilderConfigurer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.web.client.RestClientBuilderConfigurer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   RestClientAutoConfiguration#restClientSsl matched:
+      - @ConditionalOnBean (types: org.springframework.boot.ssl.SslBundles; SearchStrategy: all) found bean 'sslBundleRegistry'; @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.web.client.RestClientSsl; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   RestTemplateAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.web.client.RestTemplate' (OnClassCondition)
+      - NoneNestedConditions 0 matched 1 did not; NestedCondition on NotReactiveWebApplicationCondition.ReactiveWebApplication did not find reactive web application classes (NotReactiveWebApplicationCondition)
+
+   RestTemplateAutoConfiguration#restTemplateBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.web.client.RestTemplateBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ServletWebServerFactoryAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.servlet.ServletRequest' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   ServletWebServerFactoryAutoConfiguration#tomcatServletWebServerFactoryCustomizer matched:
+      - @ConditionalOnClass found required class 'org.apache.catalina.startup.Tomcat' (OnClassCondition)
+
+   ServletWebServerFactoryConfiguration.EmbeddedTomcat matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.apache.catalina.startup.Tomcat', 'org.apache.coyote.UpgradeProtocol' (OnClassCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.boot.web.servlet.server.ServletWebServerFactory; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   SimpleCacheConfiguration matched:
+      - Cache org.springframework.boot.autoconfigure.cache.SimpleCacheConfiguration automatic cache type (CacheCondition)
+
+   SpringDataWebAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'org.springframework.data.web.PageableHandlerMethodArgumentResolver', 'org.springframework.web.servlet.config.annotation.WebMvcConfigurer' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.PageableHandlerMethodArgumentResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SpringDataWebAutoConfiguration#pageableCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SpringDataWebAutoConfiguration#sortCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.config.SortHandlerMethodArgumentResolverCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SqlInitializationAutoConfiguration matched:
+      - @ConditionalOnProperty (spring.sql.init.enabled) matched (OnPropertyCondition)
+      - NoneNestedConditions 0 matched 1 did not; NestedCondition on SqlInitializationAutoConfiguration.SqlInitializationModeCondition.ModeIsNever @ConditionalOnProperty (spring.sql.init.mode=never) did not find property 'mode' (SqlInitializationAutoConfiguration.SqlInitializationModeCondition)
+
+   SslAutoConfiguration#sslBundleRegistry matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.ssl.SslBundleRegistry,org.springframework.boot.ssl.SslBundles; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutionAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor' (OnClassCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.TaskExecutorBuilderConfiguration#taskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.TaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration matched:
+      - @ConditionalOnMissingBean (types: java.util.concurrent.Executor; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutor matched:
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.ThreadPoolTaskExecutorBuilderConfiguration#threadPoolTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.TaskExecutorBuilder,org.springframework.boot.task.ThreadPoolTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskSchedulingAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler' (OnClassCondition)
+
+   TaskSchedulingConfigurations.SimpleAsyncTaskSchedulerBuilderConfiguration#simpleAsyncTaskSchedulerBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskSchedulingConfigurations.TaskSchedulerBuilderConfiguration#taskSchedulerBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.TaskSchedulerBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskSchedulingConfigurations.ThreadPoolTaskSchedulerBuilderConfiguration#threadPoolTaskSchedulerBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.TaskSchedulerBuilder,org.springframework.boot.task.ThreadPoolTaskSchedulerBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TransactionAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.transaction.PlatformTransactionManager' (OnClassCondition)
+
+   TransactionManagerCustomizationAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.transaction.PlatformTransactionManager' (OnClassCondition)
+
+   TransactionManagerCustomizationAutoConfiguration#platformTransactionManagerCustomizers matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet', 'org.springframework.web.servlet.config.annotation.WebMvcConfigurer' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration#formContentFilter matched:
+      - @ConditionalOnProperty (spring.mvc.formcontent.filter.enabled) matched (OnPropertyCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.web.filter.FormContentFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#flashMapManager matched:
+      - @ConditionalOnMissingBean (names: flashMapManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#localeResolver matched:
+      - @ConditionalOnMissingBean (names: localeResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#themeResolver matched:
+      - @ConditionalOnMissingBean (names: themeResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#defaultViewResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.InternalResourceViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#requestContextFilter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.context.request.RequestContextListener,org.springframework.web.filter.RequestContextFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#viewResolver matched:
+      - @ConditionalOnBean (types: org.springframework.web.servlet.ViewResolver; SearchStrategy: all) found beans 'defaultViewResolver', 'beanNameViewResolver', 'mvcViewResolver'; @ConditionalOnMissingBean (names: viewResolver types: org.springframework.web.servlet.view.ContentNegotiatingViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebSocketServletAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'jakarta.websocket.server.ServerContainer' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   WebSocketServletAutoConfiguration.TomcatWebSocketConfiguration matched:
+      - @ConditionalOnClass found required classes 'org.apache.catalina.startup.Tomcat', 'org.apache.tomcat.websocket.server.WsSci' (OnClassCondition)
+
+   WebSocketServletAutoConfiguration.TomcatWebSocketConfiguration#websocketServletWebServerCustomizer matched:
+      - @ConditionalOnMissingBean (names: websocketServletWebServerCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+   ActiveMQAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.jms.ConnectionFactory' (OnClassCondition)
+
+   AopAutoConfiguration.AspectJAutoProxyingConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.aspectj.weaver.Advice' (OnClassCondition)
+
+   ArtemisAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.jms.ConnectionFactory' (OnClassCondition)
+
+   BatchAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.batch.core.launch.JobLauncher' (OnClassCondition)
+
+   Cache2kCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.cache2k.Cache2kBuilder' (OnClassCondition)
+
+   CacheAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.cache.interceptor.CacheAspectSupport; SearchStrategy: all) did not find any beans of type org.springframework.cache.interceptor.CacheAspectSupport (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.cache.CacheManager' (OnClassCondition)
+
+   CacheAutoConfiguration.CacheManagerEntityManagerFactoryDependsOnPostProcessor:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean' (OnClassCondition)
+         - Ancestor org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration did not match (ConditionEvaluationReport.AncestorsMatchedCondition)
+
+   CaffeineCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.github.benmanes.caffeine.cache.Caffeine' (OnClassCondition)
+
+   CassandraAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.datastax.oss.driver.api.core.CqlSession' (OnClassCondition)
+
+   CassandraDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.datastax.oss.driver.api.core.CqlSession' (OnClassCondition)
+
+   CassandraReactiveDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.datastax.oss.driver.api.core.CqlSession' (OnClassCondition)
+
+   CassandraReactiveRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.cassandra.ReactiveSession' (OnClassCondition)
+
+   CassandraRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.datastax.oss.driver.api.core.CqlSession' (OnClassCondition)
+
+   ClientHttpConnectorAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.function.client.WebClient' (OnClassCondition)
+
+   CodecsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.function.client.WebClient' (OnClassCondition)
+
+   CouchbaseAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.couchbase.client.java.Cluster' (OnClassCondition)
+
+   CouchbaseCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.couchbase.client.java.Cluster' (OnClassCondition)
+
+   CouchbaseDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.couchbase.client.java.Bucket' (OnClassCondition)
+
+   CouchbaseReactiveDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.couchbase.client.java.Cluster' (OnClassCondition)
+
+   CouchbaseReactiveRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.couchbase.client.java.Cluster' (OnClassCondition)
+
+   CouchbaseRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.couchbase.client.java.Bucket' (OnClassCondition)
+
+   DataSourceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType' (OnClassCondition)
+
+   DataSourceInitializationConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.jdbc.datasource.init.DatabasePopulator' (OnClassCondition)
+
+   DataSourceTransactionManagerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.jdbc.core.JdbcTemplate' (OnClassCondition)
+
+   DispatcherServletAutoConfiguration.DispatcherServletConfiguration#multipartResolver:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.web.multipart.MultipartResolver; SearchStrategy: all) did not find any beans of type org.springframework.web.multipart.MultipartResolver (OnBeanCondition)
+
+   ElasticsearchClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'co.elastic.clients.elasticsearch.ElasticsearchClient' (OnClassCondition)
+
+   ElasticsearchDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate' (OnClassCondition)
+
+   ElasticsearchRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.elasticsearch.repository.ElasticsearchRepository' (OnClassCondition)
+
+   ElasticsearchRestClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.elasticsearch.client.RestClientBuilder' (OnClassCondition)
+
+   EmbeddedLdapAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.unboundid.ldap.listener.InMemoryDirectoryServer' (OnClassCondition)
+
+   EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'org.eclipse.jetty.server.Server', 'org.eclipse.jetty.util.Loader', 'org.eclipse.jetty.ee10.webapp.WebAppContext' (OnClassCondition)
+
+   EmbeddedWebServerFactoryCustomizerAutoConfiguration.NettyWebServerFactoryCustomizerConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.netty.http.server.HttpServer' (OnClassCondition)
+
+   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration#tomcatVirtualThreadsProtocolHandlerCustomizer:
+      Did not match:
+         - @ConditionalOnThreading did not find VIRTUAL (OnThreadingCondition)
+
+   EmbeddedWebServerFactoryCustomizerAutoConfiguration.UndertowWebServerFactoryCustomizerConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'io.undertow.Undertow', 'org.xnio.SslClientAuthMode' (OnClassCondition)
+
+   ErrorWebFluxAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.config.WebFluxConfigurer' (OnClassCondition)
+
+   FlywayAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.flywaydb.core.Flyway' (OnClassCondition)
+
+   FreeMarkerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'freemarker.template.Configuration' (OnClassCondition)
+
+   GraphQlAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GraphQlQueryByExampleAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GraphQlQuerydslAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.querydsl.core.Query' (OnClassCondition)
+
+   GraphQlRSocketAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GraphQlReactiveQueryByExampleAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GraphQlReactiveQuerydslAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.querydsl.core.Query' (OnClassCondition)
+
+   GraphQlWebFluxAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GraphQlWebFluxSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GraphQlWebMvcAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GraphQlWebMvcSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   GroovyTemplateAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'groovy.text.markup.MarkupTemplateEngine' (OnClassCondition)
+
+   GsonAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.google.gson.Gson' (OnClassCondition)
+
+   GsonHttpMessageConvertersConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.google.gson.Gson' (OnClassCondition)
+
+   H2ConsoleAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.h2.server.web.JakartaWebServlet' (OnClassCondition)
+
+   HazelcastAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.hazelcast.core.HazelcastInstance' (OnClassCondition)
+
+   HazelcastCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.hazelcast.core.HazelcastInstance' (OnClassCondition)
+
+   HazelcastJpaDependencyAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.hazelcast.core.HazelcastInstance' (OnClassCondition)
+
+   HibernateJpaAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.persistence.EntityManager' (OnClassCondition)
+
+   HttpHandlerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.DispatcherHandler' (OnClassCondition)
+
+   HypermediaAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.hateoas.EntityModel' (OnClassCondition)
+
+   InfinispanCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManager' (OnClassCondition)
+
+   InfluxDbAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.influxdb.InfluxDB' (OnClassCondition)
+
+   IntegrationAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.integration.config.EnableIntegration' (OnClassCondition)
+
+   JCacheCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'javax.cache.Caching' (OnClassCondition)
+
+   JacksonHttpMessageConvertersConfiguration.MappingJackson2XmlHttpMessageConverterConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.fasterxml.jackson.dataformat.xml.XmlMapper' (OnClassCondition)
+
+   JdbcClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnSingleCandidate did not find required type 'org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate' (OnBeanCondition)
+
+   JdbcRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration' (OnClassCondition)
+
+   JdbcTemplateAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.jdbc.core.JdbcTemplate' (OnClassCondition)
+
+   JerseyAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.glassfish.jersey.server.spring.SpringComponentProvider' (OnClassCondition)
+
+   JmsAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.jms.Message' (OnClassCondition)
+
+   JmxAutoConfiguration:
+      Did not match:
+         - @ConditionalOnProperty (spring.jmx.enabled=true) did not find property 'enabled' (OnPropertyCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.jmx.export.MBeanExporter' (OnClassCondition)
+
+   JndiConnectionFactoryAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.jms.core.JmsTemplate' (OnClassCondition)
+
+   JndiDataSourceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType' (OnClassCondition)
+
+   JooqAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.jooq.DSLContext' (OnClassCondition)
+
+   JpaRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.jpa.repository.JpaRepository' (OnClassCondition)
+
+   JsonbAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.json.bind.Jsonb' (OnClassCondition)
+
+   JsonbHttpMessageConvertersConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.json.bind.Jsonb' (OnClassCondition)
+
+   JtaAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.transaction.Transaction' (OnClassCondition)
+
+   KafkaAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.kafka.core.KafkaTemplate' (OnClassCondition)
+
+   LdapAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.ldap.core.ContextSource' (OnClassCondition)
+
+   LdapRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.ldap.repository.LdapRepository' (OnClassCondition)
+
+   LiquibaseAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'liquibase.change.DatabaseChange' (OnClassCondition)
+
+   MailSenderAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.activation.MimeType' (OnClassCondition)
+
+   MailSenderValidatorAutoConfiguration:
+      Did not match:
+         - @ConditionalOnSingleCandidate did not find required type 'org.springframework.mail.javamail.JavaMailSenderImpl' (OnBeanCondition)
+
+   MessageSourceAutoConfiguration:
+      Did not match:
+         - ResourceBundle did not find bundle with basename messages (MessageSourceAutoConfiguration.ResourceBundleCondition)
+
+   MongoDataAutoConfiguration#mongoConnectionDetails:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.mongo.MongoConnectionDetails; SearchStrategy: all) found beans of type 'org.springframework.boot.autoconfigure.mongo.MongoConnectionDetails' mongoConnectionDetails (OnBeanCondition)
+
+   MongoReactiveAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.mongodb.reactivestreams.client.MongoClient' (OnClassCondition)
+
+   MongoReactiveDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.mongodb.reactivestreams.client.MongoClient' (OnClassCondition)
+
+   MongoReactiveRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.mongodb.reactivestreams.client.MongoClient' (OnClassCondition)
+
+   MustacheAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.samskivert.mustache.Mustache' (OnClassCondition)
+
+   Neo4jAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.neo4j.driver.Driver' (OnClassCondition)
+
+   Neo4jDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.neo4j.driver.Driver' (OnClassCondition)
+
+   Neo4jReactiveDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.neo4j.driver.Driver' (OnClassCondition)
+
+   Neo4jReactiveRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.neo4j.driver.Driver' (OnClassCondition)
+
+   Neo4jRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.neo4j.driver.Driver' (OnClassCondition)
+
+   NettyAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.netty.util.NettyRuntime' (OnClassCondition)
+
+   OAuth2AuthorizationServerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.oauth2.server.authorization.OAuth2Authorization' (OnClassCondition)
+
+   OAuth2AuthorizationServerJwtAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.oauth2.server.authorization.OAuth2Authorization' (OnClassCondition)
+
+   OAuth2ClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+
+   OAuth2ResourceServerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken' (OnClassCondition)
+
+   ProjectInfoAutoConfiguration#buildProperties:
+      Did not match:
+         - @ConditionalOnResource did not find resource '${spring.info.build.location:classpath:META-INF/build-info.properties}' (OnResourceCondition)
+
+   ProjectInfoAutoConfiguration#gitProperties:
+      Did not match:
+         - GitResource did not find git info at classpath:git.properties (ProjectInfoAutoConfiguration.GitResourceAvailableCondition)
+
+   PulsarAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.apache.pulsar.client.api.PulsarClient' (OnClassCondition)
+
+   PulsarReactiveAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.apache.pulsar.client.api.PulsarClient' (OnClassCondition)
+
+   QuartzAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.quartz.Scheduler' (OnClassCondition)
+
+   R2dbcAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.r2dbc.spi.ConnectionFactory' (OnClassCondition)
+
+   R2dbcDataAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.r2dbc.core.R2dbcEntityTemplate' (OnClassCondition)
+
+   R2dbcInitializationConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'io.r2dbc.spi.ConnectionFactory', 'org.springframework.r2dbc.connection.init.DatabasePopulator' (OnClassCondition)
+
+   R2dbcRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.r2dbc.spi.ConnectionFactory' (OnClassCondition)
+
+   R2dbcTransactionManagerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.r2dbc.connection.R2dbcTransactionManager' (OnClassCondition)
+
+   RSocketGraphQlClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'graphql.GraphQL' (OnClassCondition)
+
+   RSocketMessagingAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.rsocket.RSocket' (OnClassCondition)
+
+   RSocketRequesterAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.rsocket.RSocket' (OnClassCondition)
+
+   RSocketSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.rsocket.core.SecuritySocketAcceptorInterceptor' (OnClassCondition)
+
+   RSocketServerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.rsocket.core.RSocketServer' (OnClassCondition)
+
+   RSocketStrategiesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.netty.buffer.PooledByteBufAllocator' (OnClassCondition)
+
+   RabbitAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.rabbitmq.client.Channel' (OnClassCondition)
+
+   ReactiveElasticsearchClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'co.elastic.clients.transport.ElasticsearchTransport' (OnClassCondition)
+
+   ReactiveElasticsearchRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.core.publisher.Mono' (OnClassCondition)
+
+   ReactiveMultipartAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.config.WebFluxConfigurer' (OnClassCondition)
+
+   ReactiveOAuth2ClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.core.publisher.Flux' (OnClassCondition)
+
+   ReactiveOAuth2ResourceServerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity' (OnClassCondition)
+
+   ReactiveSecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.core.publisher.Flux' (OnClassCondition)
+
+   ReactiveUserDetailsServiceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.authentication.ReactiveAuthenticationManager' (OnClassCondition)
+
+   ReactiveWebServerFactoryAutoConfiguration:
+      Did not match:
+         - @ConditionalOnWebApplication did not find reactive web application classes (OnWebApplicationCondition)
+
+   ReactorAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.core.publisher.Hooks' (OnClassCondition)
+
+   RedisAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.redis.core.RedisOperations' (OnClassCondition)
+
+   RedisCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.redis.connection.RedisConnectionFactory' (OnClassCondition)
+
+   RedisReactiveAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.core.publisher.Flux' (OnClassCondition)
+
+   RedisRepositoriesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.redis.repository.configuration.EnableRedisRepositories' (OnClassCondition)
+
+   RepositoryRestMvcAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration' (OnClassCondition)
+
+   Saml2RelyingPartyAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository' (OnClassCondition)
+
+   SecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.authentication.DefaultAuthenticationEventPublisher' (OnClassCondition)
+
+   SecurityFilterAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.config.http.SessionCreationPolicy' (OnClassCondition)
+
+   SendGridAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.sendgrid.SendGrid' (OnClassCondition)
+
+   ServletWebServerFactoryAutoConfiguration.ForwardedHeaderFilterConfiguration:
+      Did not match:
+         - @ConditionalOnProperty (server.forward-headers-strategy=framework) did not find property 'server.forward-headers-strategy' (OnPropertyCondition)
+
+   ServletWebServerFactoryConfiguration.EmbeddedJetty:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'org.eclipse.jetty.server.Server', 'org.eclipse.jetty.util.Loader', 'org.eclipse.jetty.ee10.webapp.WebAppContext' (OnClassCondition)
+
+   ServletWebServerFactoryConfiguration.EmbeddedUndertow:
+      Did not match:
+         - @ConditionalOnClass did not find required classes 'io.undertow.Undertow', 'org.xnio.SslClientAuthMode' (OnClassCondition)
+
+   SessionAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.session.Session' (OnClassCondition)
+
+   SpringApplicationAdminJmxAutoConfiguration:
+      Did not match:
+         - @ConditionalOnProperty (spring.application.admin.enabled=true) did not find property 'enabled' (OnPropertyCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilderVirtualThreads:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) found beans of type 'org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder' simpleAsyncTaskExecutorBuilder (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutorVirtualThreads:
+      Did not match:
+         - @ConditionalOnThreading did not find VIRTUAL (OnThreadingCondition)
+
+   TaskSchedulingAutoConfiguration#scheduledBeanLazyInitializationExcludeFilter:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.context.annotation.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.context.annotation.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+   TaskSchedulingConfigurations.SimpleAsyncTaskSchedulerBuilderConfiguration#simpleAsyncTaskSchedulerBuilderVirtualThreads:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder; SearchStrategy: all) found beans of type 'org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder' simpleAsyncTaskSchedulerBuilder (OnBeanCondition)
+
+   TaskSchedulingConfigurations.TaskSchedulerConfiguration:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.context.annotation.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.context.annotation.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+   ThymeleafAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.thymeleaf.spring6.SpringTemplateEngine' (OnClassCondition)
+
+   TransactionAutoConfiguration#transactionalOperator:
+      Did not match:
+         - @ConditionalOnSingleCandidate (types: org.springframework.transaction.ReactiveTransactionManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TransactionAutoConfiguration.AspectJTransactionManagementConfiguration:
+      Did not match:
+         - @ConditionalOnBean did not find required type 'org.springframework.transaction.aspectj.AbstractTransactionAspect' (OnBeanCondition)
+         - @ConditionalOnBean (types: org.springframework.transaction.aspectj.AbstractTransactionAspect; SearchStrategy: all) did not find any beans of type org.springframework.transaction.aspectj.AbstractTransactionAspect (OnBeanCondition)
+
+   TransactionAutoConfiguration.EnableTransactionManagementConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.transaction.TransactionManager; SearchStrategy: all) did not find any beans of type org.springframework.transaction.TransactionManager (OnBeanCondition)
+
+   TransactionAutoConfiguration.EnableTransactionManagementConfiguration.CglibAutoProxyConfiguration:
+      Did not match:
+         - Ancestor org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration$EnableTransactionManagementConfiguration did not match (ConditionEvaluationReport.AncestorsMatchedCondition)
+      Matched:
+         - @ConditionalOnProperty (spring.aop.proxy-target-class=true) matched (OnPropertyCondition)
+
+   TransactionAutoConfiguration.EnableTransactionManagementConfiguration.JdkDynamicAutoProxyConfiguration:
+      Did not match:
+         - @ConditionalOnProperty (spring.aop.proxy-target-class=false) did not find property 'proxy-target-class' (OnPropertyCondition)
+         - Ancestor org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration$EnableTransactionManagementConfiguration did not match (ConditionEvaluationReport.AncestorsMatchedCondition)
+
+   TransactionAutoConfiguration.TransactionTemplateConfiguration:
+      Did not match:
+         - @ConditionalOnSingleCandidate (types: org.springframework.transaction.PlatformTransactionManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   UserDetailsServiceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.authentication.AuthenticationManager' (OnClassCondition)
+
+   ValidationAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.validation.executable.ExecutableValidator' (OnClassCondition)
+
+   WebClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.function.client.WebClient' (OnClassCondition)
+
+   WebFluxAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.config.WebFluxConfigurer' (OnClassCondition)
+
+   WebMvcAutoConfiguration#hiddenHttpMethodFilter:
+      Did not match:
+         - @ConditionalOnProperty (spring.mvc.hiddenmethod.filter.enabled) did not find property 'enabled' (OnPropertyCondition)
+
+   WebMvcAutoConfiguration.ProblemDetailsErrorHandlingConfiguration:
+      Did not match:
+         - @ConditionalOnProperty (spring.mvc.problemdetails.enabled=true) did not find property 'enabled' (OnPropertyCondition)
+
+   WebMvcAutoConfiguration.ResourceChainCustomizerConfiguration:
+      Did not match:
+         - @ConditionalOnEnabledResourceChain did not find class org.webjars.WebJarAssetLocator (OnEnabledResourceChainCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#beanNameViewResolver:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.BeanNameViewResolver; SearchStrategy: all) found beans of type 'org.springframework.web.servlet.view.BeanNameViewResolver' beanNameViewResolver (OnBeanCondition)
+
+   WebServiceTemplateAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.oxm.Marshaller' (OnClassCondition)
+
+   WebServicesAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.ws.transport.http.MessageDispatcherServlet' (OnClassCondition)
+
+   WebSessionIdResolverAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'reactor.core.publisher.Mono' (OnClassCondition)
+
+   WebSocketMessagingAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer' (OnClassCondition)
+
+   WebSocketReactiveAutoConfiguration:
+      Did not match:
+         - @ConditionalOnWebApplication did not find reactive web application classes (OnWebApplicationCondition)
+
+   WebSocketServletAutoConfiguration.JettyWebSocketConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.eclipse.jetty.ee10.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer' (OnClassCondition)
+
+   WebSocketServletAutoConfiguration.UndertowWebSocketConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'io.undertow.websockets.jsr.Bootstrap' (OnClassCondition)
+
+   XADataSourceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.transaction.TransactionManager' (OnClassCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
+
+    org.springframework.boot.autoconfigure.ssl.SslAutoConfiguration
+
+    org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration
+
+    org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration
+
+    org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration
+
+    org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration
+
+
+
+2025-02-18T11:12:38.633-08:00  INFO 13412 --- [libstock_backend] [main] c.e.l.LibstockBackendApplication         : Started LibstockBackendApplication in 6.461 seconds (process running for 7.493)
+2025-02-18T11:12:38.633-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2025-02-18T11:12:38.649-08:00 DEBUG 13412 --- [libstock_backend] [main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2025-02-18T11:47:48.770-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-00.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server libstock-shard-00-00.jrjr8.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:705) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:583) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:381) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:221) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153) ~[mongodb-driver-core-5.0.1.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:176) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580) ~[mongodb-driver-core-5.0.1.jar:na]
+	... 5 common frames omitted
+
+2025-02-18T11:47:48.770-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-02.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server libstock-shard-00-02.jrjr8.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:705) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:583) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:381) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:221) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153) ~[mongodb-driver-core-5.0.1.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:176) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580) ~[mongodb-driver-core-5.0.1.jar:na]
+	... 5 common frames omitted
+
+2025-02-18T11:47:48.770-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-01.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server libstock-shard-00-01.jrjr8.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:705) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:583) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:428) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:381) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.lookupServerDescription(DefaultServerMonitor.java:221) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:153) ~[mongodb-driver-core-5.0.1.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:176) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:196) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:716) ~[mongodb-driver-core-5.0.1.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveMessageWithAdditionalTimeout(InternalStreamConnection.java:580) ~[mongodb-driver-core-5.0.1.jar:na]
+	... 5 common frames omitted
+
+2025-02-18T11:47:49.071-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-02.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=libstock-shard-00-02.jrjr8.mongodb.net:27017, type=REPLICA_SET_PRIMARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=173370799, setName='atlas-bkda7c-shard-0', canonicalAddress=libstock-shard-00-02.jrjr8.mongodb.net:27017, hosts=[libstock-shard-00-02.jrjr8.mongodb.net:27017, libstock-shard-00-00.jrjr8.mongodb.net:27017, libstock-shard-00-01.jrjr8.mongodb.net:27017], passives=[], arbiters=[], primary='libstock-shard-00-02.jrjr8.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='use1-az4'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000001ae, setVersion=163, topologyVersion=TopologyVersion{processId=67ad3bd3111aa8dac8fc20d8, counter=6}, lastWriteDate=Tue Feb 18 11:47:49 PST 2025, lastUpdateTimeNanos=66739704338600}
+2025-02-18T11:47:49.071-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-02.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Discovered replica set primary libstock-shard-00-02.jrjr8.mongodb.net:27017 with max election id 7fffffff00000000000001ae and max set version 163
+2025-02-18T11:47:49.071-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-00.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=libstock-shard-00-00.jrjr8.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=177342400, setName='atlas-bkda7c-shard-0', canonicalAddress=libstock-shard-00-00.jrjr8.mongodb.net:27017, hosts=[libstock-shard-00-02.jrjr8.mongodb.net:27017, libstock-shard-00-00.jrjr8.mongodb.net:27017, libstock-shard-00-01.jrjr8.mongodb.net:27017], passives=[], arbiters=[], primary='libstock-shard-00-02.jrjr8.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='use1-az1'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=163, topologyVersion=TopologyVersion{processId=67ad3c7b3c2f2b9c1fb8ec2c, counter=4}, lastWriteDate=Tue Feb 18 11:47:49 PST 2025, lastUpdateTimeNanos=66739710870700}
+2025-02-18T11:47:49.079-08:00  INFO 13412 --- [libstock_backend] [cluster-ClusterId{value='67b4dba57603b90d9ef2921f', description='LibStock'}-libstock-shard-00-01.jrjr8.mongodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=libstock-shard-00-01.jrjr8.mongodb.net:27017, type=REPLICA_SET_SECONDARY, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=178347799, setName='atlas-bkda7c-shard-0', canonicalAddress=libstock-shard-00-01.jrjr8.mongodb.net:27017, hosts=[libstock-shard-00-02.jrjr8.mongodb.net:27017, libstock-shard-00-00.jrjr8.mongodb.net:27017, libstock-shard-00-01.jrjr8.mongodb.net:27017], passives=[], arbiters=[], primary='libstock-shard-00-02.jrjr8.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='use1-az2'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='US_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=163, topologyVersion=TopologyVersion{processId=67ad3d8e1f0ef022477474f0, counter=3}, lastWriteDate=Tue Feb 18 11:47:49 PST 2025, lastUpdateTimeNanos=66739711994100}
+2025-02-18T12:09:01.114-08:00  INFO 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-02-18T12:09:01.115-08:00  INFO 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-02-18T12:09:01.117-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2025-02-18T12:09:01.117-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2025-02-18T12:09:01.117-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2025-02-18T12:09:01.126-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@26096f46
+2025-02-18T12:09:01.127-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@d4a5b3d
+2025-02-18T12:09:01.128-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-02-18T12:09:01.128-08:00  INFO 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 13 ms
+2025-02-18T12:09:01.144-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/reset-password", parameters={}
+2025-02-18T12:09:01.159-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:09:01.178-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:09:46.018-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/reset-password", parameters={}
+2025-02-18T12:09:46.021-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:09:46.023-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:09:46.955-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/reset-password", parameters={}
+2025-02-18T12:09:46.956-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:09:46.958-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:09:47.532-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/reset-password", parameters={}
+2025-02-18T12:09:47.534-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:09:47.536-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:14:01.860-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/forgot-password", parameters={}
+2025-02-18T12:14:01.861-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:14:01.862-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:14:08.494-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/forgot-password", parameters={}
+2025-02-18T12:14:08.495-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:14:08.496-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:14:09.605-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/forgot-password", parameters={}
+2025-02-18T12:14:09.607-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:14:09.608-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:14:11.658-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/forgot-password", parameters={}
+2025-02-18T12:14:11.659-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:14:11.660-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:38:39.958-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/forgot-password", parameters={}
+2025-02-18T12:38:39.959-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:38:39.960-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:38:40.438-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/forgot-password", parameters={}
+2025-02-18T12:38:40.439-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T12:38:40.441-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 403 FORBIDDEN
+2025-02-18T12:58:18.055-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67b156d4c9ff7f587056f92c", parameters={masked}
+2025-02-18T12:58:18.165-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T12:58:19.336-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T12:58:19.338-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@324746b9]
+2025-02-18T12:58:19.360-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T12:58:19.362-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67b156d4c9ff7f587056f92c", parameters={masked}
+2025-02-18T12:58:19.363-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T12:58:19.442-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T12:58:19.443-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@2cb9a75e]
+2025-02-18T12:58:19.443-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:06:31.448-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/login", parameters={}
+2025-02-18T13:06:31.449-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#login(LoginDTO)
+2025-02-18T13:06:31.450-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:06:31.453-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : POST "/user/login", parameters={}
+2025-02-18T13:06:31.453-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#login(LoginDTO)
+2025-02-18T13:06:31.513-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.example.libstock_backend.DTOs.LoginDTO@3dfe8ede]
+2025-02-18T13:06:31.770-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:06:31.770-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Nothing to write: null body
+2025-02-18T13:06:31.771-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 401 UNAUTHORIZED
+2025-02-18T13:06:40.177-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/user/login", parameters={}
+2025-02-18T13:06:40.178-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#login(LoginDTO)
+2025-02-18T13:06:40.179-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.example.libstock_backend.DTOs.LoginDTO@299e4d68]
+2025-02-18T13:06:40.409-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:06:40.409-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@2759a62b]
+2025-02-18T13:06:40.411-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:06:40.445-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:06:40.446-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:06:40.543-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:06:40.544-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@76fb5ce0]
+2025-02-18T13:06:40.545-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:06:40.546-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:06:40.547-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:06:40.643-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:06:40.643-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@4abd0f87]
+2025-02-18T13:06:40.645-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:06:40.647-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:06:40.647-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:06:40.652-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:06:40.652-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:06:40.658-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:06:40.663-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:06:40.664-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:06:40.672-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:06:40.672-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:06:40.679-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:06:40.682-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:06:40 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:06:40.693-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:06:40.743-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:06:40.743-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@659e6d7f]
+2025-02-18T13:06:40.744-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:07:33.292-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:07:33.293-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:07:33.545-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:33.545-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@227e4cb9]
+2025-02-18T13:07:33.547-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:07:33.549-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:07:33.549-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:07:33.652-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:33.653-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@613a81c1]
+2025-02-18T13:07:33.654-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:07:33.655-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:07:33.655-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:07:33.761-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:33.762-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@6bcf8637]
+2025-02-18T13:07:33.763-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:07:34.084-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:07:34.084-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:07:34.089-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:07:34.089-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:07:34.089-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:07:34.089-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:07:34.091-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:07:34.091-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:34.092-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:07:34 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:07:34.093-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:07:55.932-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:07:55.933-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:07:56.184-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:56.184-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@2cd73a2d]
+2025-02-18T13:07:56.185-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:07:56.187-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:07:56.187-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:07:56.282-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:56.282-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@23662618]
+2025-02-18T13:07:56.284-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:07:56.285-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:07:56.286-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:07:56.318-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:07:56.318-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:07:56.320-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:07:56.320-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:07:56.320-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:07:56.321-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:07:56.321-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:07:56.322-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:56.322-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:07:56 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:07:56.323-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:07:56.380-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:07:56.381-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@7d7e3606]
+2025-02-18T13:07:56.382-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:08:11.708-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/user/favorites?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:11.709-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:08:11.713-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:08:11.713-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/favorites.]
+2025-02-18T13:08:11.714-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:08:11.715-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:11.716-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:08:11.716-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:11.717-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:08:11 PST 2025, status=404, error=Not Found, path=/user/favorites}]
+2025-02-18T13:08:11.718-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:08:11.720-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/user/favorites?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:11.721-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:08:11.723-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:08:11.723-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/favorites.]
+2025-02-18T13:08:11.724-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:08:11.725-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:11.726-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:08:11.727-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:11.727-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:08:11 PST 2025, status=404, error=Not Found, path=/user/favorites}]
+2025-02-18T13:08:11.728-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:08:11.729-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/user/favorites?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:11.730-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:08:11.731-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:08:11.732-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/favorites.]
+2025-02-18T13:08:11.732-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:08:11.734-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:11.735-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:08:11.735-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:11.736-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:08:11 PST 2025, status=404, error=Not Found, path=/user/favorites}]
+2025-02-18T13:08:11.736-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:08:20.329-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:20.329-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:08:20.330-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/book/get_all", parameters={}
+2025-02-18T13:08:20.330-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.BookController#get_all()
+2025-02-18T13:08:20.331-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/bookauthor/read_all", parameters={}
+2025-02-18T13:08:20.333-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:08:20.335-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:08:20.337-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource bookauthor/read_all.]
+2025-02-18T13:08:20.337-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:08:20.338-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:08:20.338-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:08:20.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:20.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:08:20 PST 2025, status=404, error=Not Found, path=/bookauthor/read_all}]
+2025-02-18T13:08:20.340-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:08:20.343-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/bookauthor/read_all", parameters={}
+2025-02-18T13:08:20.343-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:08:20.344-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:08:20.344-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource bookauthor/read_all.]
+2025-02-18T13:08:20.344-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:08:20.345-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:08:20.345-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:08:20.345-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:20.346-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:08:20 PST 2025, status=404, error=Not Found, path=/bookauthor/read_all}]
+2025-02-18T13:08:20.346-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:08:20.348-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/bookauthor/read_all", parameters={}
+2025-02-18T13:08:20.348-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:08:20.350-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:08:20.350-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource bookauthor/read_all.]
+2025-02-18T13:08:20.350-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:08:20.351-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:08:20.351-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:08:20.352-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:20.352-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:08:20 PST 2025, status=404, error=Not Found, path=/bookauthor/read_all}]
+2025-02-18T13:08:20.353-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:08:20.561-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:20.562-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@6505193e]
+2025-02-18T13:08:20.563-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:08:20.564-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:08:20.565-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:08:20.669-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:20.669-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@447af8a0]
+2025-02-18T13:08:20.671-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:08:20.948-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:20.948-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[com.example.libstock_backend.Models.Book@48f832c0, com.example.libstock_backend.Models.Book@1ab8efe (truncated)...]
+2025-02-18T13:08:20.962-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:08:20.964-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/book/get_all", parameters={}
+2025-02-18T13:08:20.965-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.BookController#get_all()
+2025-02-18T13:08:21.049-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:08:21.050-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[com.example.libstock_backend.Models.Book@6c40cf3e, com.example.libstock_backend.Models.Book@3489a73 (truncated)...]
+2025-02-18T13:08:21.050-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:19:54.979-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/user/favorites?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:19:54.981-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:19:54.983-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:19:54.984-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/favorites.]
+2025-02-18T13:19:54.984-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:19:54.984-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:19:54.985-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:19:54.986-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:19:54.986-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:19:54 PST 2025, status=404, error=Not Found, path=/user/favorites}]
+2025-02-18T13:19:54.987-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:19:54.990-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/user/favorites?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:19:54.991-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:19:54.992-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:19:54.992-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/favorites.]
+2025-02-18T13:19:54.993-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:19:54.993-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:19:54.993-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:19:54.994-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:19:54.994-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:19:54 PST 2025, status=404, error=Not Found, path=/user/favorites}]
+2025-02-18T13:19:54.995-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:19:55.434-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a00f3046a9ca03ca0e14c7", parameters={masked}
+2025-02-18T13:19:55.434-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:19:55.679-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:19:55.679-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@20078bfa]
+2025-02-18T13:19:55.681-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:19:55.689-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:19:55.690-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:19:55.691-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:19:55.691-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:19:55.692-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:19:55.692-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:19:55.692-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:19:55.693-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:19:55.693-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:19:55 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:19:55.693-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:35:46.646-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : POST "/user/login", parameters={}
+2025-02-18T13:35:46.646-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#login(LoginDTO)
+2025-02-18T13:35:46.648-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.example.libstock_backend.DTOs.LoginDTO@3cb8b5ce]
+2025-02-18T13:35:46.728-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:35:46.728-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Nothing to write: null body
+2025-02-18T13:35:46.728-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 401 UNAUTHORIZED
+2025-02-18T13:37:10.126-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/login", parameters={}
+2025-02-18T13:37:10.126-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#login(LoginDTO)
+2025-02-18T13:37:10.127-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:37:10.131-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : POST "/user/login", parameters={}
+2025-02-18T13:37:10.132-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#login(LoginDTO)
+2025-02-18T13:37:10.133-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [com.example.libstock_backend.DTOs.LoginDTO@2641cc2e]
+2025-02-18T13:37:10.654-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:37:10.654-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@63434682]
+2025-02-18T13:37:10.664-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:37:10.701-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:37:10.701-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:37:10.988-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:37:10.988-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@5368ffad]
+2025-02-18T13:37:10.993-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:37:10.993-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:37:10.998-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:37:11.306-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:37:11.306-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@3dca58b9]
+2025-02-18T13:37:11.309-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:37:11.309-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:37:11.317-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:37:11.324-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:37:11.324-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:37:11.328-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:37:11.329-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:37:11.329-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:37:11.330-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:37:11.331-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:37:11.331-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:37:11.332-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:37:11 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:37:11.332-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:37:11.633-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:37:11.633-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@24ecf2b6]
+2025-02-18T13:37:11.640-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:37:15.009-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:37:15.009-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:37:15.590-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:37:15.590-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@19e781ec]
+2025-02-18T13:37:15.593-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:37:15.593-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:37:15.598-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:37:15.881-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:37:15.882-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@7e282e91]
+2025-02-18T13:37:15.894-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:50:29.402-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:50:29.403-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:50:29.923-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:50:29.924-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@76a89736]
+2025-02-18T13:50:29.930-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:50:33.048-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:50:33.049-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:50:33.574-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:50:33.575-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@2a19ee3]
+2025-02-18T13:50:33.583-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:50:33.592-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:50:33.592-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:50:33.596-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:50:33.596-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:50:33.596-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:50:33.597-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:50:33.597-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:50:33.597-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:50:33.598-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:50:33 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:50:33.598-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:51:13.066-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:51:13.066-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:51:13.601-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:51:13.601-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@78bca62e]
+2025-02-18T13:51:13.604-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:52:08.353-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:52:08.354-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:52:08.880-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:52:08.880-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@426ed4ad]
+2025-02-18T13:52:08.886-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:52:18.495-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:52:18.496-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:52:19.036-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:52:19.037-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@11ed4b63]
+2025-02-18T13:52:19.044-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:52:21.705-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:52:21.706-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:52:22.292-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:52:22.292-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@44462519]
+2025-02-18T13:52:22.304-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:53:01.020-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:53:01.020-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:53:01.557-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:53:01.557-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@7618e6e]
+2025-02-18T13:53:01.562-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:53:01.562-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:53:01.566-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:53:01.864-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:53:01.864-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@6b598fbc]
+2025-02-18T13:53:01.960-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:53:03.243-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:53:03.243-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:53:03.779-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:53:03.779-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@405a4a6]
+2025-02-18T13:53:03.787-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:53:03.796-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:53:03.797-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:53:03.799-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:53:03.800-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:53:03.800-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:53:03.800-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:53:03.801-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:53:03.801-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:53:03.803-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:53:03 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:53:03.804-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:57:12.980-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:57:12.980-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:57:13.514-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:57:13.515-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@5e08c888]
+2025-02-18T13:57:13.520-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:58:05.385-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:58:05.385-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:58:05.917-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:58:05.918-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@1339e649]
+2025-02-18T13:58:05.927-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:58:51.379-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:58:51.379-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:58:51.911-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:58:51.911-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@5cec6c89]
+2025-02-18T13:58:51.922-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:59:09.282-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:59:09.282-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:59:09.804-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:59:09.805-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@3c921950]
+2025-02-18T13:59:09.807-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:59:29.390-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:59:29.390-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:59:29.937-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:59:29.937-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@6f66060f]
+2025-02-18T13:59:29.944-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:59:31.386-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:59:31.386-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:59:31.916-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:59:31.916-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@2b317615]
+2025-02-18T13:59:31.920-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:59:43.470-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:59:43.470-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:59:44.021-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:59:44.022-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@3ca7e5d8]
+2025-02-18T13:59:44.026-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:59:44.026-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:59:44.029-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:59:44.322-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:59:44.322-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@526a018a]
+2025-02-18T13:59:44.324-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T13:59:44.324-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T13:59:44.329-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T13:59:44.337-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T13:59:44.337-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T13:59:44.338-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T13:59:44.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T13:59:44.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T13:59:44.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T13:59:44.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T13:59:44.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:59:44.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 13:59:44 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T13:59:44.340-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T13:59:44.618-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T13:59:44.618-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@197c4473]
+2025-02-18T13:59:44.630-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:00:34.019-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:00:34.020-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:00:34.565-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:00:34.565-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@291486b1]
+2025-02-18T14:00:34.569-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:01:43.392-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:01:43.392-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:01:44.792-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:01:44.792-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@47a6c62d]
+2025-02-18T14:01:44.800-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:01:46.989-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:01:46.989-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:01:48.381-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:01:48.381-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@3c87e021]
+2025-02-18T14:01:48.386-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:01:48.386-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:01:48.387-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:01:49.553-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:01:49.553-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@3a05acc4]
+2025-02-18T14:01:49.556-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:01:49.557-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:01:49.560-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:01:49.588-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T14:01:49.588-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T14:01:49.590-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T14:01:49.590-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T14:01:49.590-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T14:01:49.590-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T14:01:49.590-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T14:01:49.591-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:01:49.592-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 14:01:49 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T14:01:49.593-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T14:01:50.792-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:01:50.793-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@45bdcc1f]
+2025-02-18T14:01:50.796-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:03:34.246-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:03:34.247-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:03:35.432-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:03:35.433-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@6b0c7dd6]
+2025-02-18T14:03:35.440-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:04:20.133-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:04:20.133-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:04:21.568-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:04:21.568-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@402874b5]
+2025-02-18T14:04:21.573-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:04:21.573-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:04:21.575-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:04:23.042-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:04:23.043-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@b90f840]
+2025-02-18T14:04:23.050-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:09:32.914-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:09:32.914-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:09:34.263-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:09:34.264-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@d5e5e86]
+2025-02-18T14:09:34.272-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:10:16.510-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:10:16.512-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:10:17.623-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:10:17.624-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@6e5e58a7]
+2025-02-18T14:10:17.635-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:10:22.324-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:10:22.324-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:10:23.321-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:10:23.321-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@41a86f63]
+2025-02-18T14:10:23.332-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:10:23.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T14:10:23.339-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T14:10:23.340-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T14:10:23.341-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T14:10:23.341-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T14:10:23.341-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T14:10:23.341-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T14:10:23.342-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:10:23.342-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 14:10:23 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T14:10:23.342-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T14:10:25.652-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:10:25.652-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:10:26.595-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:10:26.595-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@dfd4566]
+2025-02-18T14:10:26.599-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:10:26.599-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:10:26.602-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:10:27.314-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:10:27.314-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@5ff317a6]
+2025-02-18T14:10:27.324-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:10:28.386-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:10:28.386-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:10:29.178-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:10:29.178-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@3124744]
+2025-02-18T14:10:29.182-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:10:29.192-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/user/home", parameters={}
+2025-02-18T14:10:29.192-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2025-02-18T14:10:29.193-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.r.ResourceHttpRequestHandler     : Resource not found
+2025-02-18T14:10:29.193-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource user/home.]
+2025-02-18T14:10:29.193-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 404 NOT_FOUND
+2025-02-18T14:10:29.194-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-02-18T14:10:29.194-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-02-18T14:10:29.194-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:10:29.195-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Tue Feb 18 14:10:29 PST 2025, status=404, error=Not Found, path=/user/home}]
+2025-02-18T14:10:29.195-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 404
+2025-02-18T14:11:06.056-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:11:06.056-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:11:06.857-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:11:06.857-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@297f3794]
+2025-02-18T14:11:06.860-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/user/get?id=67a0129646a9ca03ca0e14c8", parameters={masked}
+2025-02-18T14:11:06.860-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.libstock_backend.Controllers.UserController#get(String)
+2025-02-18T14:11:06.861-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-02-18T14:11:08.049-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-02-18T14:11:08.050-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.example.libstock_backend.DTOs.UserDTO@1b04ac62]
+2025-02-18T14:11:08.053-08:00 DEBUG 13412 --- [libstock_backend] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
