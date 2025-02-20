@@ -306,10 +306,8 @@ const UserHomePage = () => {
                       <div key={book.id} className="book-card">
                       {/* Title & Favorite Toggle in the Same Row */}
                       <div className="book-title-container">
-                          <h3 className="book-title">{book.title}</h3>
-                          
-                          {/* Favorite Toggle */}
-                          {favoriteBooks.has(book.id) ? (
+                         {/* Favorite Toggle */}
+                         {favoriteBooks.has(book.id) ? (
                               <FavoriteIcon
                               style={{ cursor: "pointer", color: "red", fontSize: "24px", marginLeft: "280px" }}
                               onClick={() => handleFavoriteToggle(book.id)}
@@ -320,6 +318,7 @@ const UserHomePage = () => {
                                 onClick={() => handleFavoriteToggle(book.id)}
                               />
                           )}
+                          <h3 className="book-title">{book.title}</h3>
                       </div>
                       <p><strong>Author:</strong> {bookAuthors[book.id] ? bookAuthors[book.id].join(", ") : "Unknown Author"}</p>
                       <p><strong>ISBN:</strong> {book.isbn}</p>
