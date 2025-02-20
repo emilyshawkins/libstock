@@ -141,8 +141,11 @@
 // export default UserHomePage;
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const AdminHomePage = () => {
+
+const UserHomePage = () => {
   // State for storing books from the database
   const [databaseBooks, setDatabaseBooks] = useState([]);
 
@@ -155,10 +158,14 @@ const AdminHomePage = () => {
   // State for search input
   const [searchQuery, setSearchQuery] = useState("");
 
+  // State for add/remove favorite items
+  const [favoriteBooks, setFavoriteBooks] = useState(new Set());
+
   // Fetch books and authors when the component mounts
   useEffect(() => {
     fetchBooks();
     fetchBookAuthors();
+    fetchUserFavorites();
   }, []);
 
   // Fetch all books from the database
@@ -201,6 +208,48 @@ const AdminHomePage = () => {
       setBookAuthors(authorDetails);
     } catch (error) {
       console.error("Error fetching book authors:", error);
+    }
+  };
+
+   // Fetch user's favorite books
+   const fetchUserFavorites = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+
+      const response = await axios.get(`http://localhost:8080/user/favorites?id=${userId}`);
+      const favoriteBookIds = new Set(response.data.map(book => book.id));
+      setFavoriteBooks(favoriteBookIds);
+    } catch (error) {
+      console.error("Error fetching favorite books:", error);
+    }
+  };
+
+  // Toggle book favorite status
+  const handleFavoriteToggle = async (bookId) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
+
+      if (favoriteBooks.has(bookId)) {
+        // Remove from favorites
+        await axios.delete(`http://localhost:8080/user/remove_favorite?id=${userId}&bookId=${bookId}`);
+        setFavoriteBooks(prev => {
+          const updatedFavorites = new Set(prev);
+          updatedFavorites.delete(bookId);
+          return updatedFavorites;
+        });
+      } else {
+        // Add to favorites
+        await axios.post(`http://localhost:8080/user/add_favorite`, { userId, bookId });
+        setFavoriteBooks(prev => { 
+          const updatedFavorites = new Set(prev);
+          updatedFavorites.add(bookId);
+          return updatedFavorites;
+        });
+      }
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
     }
   };
 
@@ -255,28 +304,31 @@ const AdminHomePage = () => {
                   <div className="book-grid">
                     {booksByLetter[letter].map((book) => (
                       <div key={book.id} className="book-card">
-                        <h3>{book.title}</h3>
-                        <p>
-                          <strong>Author:</strong>{" "}
-                          {bookAuthors[book.id]
-                            ? bookAuthors[book.id].join(", ")
-                            : "Unknown Author"}
-                        </p>
-                        <p>
-                          <strong>ISBN:</strong> {book.isbn}
-                        </p>
-                        <p>
-                          <strong>Publication Date:</strong>{" "}
-                          {book.publicationDate}
-                        </p>
-                        <button onClick={() => alert("renew")}>
-                          Renew 
-                        </button>
-                        <button onClick={() => alert("return")}>
-                          Return
-                        </button>
-                        <button onClick={() => alert("Edit")}>Edit</button>
+                      {/* Title & Favorite Toggle in the Same Row */}
+                      <div className="book-title-container">
+                          <h3 className="book-title">{book.title}</h3>
+                          
+                          {/* Favorite Toggle */}
+                          {favoriteBooks.has(book.id) ? (
+                              <FavoriteIcon
+                              style={{ cursor: "pointer", color: "red", fontSize: "24px", marginLeft: "280px" }}
+                              onClick={() => handleFavoriteToggle(book.id)}
+                              />
+                          ) : (
+                              <FavoriteBorderIcon
+                                style={{ cursor: "pointer", color: "black", fontSize: "24px", marginLeft: "280px" }}
+                                onClick={() => handleFavoriteToggle(book.id)}
+                              />
+                          )}
                       </div>
+                      <p><strong>Author:</strong> {bookAuthors[book.id] ? bookAuthors[book.id].join(", ") : "Unknown Author"}</p>
+                      <p><strong>ISBN:</strong> {book.isbn}</p>
+                      <p><strong>Publication Date:</strong> {book.publicationDate}</p>
+                      <button onClick={() => alert("renew")}>Renew</button>
+                      <button onClick={() => alert("return")}>Return</button>
+                      <button onClick={() => alert("Edit")}>Edit</button>
+                  </div>
+                  
                     ))}
                   </div>
                 </div>
@@ -290,4 +342,4 @@ const AdminHomePage = () => {
   );
 };
 
-export default AdminHomePage;
+export default UserHomePage;

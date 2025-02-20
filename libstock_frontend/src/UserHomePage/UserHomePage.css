@@ -26,66 +26,6 @@ h2 {
 }
 
 
-/* User Icon */
-.user-icon-container {
-    position: relative;
-    display: inline-block;
-}
-
-.user-icon {
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-/* Dropdown Menu */
-.dropdown-menu {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 200px;
-}
-
-.dropdown-user-info {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
-}
-
-.dropdown-user-info p {
-    margin: 5px 0;
-    font-size: 14px;
-}
-
-.dropdown-item {
-    padding: 10px 15px;
-    display: block;
-    color: #333;
-    background: none;
-    border: none;
-    width: 100%;
-    text-align: left;
-    font-size: 14px;
-}
-
-
-.dropdown-item:hover {
-    background-color: #476778;
-    color: white;
-}
-
-.logout-button {
-    font-weight: normal;
-}
-
-
-/* Search Bar */
 .search-bar {
     width: 100%;
     max-width: 500px;
@@ -143,21 +83,19 @@ h2 {
     color: #555;
 }
 
-/* Manage Button */
-/* .manage-button {
-    background-color: #476778;
-    color: white;
-    padding: 8px 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+.book-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.manage-button:hover {
-    background-color: #35505d;
-} */
+.heart-icon {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    font-size: 14px; /* Adjust size */
+    margin-left: 2500px;
+}
+
 
 @media screen and (max-width: 768px) {
     .home-container {
