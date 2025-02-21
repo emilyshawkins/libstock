@@ -274,7 +274,7 @@ const UserHomePage = () => {
   }, {});
 
   return (
-    <div className="home-container">
+    <div className="user-home-container">
       <h1>Welcome to Your Dashboard</h1>
 
       <div className="main-content">

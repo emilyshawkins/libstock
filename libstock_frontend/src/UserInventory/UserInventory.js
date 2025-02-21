@@ -99,7 +99,7 @@ const AdminHomePage = () => {
   }, {});
 
   return (
-    <div className="home-container">
+    <div className="User-home-container">
       <h1>Welcome to Your Dashboard</h1>
 
       <div className="main-content">
