@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountSettings.css";
 
-function UserSettings() {
+function AdminSettings() {
     const [selectedSetting, setSelectedSetting] = useState(null);
     const [userInfo, setUserInfo] = useState({
         email: "",
@@ -202,4 +202,4 @@ function UserSettings() {
     );
 }
 
-export default UserSettings;
+export default AdminSettings;

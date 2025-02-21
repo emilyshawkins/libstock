@@ -18,7 +18,8 @@ import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePa
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
-import AccountSettings from "./AccountSetting/AccountSettings"; // Import AccountSettings
+import AdminAccountSettings from "./AccountSetting/AdminAccountSettings"; // Import AdminAccountSettings
+import AccountSettings from "./AccountSetting/AccountSettings"; // Import User AccountSettings
 import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
 
 function App() {
@@ -68,11 +69,11 @@ function MainContent() {
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
-        {/* Admin Home page */}
+        <Route path="/user/inventory" element={<UserInventory />} />{" "}
+        {/* User Inventory */}
         <Route path="/user/favorite" element={<FavPage />} />
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
-        {/* Account Settings */}
+        {/* User Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
@@ -81,10 +82,9 @@ function MainContent() {
         {/* Admin Add Book */}
         <Route path="/admin/manual-add" element={<ManualAdd />} />{" "}
         {/* Admin Add Book Manually */}
-        <Route path="/user/settings" element={<AccountSettings />} />{" "}
-        {/* Account Settings */}
-        <Route path="/user/inventory" element={<UserInventory />} />{" "}
-        {/* User Inventory */}
+        <Route path="/admin/settings" element={<AdminAccountSettings/>} />{""}
+        {/* Admin Account Settings */}
+        
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>
