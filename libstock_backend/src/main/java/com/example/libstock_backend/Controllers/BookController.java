@@ -51,20 +51,54 @@ public class BookController {
 
     @PostMapping("/create")
     // Create a new book
-    public ResponseEntity<Book> create_book(@RequestBody Book book) {
-        if (book.getISBN() == null || book.getTitle() == null || book.getSummary() == null || book.getPublicationDate() == null || book.getPrice() == null || book.getPurchaseable() == null || book.getCover() == null) {
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<Object> create_book(@RequestBody Book book) {
+        
+        if (book.getISBN() != null && !book.getISBN().isBlank() && book.getISBN() != "") {
+
+            Book existingBook = BookRepository.findByISBN(book.getISBN());
+            if (existingBook != null) { // Check if the ISBN already exists
+                return ResponseEntity.badRequest().body("ISBN already exists");
+            }
+
+            if(book.getTitle() != null && !book.getTitle().isBlank() && book.getTitle() != "") {}  
+            else { // Check if the title is empty
+                book.setTitle("Untitled");
+            }
+            if(book.getSummary() != null && !book.getSummary().isBlank() && book.getSummary() != "") {} 
+            else { // Check if the summary is empty
+                book.setSummary("No summary available");
+            }
+            if(book.getPublicationDate() != null && !book.getPublicationDate().isBlank() && book.getPublicationDate() != "") {} 
+            else { // Check if the publication date is empty
+                book.setPublicationDate("Unknown");
+            }
+            if(book.getPrice() != null) {} 
+            else { // Check if the price is empty
+                book.setPrice(new java.math.BigDecimal("0.00"));
+            }
+            if(book.getPurchaseable() != null) {} 
+            else { // Check if the purchaseable property is empty
+                book.setPurchaseable(false);
+            }
+            if(book.getCount() != null) {} 
+            else { // Check if the count is empty
+                book.setCount(0);
+            }
+            if(book.getNumCheckedOut() != null) {} 
+            else { // Check if the numCheckedOut is empty
+                book.setNumCheckedOut(0);
+            }
+            if(book.getCover() != null) {} 
+            else { // Check if the cover is empty
+                book.setCover(null);
+            }
+
+            BookRepository.save(book);
+            return ResponseEntity.ok(book);
         }
-        Book existingBook = BookRepository.findByISBN(book.getISBN());
-        if (existingBook != null) {
-            return ResponseEntity.badRequest().body(null);
+        else {
+            return ResponseEntity.badRequest().body("ISBN is required");
         }
-        if (book.getCount() < 0 || book.getNumCheckedOut() < 0) { // Check if the count or numCheckedOut is less than 0
-            book.setCount(0);
-            book.setNumCheckedOut(0);
-        }
-        BookRepository.save(book);
-        return ResponseEntity.ok(book); 
     }
 
     @GetMapping("/read")
@@ -79,20 +113,42 @@ public class BookController {
 
     @PatchMapping("/update")
     // Update a book
-    public ResponseEntity<Book> update_book(@RequestBody Book book) {
+    public ResponseEntity<Object> update_book(@RequestBody Book book) {
         Book existingBook = BookRepository.findById(book.getId()).orElse(null);
-        if (existingBook == null) {
+        if (existingBook == null) { // Check if the book exists
             return ResponseEntity.notFound().build();
         }
-        existingBook.setISBN(book.getISBN());
-        existingBook.setTitle(book.getTitle());
-        existingBook.setSummary(book.getSummary());
-        existingBook.setPublicationDate(book.getPublicationDate());
-        existingBook.setPrice(book.getPrice());
-        existingBook.setPurchaseable(book.getPurchaseable());
-        existingBook.setCount(book.getCount());
-        existingBook.setNumCheckedOut(book.getNumCheckedOut());
-        existingBook.setCover(book.getCover());
+        if (BookRepository.findByISBN(book.getISBN()) != null) { // Check if the ISBN already exists
+            return ResponseEntity.badRequest().body("ISBN already exists");
+        }
+        else if (book.getISBN() != null) { // Check if the ISBN is empty
+            existingBook.setISBN(book.getISBN());
+        }
+        if (book.getTitle() != null) {
+            existingBook.setTitle(book.getTitle());
+        }
+        if (book.getSummary() != null) {
+            existingBook.setSummary(book.getSummary());
+        }
+        if (book.getPublicationDate() != null) {
+            existingBook.setPublicationDate(book.getPublicationDate());
+        }
+        if (book.getPrice() != null) {
+            existingBook.setPrice(book.getPrice());
+        }
+        if (book.getPurchaseable() != null) {
+            existingBook.setPurchaseable(book.getPurchaseable());
+        }
+        if (book.getCount() != null) {
+            existingBook.setCount(book.getCount());
+        }
+        if (book.getNumCheckedOut() != null) {
+            existingBook.setNumCheckedOut(book.getNumCheckedOut());
+        }
+        if (book.getCover() != null) {
+            existingBook.setCover(book.getCover());
+        }
+
         BookRepository.save(existingBook);
         return ResponseEntity.ok(existingBook);
     }
@@ -100,6 +156,7 @@ public class BookController {
     @DeleteMapping("/delete")
     // Delete a book
     public ResponseEntity<Book> delete_book(@RequestParam String id) {
+
         Book existingBook = BookRepository.findById(id).orElse(null);
         if (existingBook == null) {
             return ResponseEntity.notFound().build();
@@ -113,6 +170,7 @@ public class BookController {
         RatingRepository.deleteAllByBookId(id);
         WishlistItemRepository.deleteAllByBookId(id);
         BookRepository.delete(existingBook);
+
         return ResponseEntity.ok(existingBook);
     }
 
@@ -132,7 +190,7 @@ public class BookController {
         try {
             existingBook.setCover(cover.getBytes());
         } catch (IOException e) {
-            return ResponseEntity.status(Response.SC_INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(Response.SC_INTERNAL_SERVER_ERROR).body("Error uploading image");
         }        
         BookRepository.save(existingBook);
         

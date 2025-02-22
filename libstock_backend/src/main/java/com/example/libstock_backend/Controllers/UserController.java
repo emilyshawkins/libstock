@@ -21,7 +21,13 @@ import com.example.libstock_backend.DTOs.LoginDTO;
 import com.example.libstock_backend.DTOs.ProfileDTO;
 import com.example.libstock_backend.DTOs.UserDTO;
 import com.example.libstock_backend.Models.User;
+import com.example.libstock_backend.Repositories.CheckoutRepository;
+import com.example.libstock_backend.Repositories.FavoriteRepository;
+import com.example.libstock_backend.Repositories.NotificationRepository;
+import com.example.libstock_backend.Repositories.QueueRepository;
+import com.example.libstock_backend.Repositories.RatingRepository;
 import com.example.libstock_backend.Repositories.UserRepository;
+import com.example.libstock_backend.Repositories.WishlistItemRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -30,23 +36,35 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CheckoutRepository checkoutRepository;
+    @Autowired
+    FavoriteRepository favoriteRepository;
+    @Autowired
+    NotificationRepository notificationRepository;
+    @Autowired
+    QueueRepository queueRepository;
+    @Autowired
+    RatingRepository ratingRepository;
+    @Autowired
+    WishlistItemRepository wishlistItemRepository;
 
     @PostMapping("/admin_signup")
     // Create a new admin
-    public ResponseEntity<UserDTO> create_admin(@RequestBody User user) {
+    public ResponseEntity<Object> create_admin(@RequestBody User user) {
 
         if (user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null || user.getPassword() == null) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are missing
+            return ResponseEntity.badRequest().body("Missing required fields"); // 400 Bad Request if any required fields are missing
         }
         else if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("") || user.getPassword().equals("")) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are empty
+            return ResponseEntity.badRequest().body("Missing required fields"); // 400 Bad Request if any required fields are empty
         }
         else {
             User existingUser = userRepository.findByEmail(user.getEmail()); // Check if email is already in use
             if (existingUser != null) {
-                return ResponseEntity.badRequest().body(null);
+                return ResponseEntity.badRequest().body("Email already in use");
             }
-            user.setAdmin(false);
+            user.setAdmin(true);
             user.setImage(null);
         }
         userRepository.save(user);
@@ -55,18 +73,18 @@ public class UserController {
 
     @PostMapping("/user_signup")
     // Create a new user
-    public ResponseEntity<UserDTO> create_user(@RequestBody User user) {
+    public ResponseEntity<Object> create_user(@RequestBody User user) {
         
         if (user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null || user.getPassword() == null) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are missing
+            return ResponseEntity.badRequest().body("Missing required fields"); // 400 Bad Request if any required fields are missing
         }
         else if (user.getEmail().equals("") || user.getFirstName().equals("") || user.getLastName().equals("") || user.getPassword().equals("")) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are empty
+            return ResponseEntity.badRequest().body("Missing required fields"); // 400 Bad Request if any required fields are empty
         }
         else {
             User existingUser = userRepository.findByEmail(user.getEmail()); // Check if email is already in use
             if (existingUser != null) {
-                return ResponseEntity.badRequest().body(null);
+                return ResponseEntity.badRequest().body("Email already in use");
             }
             user.setAdmin(false);
             user.setImage(null);
@@ -77,13 +95,13 @@ public class UserController {
 
     @PostMapping("/login")
     // Login
-    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO user) {
+    public ResponseEntity<Object> login(@RequestBody LoginDTO user) {
 
         if (user.getEmail() == null || user.getPassword() == null) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are missing
+            return ResponseEntity.badRequest().body("Missing required fields"); // 400 Bad Request if any required fields are missing
         }
         else if (user.getEmail().equals("") || user.getPassword().equals("")) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request if any required fields are empty
+            return ResponseEntity.badRequest().body("Missing required fields"); // 400 Bad Request if any required fields are empty
         }
         else {
             User existingUser = userRepository.findByEmail(user.getEmail());
@@ -104,10 +122,10 @@ public class UserController {
 
     @GetMapping("/get")
     // Get a user by id
-    public ResponseEntity<UserDTO> get(@RequestParam String id) {
+    public ResponseEntity<Object> get(@RequestParam String id) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) { // 404 Not Found if user does not exist
-            return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
+            return ResponseEntity.status(Response.SC_NOT_FOUND).body("User not found");
         }
         String ret_img = (existingUser.getImage() != null) ? Base64.getEncoder().encodeToString(existingUser.getImage()) : null;
 
@@ -116,17 +134,17 @@ public class UserController {
 
     @PatchMapping("/update")
     // Update a user
-    public ResponseEntity<UserDTO> update(@RequestBody ProfileDTO profile) {
+    public ResponseEntity<Object> update(@RequestBody ProfileDTO profile) {
         if (profile.getId() == null) {
-            return ResponseEntity.status(Response.SC_BAD_REQUEST).body(null);
+            return ResponseEntity.status(Response.SC_BAD_REQUEST).body("Missing required fields");
         }
         else if (profile.getId().equals("")) {
-            return ResponseEntity.status(Response.SC_BAD_REQUEST).body(null);
+            return ResponseEntity.status(Response.SC_BAD_REQUEST).body("Missing required fields");
         }
         else {
             User existingUser = userRepository.findById(profile.getId()).orElse(null);
             if (existingUser == null) {
-                return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
+                return ResponseEntity.status(Response.SC_NOT_FOUND).body("User not found");
             }
 
             // Check if email is being changed and if so, check if it is already in use
@@ -145,8 +163,12 @@ public class UserController {
                 existingUser.setLastName(profile.getLastName());
             }
             if (profile.getCurrentPassword() != null && profile.getNewPassword() != null) { // Change password
-                existingUser.getPassword().equals(profile.getCurrentPassword());
-                existingUser.setPassword(profile.getNewPassword());
+                if (existingUser.getPassword().equals(profile.getCurrentPassword())) { // Check if current password is correct
+                    existingUser.setPassword(profile.getNewPassword());
+                }
+                else {
+                    return ResponseEntity.status(Response.SC_UNAUTHORIZED).body("Incorrect password");
+                }
             }
 
             userRepository.save(existingUser);
@@ -159,21 +181,30 @@ public class UserController {
     
     @DeleteMapping("/delete")
     // Delete a user
-    public ResponseEntity<UserDTO> delete(@RequestParam String id) {
+    public ResponseEntity<Object> delete(@RequestParam String id) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
-            return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
+            return ResponseEntity.status(Response.SC_NOT_FOUND).body("User not found");
         }
+
+        // Delete all user data
+        checkoutRepository.deleteAllByUserId(id);
+        favoriteRepository.deleteAllByUserId(id);
+        notificationRepository.deleteAllByUserId(id);
+        queueRepository.deleteAllByUserId(id);
+        ratingRepository.deleteAllByUserId(id);
+        wishlistItemRepository.deleteAllByUserId(id);
+
         userRepository.delete(existingUser);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body("User deleted");
     }
 
     @PostMapping("/set_profile_img")
     // Set a user's profile image
-    public ResponseEntity<UserDTO> set_profile_img(@RequestParam String id, @RequestParam("profilePicture") MultipartFile image) {
+    public ResponseEntity<Object> set_profile_img(@RequestParam String id, @RequestParam("profilePicture") MultipartFile image) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser == null) {
-            return ResponseEntity.status(Response.SC_NOT_FOUND).body(null);
+            return ResponseEntity.status(Response.SC_NOT_FOUND).body("User not found");
         }
         try {
             existingUser.setImage(image.getBytes());

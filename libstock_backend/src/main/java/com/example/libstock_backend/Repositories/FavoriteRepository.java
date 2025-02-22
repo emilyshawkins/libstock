@@ -9,4 +9,5 @@ public interface FavoriteRepository extends MongoRepository<Favorite, String> {
     List<Favorite> findByBookId(String bookId); // Find favorites by book id
     Favorite findByUserIdAndBookId(String userId, String bookId); // Find favorite by user id and book id
     void deleteAllByBookId(String bookId); // Delete all favorites by book id
+    void deleteAllByUserId(String userId); // Delete all favorites by user id
 }

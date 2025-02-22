@@ -71,14 +71,14 @@ public class RatingController {
         return ResponseEntity.ok(rating);
     }
 
-    @GetMapping("get_ratings_by_user")
+    @GetMapping("/get_ratings_by_user")
     // Get all ratings for a user
     public ResponseEntity<Iterable<Rating>> get_ratings_by_user(@RequestParam String userId) {
         Iterable<Rating> ratings = ratingRepository.findByUserId(userId);
         return ResponseEntity.ok(ratings);
     }
 
-    @GetMapping("get_ratings_by_book")
+    @GetMapping("/get_ratings_by_book")
     // Get all ratings for a book
     public ResponseEntity<Iterable<Rating>> get_ratings_by_book(@RequestParam String bookId) {
         Iterable<Rating> ratings = ratingRepository.findByBookId(bookId);

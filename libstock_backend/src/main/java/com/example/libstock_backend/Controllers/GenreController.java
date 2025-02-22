@@ -28,15 +28,15 @@ public class GenreController {
 
     @PostMapping("/create")
     // Create a new genre
-    public ResponseEntity<Genre> create_genre(@RequestBody Genre genre) {
-        if (genre.getName() == null) {
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<Object> create_genre(@RequestBody Genre genre) {
+        if (genre.getName() == null) { // Name is required
+            return ResponseEntity.badRequest().body("Name is required");
         }
-        Genre existingGenre = genreRepository.findByName(genre.getName());
-        if (existingGenre != null) {
-            return ResponseEntity.badRequest().body(null);
+        Genre existingGenre = genreRepository.findByName(genre.getName()); // Check if genre already exists
+        if (existingGenre != null) { // Genre already exists
+            return ResponseEntity.badRequest().body("Genre already exists");
         }
-        genreRepository.save(genre);
+        genreRepository.save(genre); // Save genre
         return ResponseEntity.ok(genre);
     }
 
@@ -57,6 +57,7 @@ public class GenreController {
         if (existingGenre == null) {
             return ResponseEntity.notFound().build();
         }
+        existingGenre.setName(genre.getName());
         genreRepository.save(existingGenre);
         return ResponseEntity.ok(existingGenre);
     }

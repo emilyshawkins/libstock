@@ -36,13 +36,20 @@ public class BookAuthorController {
     
     @PostMapping("/create")
     // Create a new book author
-    public ResponseEntity<BookAuthor> create_bookauthor(@RequestBody BookAuthor bookAuthor) {
+    public ResponseEntity<Object> create_bookauthor(@RequestBody BookAuthor bookAuthor) {
         if (bookAuthor.getAuthorId() == null || bookAuthor.getBookId() == null) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Author ID and Book ID are required.");
         }
+        if (authorRepository.findById(bookAuthor.getAuthorId()).orElse(null) == null) {
+            return ResponseEntity.badRequest().body("Author does not exist.");
+        }
+        if (bookRepository.findById(bookAuthor.getBookId()).orElse(null) == null) {
+            return ResponseEntity.badRequest().body("Book does not exist.");
+        }
+
         BookAuthor existingBookAuthor = bookauthorRepository.findByAuthorIdAndBookId(bookAuthor.getAuthorId(), bookAuthor.getBookId());
         if (existingBookAuthor != null) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Book and author already associated.");
         }
         bookauthorRepository.save(bookAuthor);
         return ResponseEntity.ok(bookAuthor);
@@ -60,10 +67,17 @@ public class BookAuthorController {
 
     @PatchMapping("/update")
     // Update a book author
-    public ResponseEntity<BookAuthor> update_bookauthor(@RequestBody BookAuthor bookAuthor) {
+    public ResponseEntity<BookAuthor> update_bookauthor(@RequestBody BookAuthor bookAuthor) { // Probably delete over update
         BookAuthor existingBookAuthor = bookauthorRepository.findById(bookAuthor.getId()).orElse(null);
         if (existingBookAuthor == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        if (bookAuthor.getAuthorId() != null) {
+            existingBookAuthor.setAuthorId(bookAuthor.getAuthorId());
+        }
+        if (bookAuthor.getBookId() != null) {
+            existingBookAuthor.setBookId(bookAuthor.getBookId());
         }
 
         bookauthorRepository.save(existingBookAuthor);

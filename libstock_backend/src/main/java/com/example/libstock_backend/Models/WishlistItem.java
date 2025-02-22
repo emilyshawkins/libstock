@@ -10,13 +10,13 @@ public class WishlistItem {
     private String id;
 
     private String userId; // ID of the user
-    private String BookId; // ID of the book
+    private String bookId; // ID of the book
 
     public WishlistItem() {}
 
-    public WishlistItem(String userId, String BookId) {
+    public WishlistItem(String userId, String bookId) {
         this.userId = userId;
-        this.BookId = BookId;
+        this.bookId = bookId;
     }
 
     public String getId() {
@@ -28,7 +28,7 @@ public class WishlistItem {
     }
 
     public String getBookId() {
-        return BookId;
+        return bookId;
     }
 
     public void setId(String id) {
@@ -39,8 +39,8 @@ public class WishlistItem {
         this.userId = userId;
     }
 
-    public void setBookId(String BookId) {
-        this.BookId = BookId;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
     
 }

@@ -12,4 +12,5 @@ public interface QueueRepository extends MongoRepository<Queue, String> {
     List<Queue> findByUserId(String userId); // Find queues by user id
     int countByBookId(String bookId); // Count queues by book id
     void deleteAllByBookId(String bookId); // Delete all queues by book id
+    void deleteAllByUserId(String userId); // Delete all queues by user id
 }

@@ -9,4 +9,5 @@ public interface RatingRepository extends MongoRepository<Rating, String> {
     List<Rating> findByBookId(String bookId); // Get all ratings for a book
     Rating findByUserIdAndBookId(String userId, String bookId); // Get a rating by a user for a book
     void deleteAllByBookId(String bookId); // Delete all ratings for a book
+    void deleteAllByUserId(String userId); // Delete all ratings by a user
 }

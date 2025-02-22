@@ -28,24 +28,26 @@ public class AuthorController {
 
     @PostMapping("/create")
     // Create a new author
-    public ResponseEntity<Author> create_author(@RequestBody Author author) {
-        if (author.getFirstName() == null || author.getLastName() == null) { // Check if the first name or last name is null
-            return ResponseEntity.badRequest().body(null);
-        }
-        else if (author.getFirstName().equals("") || author.getLastName().equals("")) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        else {
-            authorRepository.save(author);
-            return ResponseEntity.ok(author);
+    public ResponseEntity<Object> create_author(@RequestBody Author author) {
+        if (author.getFirstName() != null && !author.getFirstName().isBlank() && author.getFirstName() != "") { // Check if the first name is not null or blank
+            if (author.getLastName() != null && !author.getLastName().isBlank() && author.getLastName() != "") { // Check if the last name is not null or blank
+                authorRepository.save(author); 
+                return ResponseEntity.ok(author);
+            } else { // If the last name is null or blank, set it to null
+                author.setLastName(null);
+                authorRepository.save(author);
+                return ResponseEntity.ok(author);
+            }
+        } else {
+            return ResponseEntity.badRequest().body("First name must not be blank.");
         }
     }
 
     @GetMapping("/read")
     // Read an author
-    public ResponseEntity<Author> read_author(@RequestParam String id) {
+    public ResponseEntity<Object> read_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
-        if (author == null) {
+        if (author == null) { // Check if the author exists
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(author);
@@ -55,11 +57,17 @@ public class AuthorController {
     // Update an author
     public ResponseEntity<Author> update_author(@RequestBody Author author) {
         Author existingAuthor = authorRepository.findById(author.getId()).orElse(null);
-        if (existingAuthor == null) {
-            return ResponseEntity.notFound().build();
+        if (existingAuthor == null) { // Check if the author exists
+            return ResponseEntity.notFound().build(); 
         }
-        existingAuthor.setFirstName(author.getFirstName());
-        existingAuthor.setLastName(author.getLastName());
+
+        if (author.getFirstName() != null) { // Check if the first name is not null
+            existingAuthor.setFirstName(author.getFirstName()); // Update the first name
+        }
+        if (author.getLastName() != null) { // Check if the last name is not null
+            existingAuthor.setLastName(author.getLastName()); // Update the last name
+        }
+   
         authorRepository.save(existingAuthor);
         return ResponseEntity.ok(existingAuthor);
     }
@@ -68,11 +76,11 @@ public class AuthorController {
     // Delete an author
     public ResponseEntity<Author> delete_author(@RequestParam String id) {
         Author author = authorRepository.findById(id).orElse(null);
-        if (author == null) {
+        if (author == null) { // Check if the author exists
             return ResponseEntity.notFound().build();
         }
 
-        bookAuthorRepository.deleteAllByAuthorId(id);
+        bookAuthorRepository.deleteAllByAuthorId(id); // Delete all book authors with the author id
 
         authorRepository.delete(author);
         return ResponseEntity.ok(author);
@@ -81,7 +89,7 @@ public class AuthorController {
     @GetMapping("/get_all")
     // Get all authors
     public ResponseEntity<Iterable<Author>> get_all_authors() {
-        Iterable<Author> authors = authorRepository.findAll();
+        Iterable<Author> authors = authorRepository.findAll(); // Get all authors
         return ResponseEntity.ok(authors);
     }    
 }
