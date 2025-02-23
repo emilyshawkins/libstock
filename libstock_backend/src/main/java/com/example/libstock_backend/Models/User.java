@@ -8,12 +8,12 @@ public class User {
     @Id
     private String id;
 
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private boolean isAdmin;
-    private byte[] image;
+    private String email; // Email of the user
+    private String firstName; // First name of the user
+    private String lastName; // Last name of the user
+    private String password; // Password of the user
+    private boolean isAdmin; // Whether the user is an admin
+    private byte[] image; // Profile image of the user
 
     public User() {}
 

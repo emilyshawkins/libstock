@@ -35,16 +35,28 @@ public class BookAuthorController {
     AuthorRepository authorRepository;
     
     @PostMapping("/create")
-    public ResponseEntity<BookAuthor> create_bookauthor(@RequestBody BookAuthor bookAuthor) {
+    // Create a new book author
+    public ResponseEntity<Object> create_bookauthor(@RequestBody BookAuthor bookAuthor) {
+        if (bookAuthor.getAuthorId() == null || bookAuthor.getBookId() == null) {
+            return ResponseEntity.badRequest().body("Author ID and Book ID are required.");
+        }
+        if (authorRepository.findById(bookAuthor.getAuthorId()).orElse(null) == null) {
+            return ResponseEntity.badRequest().body("Author does not exist.");
+        }
+        if (bookRepository.findById(bookAuthor.getBookId()).orElse(null) == null) {
+            return ResponseEntity.badRequest().body("Book does not exist.");
+        }
+
         BookAuthor existingBookAuthor = bookauthorRepository.findByAuthorIdAndBookId(bookAuthor.getAuthorId(), bookAuthor.getBookId());
         if (existingBookAuthor != null) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Book and author already associated.");
         }
         bookauthorRepository.save(bookAuthor);
         return ResponseEntity.ok(bookAuthor);
     }
 
     @GetMapping("/read")
+    // Read a book author
     public ResponseEntity<BookAuthor> read_bookauthor(@RequestParam String id) {
         BookAuthor existingBookAuthor = bookauthorRepository.findById(id).orElse(null);
         if (existingBookAuthor == null) {
@@ -54,10 +66,18 @@ public class BookAuthorController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<BookAuthor> update_bookauthor(@RequestBody BookAuthor bookAuthor) {
+    // Update a book author
+    public ResponseEntity<BookAuthor> update_bookauthor(@RequestBody BookAuthor bookAuthor) { // Probably delete over update
         BookAuthor existingBookAuthor = bookauthorRepository.findById(bookAuthor.getId()).orElse(null);
         if (existingBookAuthor == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        if (bookAuthor.getAuthorId() != null) {
+            existingBookAuthor.setAuthorId(bookAuthor.getAuthorId());
+        }
+        if (bookAuthor.getBookId() != null) {
+            existingBookAuthor.setBookId(bookAuthor.getBookId());
         }
 
         bookauthorRepository.save(existingBookAuthor);
@@ -65,6 +85,7 @@ public class BookAuthorController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a book author
     public ResponseEntity<BookAuthor> delete_bookauthor(@RequestParam String id) {
         BookAuthor existingBookAuthor = bookauthorRepository.findById(id).orElse(null);
         if (existingBookAuthor == null) {
@@ -75,6 +96,7 @@ public class BookAuthorController {
     }
 
     @GetMapping("/get_books_by_author")
+    // Get books by author
     public ResponseEntity<Iterable<Book>> get_books_by_author(@RequestParam String authorId) {
         Iterable<BookAuthor> bookauthors = bookauthorRepository.findByAuthorId(authorId);
         List<Book> books = new ArrayList<>();
@@ -88,6 +110,7 @@ public class BookAuthorController {
     }
 
     @GetMapping("/get_authors_by_book")
+    // Get authors by book
     public ResponseEntity<Iterable<Author>> get_authors_by_book(@RequestParam String bookId) {
         Iterable<BookAuthor> bookauthors = bookauthorRepository.findByBookId(bookId);
         List<Author> authors = new ArrayList<>();

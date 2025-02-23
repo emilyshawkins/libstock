@@ -5,24 +5,25 @@ import java.math.BigDecimal;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+// Book model
 @Document(collection = "books")
 public class Book {
     @Id
     private String id;
 
-    private String ISBN;
-    private String title;
-    private String summary;
-    private String publicationDate;
-    private BigDecimal price;
-    private Boolean purchaseable;
-    private int count;
-    private int numCheckedOut;
-    private byte[] cover;
+    private String ISBN; // International Standard Book Number
+    private String title; // Title of the book
+    private String summary; // Summary of the book
+    private String publicationDate; // Publication date of the book
+    private BigDecimal price; // Price of the book
+    private Boolean purchaseable; // Whether the book is purchaseable
+    private Integer count; // Number of copies of the book
+    private Integer numCheckedOut; // Number of copies of the book that are checked out
+    private byte[] cover; // Cover image of the book
 
     public Book() {}
 
-    public Book(String ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchaseable, int count, int numCheckedOut, byte[] cover) {
+    public Book(String ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchaseable, Integer count, Integer numCheckedOut, byte[] cover) {
         this.ISBN = ISBN;
         this.title = title;
         this.summary = summary;
@@ -62,11 +63,11 @@ public class Book {
         return purchaseable;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public int getNumCheckedOut() {
+    public Integer getNumCheckedOut() {
         return numCheckedOut;
     }
 
@@ -102,11 +103,11 @@ public class Book {
         this.purchaseable = purchaseable;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
-    public void setNumCheckedOut(int numCheckedOut) {
+    public void setNumCheckedOut(Integer numCheckedOut) {
         this.numCheckedOut = numCheckedOut;
     }
 
