@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.libstock_backend.Models.Notification;
 
 import com.example.libstock_backend.Repositories.NotificationRepository;
+import com.example.libstock_backend.Repositories.UserRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -25,16 +26,22 @@ public class NotificationController {
 
     @Autowired
     NotificationRepository notificationRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @PostMapping("/create")
-    // Create a new notification
-    public ResponseEntity<Notification> create_notification(@RequestBody Notification notification) {
+    // Create a new notification, will probably be exclusively used by the backend
+    public ResponseEntity<Object> create_notification(@RequestBody Notification notification) { // Need userId and message
         if(notification.getUserId() == null || notification.getMessage() == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("User ID and message are required.");
         }
-        // Set the date to the current date and read to false
-        notification.setDate(new Date(0));
-        notification.setRead(false);
+        if(userRepository.findById(notification.getUserId()).orElse(null) == null) {
+            return ResponseEntity.badRequest().body("User not found.");
+        }
+        
+        notification.setDate(new Date()); // Set date to epoch time
+        notification.setRead(false); // Set read to false
+
         notificationRepository.save(notification);
         return ResponseEntity.ok(notification);
     }
@@ -51,7 +58,7 @@ public class NotificationController {
     }
 
     @PatchMapping("/update")
-    // Update a notification
+    // Update a notification, will probably not be used
     public ResponseEntity<Notification> update_notification(@RequestBody Notification notification) {
         Notification existingNotification = notificationRepository.findById(notification.getId()).orElse(null);
         if (existingNotification == null) {
@@ -78,6 +85,18 @@ public class NotificationController {
     public ResponseEntity<Iterable<Notification>> get_all(@RequestParam String userId) {
         Iterable<Notification> notifications = notificationRepository.findByUserId(userId);
         return ResponseEntity.ok(notifications);
+    }
+
+    @GetMapping("/is_read")
+    // Mark a notification as read
+    public ResponseEntity<Notification> is_read(@RequestParam String id) {
+        Notification notification = notificationRepository.findById(id).orElse(null);
+        if (notification == null) {
+            return ResponseEntity.notFound().build();
+        }
+        notification.setRead(true);
+        notificationRepository.save(notification);
+        return ResponseEntity.ok(notification);
     }
     
 }
