@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.libstock_backend.Models.Rating;
+import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.RatingRepository;
+import com.example.libstock_backend.Repositories.UserRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -22,17 +24,36 @@ public class RatingController {
     
     @Autowired
     RatingRepository ratingRepository;
+    @Autowired
+    BookRepository bookRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @PostMapping("/create")
     // Create a new rating
-    public ResponseEntity<Rating> create_rating(@RequestBody Rating rating) {
-        if (rating.getUserId() == null || rating.getBookId() == null) {
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<Object> create_rating(@RequestBody Rating rating) {
+        System.out.println("Creating rating");
+        if (rating.getUserId() == null || rating.getBookId() == null) { // Check if required fields are present
+            return ResponseEntity.badRequest().body("User ID and Book ID are required fields.");
         }
+        if (userRepository.findById(rating.getUserId()).orElse(null) == null) { // Check if user exists
+            return ResponseEntity.badRequest().body("User does not exist.");
+        }
+        if (bookRepository.findById(rating.getBookId()).orElse(null) == null) { // Check if book exists
+            return ResponseEntity.badRequest().body("Book does not exist.");
+        }
+        if (rating.getStars() == null) { // Check if stars are provided
+            return ResponseEntity.badRequest().body("Stars are required.");
+        }
+        if (rating.getStars() < 1 || rating.getStars() > 5) { // Check if stars are between 1 and 5
+            return ResponseEntity.badRequest().body("Stars must be between 1 and 5.");
+        }
+
         Rating existingRating = ratingRepository.findByUserIdAndBookId(rating.getUserId(), rating.getBookId());
-        if (existingRating != null) {
-            return ResponseEntity.badRequest().body(null);
+        if (existingRating != null) { // Check if rating already exists
+            return ResponseEntity.badRequest().body("Rating already exists.");
         }
+
         ratingRepository.save(rating);
         return ResponseEntity.ok(rating);
     }
@@ -49,13 +70,22 @@ public class RatingController {
 
     @PatchMapping("/update")
     // Update a rating
-    public ResponseEntity<Rating> update_rating(@RequestBody Rating rating) {
+    public ResponseEntity<Object> update_rating(@RequestBody Rating rating) { // Can only update stars and comment
         Rating existingRating = ratingRepository.findById(rating.getId()).orElse(null);
         if (existingRating == null) {
             return ResponseEntity.notFound().build();
         }
-        existingRating.setStars(rating.getStars());
-        existingRating.setComment(rating.getComment());
+        
+        if (rating.getStars() != null) {
+            if (rating.getStars() < 1 || rating.getStars() > 5) { // Check if stars are between 1 and 5
+                return ResponseEntity.badRequest().body("Stars must be between 1 and 5.");
+            }
+            existingRating.setStars(rating.getStars());
+        }
+        if (rating.getComment() != null) {
+            existingRating.setComment(rating.getComment());
+        }
+
         ratingRepository.save(existingRating);
         return ResponseEntity.ok(existingRating);
     }
