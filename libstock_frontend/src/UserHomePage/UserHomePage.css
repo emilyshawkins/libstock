@@ -1,11 +1,13 @@
 /* src/UserHomePage.css */
-.user-home-container {
+.user-home-container{
     max-width: 1600px;
     margin-top: 50px;
     margin-left: 260px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #fff;
     border-radius: 10px;
+    align-items: center;
+    justify-content: flex-start;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -90,13 +92,15 @@ h2 {
     justify-content: space-between;
 }
 
-.heart-icon {
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-    font-size: 14px; /* Adjust size */
-    margin-left: 2500px;
-}
 
+.book-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+}
 
 @media screen and (max-width: 768px) {
     .home-container {

@@ -1,109 +1,122 @@
-// src/FavoritePage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShareIcon from "@mui/icons-material/Share";
 import "./FavPage.css";
 
-const FavoritePage = () => {
-    const [favorites, setFavorites] = useState([]);
-    const [editingItem, setEditingItem] = useState(null);
-    const [editedTitle, setEditedTitle] = useState("");
-    const [editedDescription, setEditedDescription] = useState("");
+const FavPage = () => {
+  const [favoriteBooks, setFavoriteBooks] = useState([]);
+  const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
+  const [shareLink, setShareLink] = useState("");
 
-    useEffect(() => {
-        fetchFavorites();
-    }, []);
+  useEffect(() => {
+    fetchUserFavorites();
+  }, []);
 
-    // Fetch favorite items
-    const fetchFavorites = async () => {
-        try {
-            const userId = localStorage.getItem("userId");
-            const response = await axios.get(`http://localhost:8080/user/favorites?id=${userId}`);
-            setFavorites(response.data);
-        } catch (error) {
-            console.error("Error fetching favorite items:", error);
-        }
-    };
+  // Fetch user's favorite books
+  const fetchUserFavorites = async () => {
+    if (!userId) return;
 
-    // Remove item from favorites
-    const removeFavorite = async (itemId) => {
-        try {
-            await axios.delete(`http://localhost:8080/user/favorites/remove?id=${itemId}`);
-            setFavorites(favorites.filter(item => item.id !== itemId));
-        } catch (error) {
-            console.error("Error removing favorite item:", error);
-        }
-    };
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`
+      );
+      setFavoriteBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching favorite books:", error);
+    }
+  };
 
-    // Start editing an item
-    const startEditing = (item) => {
-        setEditingItem(item.id);
-        setEditedTitle(item.title);
-        setEditedDescription(item.description);
-    };
+  // Toggle favorite book
+  const handleFavoriteToggle = async (bookId) => {
+    try {
+      if (favoriteBooks.some((book) => book.id === bookId)) {
+        // Remove from favorites
+        await axios.delete(`http://localhost:8080/favorite/delete`, {
+          params: { userId, bookId },
+        });
+        setFavoriteBooks((prev) => prev.filter((book) => book.id !== bookId));
+      }
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+    }
+  };
 
-    // Save edited item
-    const saveEdit = async (itemId) => {
-        try {
-            await axios.patch(`http://localhost:8080/user/favorites/edit?id=${itemId}`, {
-                title: editedTitle,
-                description: editedDescription
-            });
-            setFavorites(favorites.map(item =>
-                item.id === itemId ? { ...item, title: editedTitle, description: editedDescription } : item
-            ));
-            setEditingItem(null);
-        } catch (error) {
-            console.error("Error updating item:", error);
-        }
-    };
+  // Generate shareable link
+  const generateShareLink = () => {
+    const link = `${window.location.origin}/shared-favorites?userId=${userId}`;
+    setShareLink(link);
+    navigator.clipboard.writeText(link);
+    alert("Favorite books link copied to clipboard!");
+  };
 
-    // Share favorite item (copy link)
-    const shareItem = (itemId) => {
-        const shareLink = `http://localhost:3000/user/favorite/${itemId}`;
-        navigator.clipboard.writeText(shareLink);
-        alert("Link copied to clipboard!");
-    };
+  // Organize books alphabetically
+  const booksByLetter = favoriteBooks.reduce((acc, book) => {
+    const firstLetter = book.title[0].toUpperCase();
+    if (!acc[firstLetter]) acc[firstLetter] = [];
+    acc[firstLetter].push(book);
+    return acc;
+  }, {});
 
-    return (
-        <div className="favorite-container">
-            <h1>My Favorite Items</h1>
-            {favorites.length === 0 ? (
-                <p>No favorite items found.</p>
-            ) : (
-                <div className="favorite-list">
-                    {favorites.map(item => (
-                        <div key={item.id} className="favorite-card">
-                            {editingItem === item.id ? (
-                                <div className="edit-container">
-                                    <input
-                                        type="text"
-                                        value={editedTitle}
-                                        onChange={(e) => setEditedTitle(e.target.value)}
-                                    />
-                                    <textarea
-                                        value={editedDescription}
-                                        onChange={(e) => setEditedDescription(e.target.value)}
-                                    />
-                                    <button onClick={() => saveEdit(item.id)}>Save</button>
-                                    <button onClick={() => setEditingItem(null)}>Cancel</button>
-                                </div>
-                            ) : (
-                                <>
-                                    <h3>{item.title}</h3>
-                                    <p>{item.description}</p>
-                                    <div className="favorite-actions">
-                                        <button onClick={() => shareItem(item.id)}>Share</button>
-                                        <button onClick={() => startEditing(item)}>Edit</button>
-                                        <button onClick={() => removeFavorite(item.id)} className="remove-btn">Remove</button>
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    );
+  return (
+    <div className="fav-container">
+      <h1>Your Favorite Books</h1>
+
+      <button className="share-button" onClick={generateShareLink}>
+        <ShareIcon /> Share Favorites
+      </button>
+
+      {shareLink && (
+        <p className="share-link">
+          Share this link: <a href={shareLink}>{shareLink}</a>
+        </p>
+      )}
+
+      {favoriteBooks.length > 0 ? (
+        Object.keys(booksByLetter)
+          .sort()
+          .map((letter) => (
+            <div key={letter} className="book-section">
+              <h2 className="section-title">{letter}</h2>
+              <div className="book-grid">
+                {booksByLetter[letter].map((book) => (
+                  <div key={book.id} className="book-card">
+                    <div className="book-title-container">
+                      <h3 className="book-title">{book.title}</h3>
+                      <span
+                        className="favorite-icon"
+                        onClick={() => handleFavoriteToggle(book.id)}
+                      >
+                        <FavoriteIcon
+                          style={{
+                            cursor: "pointer",
+                            color: "red",
+                            fontSize: "24px",
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <p>
+                      <strong>Author:</strong>{" "}
+                      {book.author || "Unknown Author"}
+                    </p>
+                    <p>
+                      <strong>ISBN:</strong> {book.isbn}
+                    </p>
+                    <p>
+                      <strong>Publication Date:</strong> {book.publicationDate}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+      ) : (
+        <p>No favorite books yet.</p>
+      )}
+    </div>
+  );
 };
 
-export default FavoritePage;
+export default FavPage;
