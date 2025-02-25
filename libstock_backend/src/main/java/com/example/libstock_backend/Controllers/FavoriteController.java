@@ -82,10 +82,21 @@ public class FavoriteController {
         return ResponseEntity.ok(favorite);
     }
 
+    // @DeleteMapping("/delete")
+    // // Delete a favorite
+    // public ResponseEntity<Favorite> delete_favorite(@RequestParam String id) {
+    //     Favorite favorite = favoriteRepository.findById(id).orElse(null);
+    //     if (favorite == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     favoriteRepository.delete(favorite);
+    //     return ResponseEntity.ok(favorite);
+    // }
+
     @DeleteMapping("/delete")
-    // Delete a favorite
-    public ResponseEntity<Favorite> delete_favorite(@RequestParam String id) {
-        Favorite favorite = favoriteRepository.findById(id).orElse(null);
+    // Delete a favorite by user and book ID
+    public ResponseEntity<Favorite> delete_favorite_by_ids(@RequestParam String userId, @RequestParam String bookId) {
+        Favorite favorite = favoriteRepository.findByUserIdAndBookId(userId, bookId);
         if (favorite == null) {
             return ResponseEntity.notFound().build();
         }
