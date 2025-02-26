@@ -16,7 +16,7 @@ function ForgotPass() {
         setMessage("");
 
         try {
-            const response = await axios.post("http://localhost:8080/user/forgot-password", { email });
+            const response = await axios.post("http://localhost:8080/user/get", { email });
             
             if (response.data.success) {
                 setMessage("Check your email to reset password");

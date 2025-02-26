@@ -28,8 +28,8 @@ function Topbar() {
                     });
 
                     // If user has uploaded a profile picture, use it
-                    if (response.data.profilePicture) {
-                        setPreviewImage(`data:image/png;base64,${response.data.profilePicture}`);
+                    if (response.data.image ) {
+                        setPreviewImage(`data:image/png;base64,${response.data.image }`);
                     }
                 }
             } catch (error) {
@@ -70,6 +70,7 @@ function Topbar() {
                     alt="User Avatar"
                     className="user-icon"
                     style={{ cursor: "pointer" }}
+                    onError={(e) => { e.target.src = "/user-icon.png"; }} // Replace broken images
                     onClick={toggleDropdown}
                 />
                 {isDropdownOpen && (

@@ -56,8 +56,3 @@
     background-color: #476778;
     color: white;
 }
-
-
-.home-container{
-    margin-top: 70px; /* Pushes content down to avoid being hidden behind the Topbar */
-}

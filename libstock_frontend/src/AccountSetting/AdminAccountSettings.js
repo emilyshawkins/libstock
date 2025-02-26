@@ -119,6 +119,30 @@ function AdminSettings() {
         }
     };
 
+    // Delete Account
+    const handleDeleteAccount = async () => {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+            alert("User ID not found.");
+            return;
+        }
+
+        const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+        if (!confirmDelete) return;
+
+        try {
+            await axios.delete(`http://localhost:8080/user/delete?id=${userId}`
+            );
+
+            alert("Your account has been successfully deleted.");
+            localStorage.clear();
+            window.location.href = "/signin"; 
+        } catch (error) {
+            console.error("Error deleting account:", error);
+            alert(error.response?.data?.message || "An error occurred while deleting the account.");
+        }
+    };
+
     return (
         <div className="settings-container">
             {/* User Profile Section */}
@@ -194,7 +218,7 @@ function AdminSettings() {
                 </label>
                 {selectedSetting === "delete" && (
                     <div className="accordion-content">
-                        <button className="delete-button" onClick={() => handleUpdate("delete")}>Delete My Account</button>
+                        <button className="delete-button" onClick={handleDeleteAccount}>Delete My Account</button>
                     </div>
                 )}
             </div>
