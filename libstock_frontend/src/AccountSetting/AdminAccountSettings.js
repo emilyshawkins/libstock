@@ -17,6 +17,7 @@ function AdminSettings() {
     const [profilePicture, setProfilePicture] = useState(null);
     const [previewImage, setPreviewImage] = useState("/user-icon.png"); // Default profile image
     const [isImageOpen, setIsImageOpen] = useState(false); // State to track full-screen view
+    const [showUpdateButton, setShowUpdateButton] = useState(false); // New state for button visibility
 
 
     useEffect(() => {
@@ -53,6 +54,7 @@ function AdminSettings() {
         if (file) {
             setProfilePicture(file);
             setPreviewImage(URL.createObjectURL(file));
+            setShowUpdateButton(true); // Show update button after selecting an image
         }
     };
 
@@ -73,6 +75,7 @@ function AdminSettings() {
 
             if (response.data.success) {
                 alert("Profile picture updated successfully!");
+                setShowUpdateButton(false); // Hide the button after successful upload
                 window.location.reload(); // Auto-reload page after update
             } else {
                 alert("Failed to update profile picture.");
@@ -162,9 +165,11 @@ function AdminSettings() {
                 </div>
                 <h3 className="user-name">{userInfo.firstName} {userInfo.lastName}</h3>
                 <p className="user-email">{userInfo.email}</p>
-                <button className="update-profile-button" onClick={handleUploadProfilePicture}>
-                    Update Profile Picture
-                </button>
+                {showUpdateButton && (
+                    <button className="update-profile-button" onClick={handleUploadProfilePicture}>
+                        Update Profile Picture
+                    </button>
+                )}
             </div>
 
             {isImageOpen && (
