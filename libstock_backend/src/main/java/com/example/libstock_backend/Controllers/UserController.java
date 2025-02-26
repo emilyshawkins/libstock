@@ -216,4 +216,33 @@ public class UserController {
         return ResponseEntity.ok(new UserDTO(existingUser.getId(), existingUser.getEmail(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.isAdmin(), ret_img));
     }
 
+    @GetMapping("/forgot_password")
+    // Forgot password
+    public ResponseEntity<Object> forgot_password(@RequestParam String email) {
+        User existingUser = userRepository.findByEmail(email);
+        if (existingUser == null) {
+            return ResponseEntity.status(Response.SC_NOT_FOUND).body("User not found");
+        }
+
+        // TODO: Send email with password reset link
+
+        return ResponseEntity.ok("Password reset link sent to email");
+
+    }
+
+    @PatchMapping("/reset_password")
+    // Reset password
+    public ResponseEntity<Object> reset_password(@RequestParam String id, @RequestBody String password) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        if (existingUser == null) {
+            return ResponseEntity.status(Response.SC_NOT_FOUND).body("User not found");
+        }
+
+        existingUser.setPassword(password);
+        userRepository.save(existingUser);
+
+        return ResponseEntity.ok("Password reset successful");
+
+    }
+
 }
