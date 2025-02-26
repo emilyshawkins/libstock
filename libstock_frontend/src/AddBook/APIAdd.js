@@ -9,6 +9,8 @@ const AdminInventory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [genres, setGenres] = useState([]); // List of available genres
+  const [selectedGenres, setSelectedGenres] = useState([]); // List of selected genres for the book
   const [bookDetails, setBookDetails] = useState({
     price: "",
     count: "",
@@ -18,9 +20,24 @@ const AdminInventory = () => {
 
   const navigate = useNavigate();
 
+  // Fetch available genres from the database
+  useEffect(() => {
+    fetchGenres();
+  }, []);
+
+  const fetchGenres = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/genre/get_all");
+      setGenres(response.data); // Store the full genre objects (id & name)
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+    }
+  };
+
   // Handles selecting a book
   const handleAddBookClick = (book) => {
     setSelectedBook(book);
+    setSelectedGenres([]); // Reset selected genres when a new book is chosen
     setBookDetails({
       price: "",
       count: "",
@@ -94,7 +111,8 @@ const AdminInventory = () => {
     if (
       bookDetails.price === "" ||
       bookDetails.count === "" ||
-      bookDetails.numCheckedOut === ""
+      bookDetails.numCheckedOut === "" ||
+      selectedGenres.length === 0 // Genre is required
     ) {
       alert("Please fill in all fields before adding the book.");
       return;
@@ -105,7 +123,6 @@ const AdminInventory = () => {
 
     try {
       const authorIds = [];
-
       // Loop through all authors and check/create them in the database
       for (const authorFullName of authors) {
         const [firstName, ...lastNameParts] = authorFullName.split(" ");
@@ -154,7 +171,15 @@ const AdminInventory = () => {
           );
         }
 
-        alert("Book and author linked successfully!");
+        for (const genre of selectedGenres) {
+          await axios.post(
+            "http://localhost:8080/bookgenre/create",
+            { genreId: genre.id, bookId },
+            { headers: { "Content-Type": "application/json" } }
+          );
+        }
+
+        alert("Book, authors, and genres linked successfully!");
         setSelectedBook(null);
       }
     } catch (error) {
@@ -163,6 +188,15 @@ const AdminInventory = () => {
     }
   };
 
+  const handleAddGenre = (e) => {
+    const genreId = e.target.value;
+    if (!genreId) return;
+
+    const genre = genres.find((g) => g.id === genreId);
+    if (genre && !selectedGenres.some((g) => g.id === genreId)) {
+      setSelectedGenres([...selectedGenres, genre]);
+    }
+  };
   return (
     <div className="book-inventory-container">
       <header className="page-header">
@@ -266,6 +300,22 @@ const AdminInventory = () => {
               />
               Purchasable
             </label>
+            <label>
+              Genres:
+              <select onChange={handleAddGenre}>
+                <option value="">Select Genre</option>
+                {genres.map((genre) => (
+                  <option key={genre.id} value={genre.id}>
+                    {genre.genreName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <ul>
+              {selectedGenres.map((genre) => (
+                <li key={genre.id}>{genre.genreName}</li>
+              ))}
+            </ul>
             <button onClick={confirmAddBook}>Confirm Add</button>
             <button onClick={() => setSelectedBook(null)}>Cancel</button>
           </div>

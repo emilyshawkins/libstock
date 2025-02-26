@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./AdminHomePage.css";
 
 const AdminHomePage = () => {
@@ -14,6 +15,12 @@ const AdminHomePage = () => {
 
   // State for search input
   const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate(); // Initialize navigate function
+
+  const handleBookClick = (bookId) => {
+    navigate(`/admin/home/book?id=${bookId}`); // Navigate to book details page
+  };
 
   // Fetch books and authors when the component mounts
   useEffect(() => {
@@ -160,7 +167,12 @@ const AdminHomePage = () => {
                   <h2 className="section-title">{letter}</h2>
                   <div className="book-grid">
                     {booksByLetter[letter].map((book) => (
-                      <div key={book.id} className="book-card">
+                      <div
+                        key={book.id}
+                        className="book-card"
+                        onClick={() => handleBookClick(book.id)} // Add click event
+                        style={{ cursor: "pointer" }}
+                      >
                         <h3>{book.title}</h3>
                         <p>
                           <strong>Author:</strong>{" "}
@@ -175,7 +187,12 @@ const AdminHomePage = () => {
                           <strong>Publication Date:</strong>{" "}
                           {book.publicationDate}
                         </p>
-                        <button onClick={() => removeBook(book.id)}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent click from triggering book navigation
+                            removeBook(book.id);
+                          }}
+                        >
                           Remove
                         </button>
                       </div>

@@ -20,6 +20,7 @@ import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import AccountSettings
 import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
+import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
 
 function App() {
   return (
@@ -33,9 +34,13 @@ function MainContent() {
   const location = useLocation(); // Get the current route path
 
   // Show Navbar ONLY on "/", "/signin", "/signup", and "/forgot-password"
-  const isNavbarVisible = ["/", "/signin", "/signup", "/forgot-password", "/reset-password"].includes(
-    location.pathname
-  );
+  const isNavbarVisible = [
+    "/",
+    "/signin",
+    "/signup",
+    "/forgot-password",
+    "/reset-password",
+  ].includes(location.pathname);
 
   // Show AdminSidebar ONLY on "/admin/*" routes
   const isAdminSidebar = location.pathname.startsWith("/admin");
@@ -63,8 +68,10 @@ function MainContent() {
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
-        <Route path="/forgot-password" element={<ForgotPass/>} /> {/* Forgot Password Page*/}
-        <Route path="/reset-password" element={<ResetPass/>} /> {/* Forgot Password Page*/}
+        <Route path="/forgot-password" element={<ForgotPass />} />{" "}
+        {/* Forgot Password Page*/}
+        <Route path="/reset-password" element={<ResetPass />} />{" "}
+        {/* Forgot Password Page*/}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
@@ -77,6 +84,8 @@ function MainContent() {
         {/* User Home page */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
+        <Route path="/admin/home/book" element={<BookDetails />} />{" "}
+        {/* Admin Book Details */}
         <Route path="/admin/add-book" element={<APIAdd />} />{" "}
         {/* Admin Add Book */}
         <Route path="/admin/manual-add" element={<ManualAdd />} />{" "}
