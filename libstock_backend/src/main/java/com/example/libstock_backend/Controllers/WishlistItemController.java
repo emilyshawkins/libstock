@@ -86,8 +86,8 @@ public class WishlistItemController {
 
     @DeleteMapping("/delete")
     // Delete a wishlist item by id
-    public ResponseEntity<WishlistItem> delete_wishlist_item(@RequestParam String id) {
-        WishlistItem wishlistItem = wishlistItemRepository.findById(id).orElse(null);
+    public ResponseEntity<WishlistItem> delete_wishlist_item(@RequestParam String userId, @RequestParam String bookId) {
+        WishlistItem wishlistItem = wishlistItemRepository.findByUserIdAndBookId(userId, bookId);
         if (wishlistItem == null) {
             return ResponseEntity.notFound().build();
         }
@@ -95,7 +95,7 @@ public class WishlistItemController {
         return ResponseEntity.ok(wishlistItem);
     }
 
-    @GetMapping("/get_all")
+    @GetMapping("/get_wishlist_by_user")
     // Get all wishlist items
     public ResponseEntity<Iterable<Book>> get_all_wishlist_items(@RequestParam String userId) {
         Iterable<WishlistItem> wishlistItems = wishlistItemRepository.findByUserId(userId);
