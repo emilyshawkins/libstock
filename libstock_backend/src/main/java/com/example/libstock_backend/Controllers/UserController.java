@@ -199,7 +199,7 @@ public class UserController {
         return ResponseEntity.ok().body("User deleted");
     }
 
-    @PostMapping("/set_profile_img")
+    @PatchMapping("/set_profile_img")
     // Set a user's profile image
     public ResponseEntity<Object> set_profile_img(@RequestParam String id, @RequestParam("profilePicture") MultipartFile image) {
         User existingUser = userRepository.findById(id).orElse(null);
