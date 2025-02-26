@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountSettings.css";
 
-function UserSettings() {
+function AdminSettings() {
     const [selectedSetting, setSelectedSetting] = useState(null);
     const [userInfo, setUserInfo] = useState({
         email: "",
@@ -82,7 +82,6 @@ function UserSettings() {
             }
         } catch (error) {
             console.error("Error updating profile picture:", error);
-            console.log("Error Response:", error.response); // Debugging Line
             alert("An error occurred. Please try again.");
         }
     };
@@ -146,7 +145,6 @@ function UserSettings() {
             alert(error.response?.data?.message || "An error occurred while deleting the account.");
         }
     };
-
 
     return (
         <div className="settings-container">
@@ -233,4 +231,4 @@ function UserSettings() {
     );
 }
 
-export default UserSettings;
+export default AdminSettings;

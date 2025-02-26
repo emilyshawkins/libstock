@@ -6,7 +6,7 @@ import "./Topbar.css"; // Ensure correct styles
 
 function Topbar() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "" });
+    const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "", admin: false });
     const navigate = useNavigate();
 
     // Profile Picture State (Default: user-icon.png)
@@ -24,19 +24,12 @@ function Topbar() {
                         firstName: response.data.firstName || "Unknown",
                         lastName: response.data.lastName || "",
                         email: response.data.email || "No email available",
-                        isAdmin: response.data.isAdmin || false,
-                        currentPassword: "",
-                        newPassword: "",
+                        admin: response.data.admin || false,
                     });
-                    if (response.data) {
-                        setUserInfo({
-                            firstName: response.data.firstName || "Unknown",
-                            lastName: response.data.lastName || "",
-                            email: response.data.email || "No email available",
-                        });
-                    }
-                    if (response.data.image) {
-                        setPreviewImage(`data:image/png;base64,${response.data.image}`);
+
+                    // If user has uploaded a profile picture, use it
+                    if (response.data.image ) {
+                        setPreviewImage(`data:image/png;base64,${response.data.image }`);
                     }
                 }
             } catch (error) {
@@ -52,11 +45,11 @@ function Topbar() {
 
     const closeDropdown = (callback) => {
         setIsDropdownOpen(false);
-        callback();
+        if (callback) callback();
     };
 
     const handleSettingsClick = () => {
-        closeDropdown(() => navigate("/user/settings"));
+        closeDropdown(() => navigate(userInfo.admin ? "/admin/settings" : "/user/settings"));
     };
 
     const handleLogout = () => {
@@ -77,6 +70,7 @@ function Topbar() {
                     alt="User Avatar"
                     className="user-icon"
                     style={{ cursor: "pointer" }}
+                    onError={(e) => { e.target.src = "/user-icon.png"; }} // Replace broken images
                     onClick={toggleDropdown}
                 />
                 {isDropdownOpen && (

@@ -3,14 +3,15 @@ package com.example.libstock_backend.Models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//Queue if book is not available
 @Document(collection = "queues")
 public class Queue {
     @Id
     private String id;
 
-    private String userId;
-    private String bookId;
-    private int position;
+    private String userId; // ID of the user
+    private String bookId; // ID of the book
+    private int position; // Position in the queue
 
     public Queue() {}
 

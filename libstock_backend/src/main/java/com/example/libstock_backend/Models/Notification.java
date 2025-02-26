@@ -1,6 +1,6 @@
 package com.example.libstock_backend.Models;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,13 +12,13 @@ public class Notification {
 
     private String userId; // user that the notification is for
 
-    private LocalDateTime date;
-    private String message;
-    private boolean read;
+    private Date date; // date of the notification
+    private String message; // message of the notification
+    private boolean read; // whether the notification has been read
 
     public Notification() {}
 
-    public Notification(String userId, LocalDateTime date, String message, boolean read) {
+    public Notification(String userId, Date date, String message, boolean read) {
         this.userId = userId;
         this.date = date;
         this.message = message;
@@ -33,7 +33,7 @@ public class Notification {
         return userId;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -53,7 +53,7 @@ public class Notification {
         this.userId = userId;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

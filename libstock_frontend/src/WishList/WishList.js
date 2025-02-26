@@ -1,11 +1,10 @@
-/* src/FavPage.js */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import "./FavPage.css";
+import "./WishList.css";
 
-const FavPage = () => {
+const WishListPage = () => {
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
@@ -60,7 +59,7 @@ const FavPage = () => {
   }, {});
 
   return (
-    <div className="fav-container">
+    <div className="wishlist-container">
       <h1>Your Favorite Books</h1>
 
       <button className="share-button" onClick={generateShareLink}>
@@ -119,4 +118,4 @@ const FavPage = () => {
   );
 };
 
-export default FavPage;
+export default WishListPage;

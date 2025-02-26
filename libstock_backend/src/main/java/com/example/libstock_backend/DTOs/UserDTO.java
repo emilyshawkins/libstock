@@ -1,5 +1,6 @@
 package com.example.libstock_backend.DTOs;
 
+// Data Transfer Object for user
 public class UserDTO {
 
     private String id;

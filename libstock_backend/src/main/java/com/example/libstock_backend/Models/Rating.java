@@ -3,20 +3,21 @@ package com.example.libstock_backend.Models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//Ratings for books
 @Document(collection = "ratings")
 public class Rating {
     @Id
     private String id;
 
-    private String userId;
-    private String bookId;
+    private String userId; // ID of the user
+    private String bookId; // ID of the book
 
-    private int stars;
+    private Integer stars;
     private String comment;
 
     public Rating() {}
 
-    public Rating(String userId, String bookId, int stars, String comment) {
+    public Rating(String userId, String bookId, Integer stars, String comment) {
         this.userId = userId;
         this.userId = bookId;
         this.stars = stars;
@@ -35,7 +36,7 @@ public class Rating {
         return bookId;
     }
 
-    public int getStars() {
+    public Integer getStars() {
         return stars;
     }
 
@@ -55,7 +56,7 @@ public class Rating {
         this.bookId = bookId;
     }
 
-    public void setStars(int stars) {
+    public void setStars(Integer stars) {
         this.stars = stars;
     }
 
