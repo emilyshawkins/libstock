@@ -14,7 +14,7 @@ const AdminInventory = () => {
   const [bookDetails, setBookDetails] = useState({
     price: "",
     count: "",
-    purchasable: false,
+    purchaseable: false,
     numCheckedOut: "",
   });
 
@@ -41,7 +41,7 @@ const AdminInventory = () => {
     setBookDetails({
       price: "",
       count: "",
-      purchasable: false,
+      purchaseable: false,
       genre: "",
       numCheckedOut: "",
     });
@@ -147,7 +147,7 @@ const AdminInventory = () => {
           "2024-05-02T00:00:00.000+00:00",
         publisher: selectedBook.volumeInfo.publisher || "Unknown Publisher",
         price: bookDetails.price,
-        purchasable: bookDetails.purchasable,
+        purchaseable: bookDetails.purchaseable,
         count: bookDetails.count,
         numCheckedOut: bookDetails.numCheckedOut,
       };
@@ -291,14 +291,14 @@ const AdminInventory = () => {
                 required
               />
             </label>
-            <label className="purchasable-group">
+            <label className="purchaseable-group">
               <input
                 type="checkbox"
-                name="purchasable"
-                checked={bookDetails.purchasable}
+                name="purchaseable"
+                checked={bookDetails.purchaseable}
                 onChange={handleBookDetailChange}
               />
-              Purchasable
+              purchaseable
             </label>
             <label>
               Genres:
