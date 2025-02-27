@@ -73,7 +73,7 @@ function UserSettings() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            if (response.data.success) {
+            if (response.status === 200) {
                 alert("Profile picture updated successfully!");
                 setShowUpdateButton(false); // Hide the button after successful upload
                 window.location.reload(); // Auto-reload page after update
