@@ -1,19 +1,28 @@
-/* Topbar */
+/* src/Navbar/Topbar.css */
 .top-bar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 60px;
-    width: 100%;
-    background-color: whitesmoke;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 0 20px;
-    z-index: 1000;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    position: relative;
 }
 
-/* User Icon Container */
+.notification-icon {
+    position: relative;
+    margin-right: 20px;
+}
+
+.notification-icon img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.user-icon-container {
+    position: relative;
+}
+
 .user-icon {
     width: 40px;
     height: 40px;
@@ -27,32 +36,131 @@
     transform: scale(1.1);
 }
 
-
-/* Dropdown Menu */
+/* Dropdown Common Styles */
 .dropdown-menu {
     position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
+    top: 55px;
+    right: 10;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 150px;
-    padding: 10px;
+    width: 220px;
+    z-index: 100;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Dropdown Items */
-.dropdown-item {
+/* Notification Dropdown */
+.dropdown-menu.notifications {
+    position: fixed;
+    top: 55px;
+    right: 80px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 350px;
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 9999; /* Ensure it's above other elements */
     display: block;
-    padding: 10px;
-    color: #333;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
 }
 
-.dropdown-item:hover {
-    background-color: #476778;
+.notifications {
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.noti-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.notifications h4 {
+    padding: 10px;
+    margin: 0;
+    font-size: 16px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.notifications ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.notifications ul li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.notifications ul li:hover {
+    background-color: #f0f0f0;
+}
+
+/* User Dropdown */
+.dropdown-user-info {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.dropdown-user-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.account-setting,
+.log-out {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    color: black;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.account-setting:hover,
+.log-out:hover {
     color: white;
+    background-color: #314f5f;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .dropdown-menu {
+        width: 180px;
+    }
+
+    .notifications {
+        width: 200px;
+    }
+
+    .notifications ul li {
+        font-size: 12px;
+    }
 }

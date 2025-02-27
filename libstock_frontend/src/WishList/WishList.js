@@ -60,10 +60,10 @@ const WishListPage = () => {
 
   return (
     <div className="wishlist-container">
-      <h1>Your Favorite Books</h1>
+      <h1>Your WishList Books</h1>
 
       <button className="share-button" onClick={generateShareLink}>
-        <ShareIcon /> Share Favorites
+        <ShareIcon /> Share WishList
       </button>
 
       {shareLink && (

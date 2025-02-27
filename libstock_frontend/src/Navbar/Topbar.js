@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Topbar.css"; // Ensure correct styles
+import "./Topbar.css"; 
 
 function Topbar() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isNotiDropdownOpen, setIsNotiDropdownOpen] = useState(false);
     const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "", admin: false });
+    const [notifications, setNotifications] = useState([]);
     const navigate = useNavigate();
-
-    // Profile Picture State (Default: user-icon.png)
     const [previewImage, setPreviewImage] = useState("/user-icon.png");
 
     useEffect(() => {
@@ -27,24 +27,46 @@ function Topbar() {
                         admin: response.data.admin || false,
                     });
 
-                    // If user has uploaded a profile picture, use it
-                    if (response.data.image ) {
-                        setPreviewImage(`data:image/png;base64,${response.data.image }`);
+                    if (response.data.image) {
+                        setPreviewImage(`data:image/png;base64,${response.data.image}`);
                     }
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
         }
+
+        async function fetchNotifications() {
+            try {
+                const userId = localStorage.getItem("userId");
+                if (!userId) return;
+
+                const response = await axios.get(`http://localhost:8080/notification/get_all?userId=${userId}`);
+                if (response.data) {
+                    setNotifications(response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            }
+        }
+
         fetchUserData();
+        fetchNotifications();
     }, []);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
+        setIsNotiDropdownOpen(false);
+    };
+
+    const toggleNotiDropdown = () => {
+        setIsNotiDropdownOpen(!isNotiDropdownOpen);
+        setIsDropdownOpen(false);
     };
 
     const closeDropdown = (callback) => {
         setIsDropdownOpen(false);
+        setIsNotiDropdownOpen(false);
         if (callback) callback();
     };
 
@@ -61,16 +83,36 @@ function Topbar() {
 
     return (
         <div className="top-bar">
-            <div className="notification-icon">
-                <img src="/notification-icon.png" alt="Notifications" />
+            <div className="notification-icon" >
+                <img
+                    src="/notification-icon.png" 
+                    alt="Notifications" 
+                    style={{ cursor: "pointer" }} 
+                    onClick={toggleNotiDropdown}
+                />
+                {isNotiDropdownOpen && (
+                    <div className="dropdown-menu notifications">
+                        <h4>Notifications</h4>
+                        {notifications.length > 0 ? (
+                            <ul>
+                                {notifications.map((noti, index) => (
+                                    <li key={index}>{noti.message}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className= "noti-content"> No new notifications </p>
+                        )}
+                    </div>
+                )}
             </div>
+
             <div className="user-icon-container">
                 <img
                     src={previewImage}
                     alt="User Avatar"
                     className="user-icon"
                     style={{ cursor: "pointer" }}
-                    onError={(e) => { e.target.src = "/user-icon.png"; }} // Replace broken images
+                    onError={(e) => { e.target.src = "/user-icon.png"; }}
                     onClick={toggleDropdown}
                 />
                 {isDropdownOpen && (
