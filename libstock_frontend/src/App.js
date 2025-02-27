@@ -80,12 +80,13 @@ function MainContent() {
         {/* User Home page */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
-        <Route path="/user/favorite" element={<FavPage />} />
+        <Route path="/user/favorite" element={<FavPage />} />{" "}
+        <Route path="/user/wishlist" element={<WishList/>} />{" "}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "} 
         {/* Admin Home page */}
         <Route path="/admin/home/book" element={<BookDetails />} />{" "}
         {/* Admin Book Details */}
