@@ -19,11 +19,13 @@ import AccountSettings from "./AccountSetting/AccountSettings"; // Import User A
 import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
 import WishList from "./WishList/WishList"; //Import Wishlist Page
+import UserBookDetails from "./BookDetails/UserBookDetails"; // Import BookDetails
 
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
+import AdminAccountSettings from "./AccountSetting/AdminAccountSettings"; // Import User AccountSettings
 
 function App() {
   return (
@@ -76,16 +78,18 @@ function MainContent() {
         <Route path="/reset-password" element={<ResetPass />} />{" "}
         {/* Forgot Password Page*/}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
+
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
-        {/* Admin Home page */}
         <Route path="/user/favorite" element={<FavPage />} />{" "}
         <Route path="/user/wishlist" element={<WishList/>} />{" "}
+        <Route path="/user/home/book" element={<UserBookDetails />} />{" "}
+        {/* User Book Details */}
+        <Route path="/user/inventory" element={<UserInventory />} />{" "}
+        {/* User Inventory */}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
-        <Route path="/user/home" element={<UserHomePage />} />{" "}
-        {/* User Home page */}
+
         <Route path="/admin/home" element={<AdminHomePage />} />{" "} 
         {/* Admin Home page */}
         <Route path="/admin/home/book" element={<BookDetails />} />{" "}
@@ -94,10 +98,9 @@ function MainContent() {
         {/* Admin Add Book */}
         <Route path="/admin/manual-add" element={<ManualAdd />} />{" "}
         {/* Admin Add Book Manually */}
-        <Route path="/user/settings" element={<AccountSettings />} />{" "}
+        <Route path="/admin/settings" element={<AdminAccountSettings />} />{" "}
         {/* Account Settings */}
-        <Route path="/user/inventory" element={<UserInventory />} />{" "}
-        {/* User Inventory */}
+
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>

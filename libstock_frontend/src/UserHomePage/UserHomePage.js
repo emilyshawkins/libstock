@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import "./UserHomePage.css";
@@ -11,6 +12,7 @@ const UserHomePage = () => {
 
   // State for storing authors linked to books
   const [bookAuthors, setBookAuthors] = useState({});
+  const [bookGenres, setBookGenres] = useState({});
 
   // State for filtered books (for search functionality)
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -21,11 +23,20 @@ const UserHomePage = () => {
   // State for add/remove favorite items
   const [favoriteBooks, setFavoriteBooks] = useState(new Set());
 
+  const navigate = useNavigate(); // Initialize navigate function
+  const handleBookClick = (bookId) => {
+    navigate(`/user/home/book?id=${bookId}`); // Navigate to book details page
+  };
+
   // Fetch books and authors when the component mounts
   useEffect(() => {
-    fetchBooks();
-    fetchBookAuthors();
+    const fetchData = async () => {
+    const books = await fetchBooks(); // Wait for books to load
+    fetchBookAuthors(books); // Fetch authors only after books are available
+    fetchBookGenres(books);
     fetchUserFavorites();
+    };
+    fetchData();
   }, []);
 
   // Fetch all books from the database
@@ -40,36 +51,69 @@ const UserHomePage = () => {
   };
 
   // Fetch book-author relationships and store them
-  const fetchBookAuthors = async () => {
+  const fetchBookAuthors = async (books) => {
+    if (!books || books.length === 0) return; // Prevent API call if no books exist
+
     try {
-      const response = await axios.get(
-        "http://localhost:8080/bookauthor/read_all"
-      );
-      const bookAuthorMappings = response.data;
+      const bookAuthorsMap = {}; // Store authors for each book
 
-      const authorDetails = {};
-
-      // Fetch each author linked to a book
-      for (const mapping of bookAuthorMappings) {
-        const authorResponse = await axios.get(
-          `http://localhost:8080/author/read?id=${mapping.authorId}`
-        );
-
-        if (authorResponse.data) {
-          if (!authorDetails[mapping.bookId]) {
-            authorDetails[mapping.bookId] = [];
-          }
-          authorDetails[mapping.bookId].push(
-            `${authorResponse.data.firstName} ${authorResponse.data.lastName}`
+      for (const book of books) {
+        try {
+          // Fetch authors for the given book ID
+          const authorResponse = await axios.get(
+            `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${book.id}`
           );
+
+          if (authorResponse.data.length > 0) {
+            const authorNames = authorResponse.data.map(
+              (author) => `${author.firstName} ${author.lastName}`
+            );
+            bookAuthorsMap[book.id] = authorNames;
+          } else {
+            bookAuthorsMap[book.id] = ["Unknown Author"];
+          }
+        } catch (error) {
+          console.error(`Error fetching authors for book ${book.id}:`, error);
+          bookAuthorsMap[book.id] = ["Unknown Author"];
         }
       }
 
-      setBookAuthors(authorDetails);
+      setBookAuthors(bookAuthorsMap); // Update state with book-author mapping
     } catch (error) {
       console.error("Error fetching book authors:", error);
     }
   };
+
+  const fetchBookGenres = async (books) => {
+    if (!books || books.length === 0) return;
+
+    try {
+      const bookGenresMap = {};
+
+      for (const book of books) {
+        try {
+          const genreResponse = await axios.get(
+            `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${book.id}`
+          );
+
+          if (genreResponse.data.length > 0) {
+            const genreNames = genreResponse.data.map((genre) => genre.name);
+            bookGenresMap[book.id] = genreNames;
+          } else {
+            bookGenresMap[book.id] = ["Unknown Genre"];
+          }
+        } catch (error) {
+          console.error(`Error fetching genres for book ${book.id}:`, error);
+          bookGenresMap[book.id] = ["Unknown Genre"];
+        }
+      }
+
+      setBookGenres(bookGenresMap);
+    } catch (error) {
+      console.error("Error fetching book genres:", error);
+    }
+  };
+
 
   const fetchUserFavorites = async () => {
     try {
@@ -163,25 +207,58 @@ const UserHomePage = () => {
                   <h2 className="section-title">{letter}</h2>
                   <div className="book-grid">
                     {booksByLetter[letter].map((book) => (
-                      <div key={book.id} className="book-card">
-                      {/* Title & Favorite Toggle in the Same Row */}
-                      <div className="book-title-container">
-                         <h3 className="book-title">{book.title}</h3>
-                         {/* Favorite icon with toggle functionality */}
-                        <span className="favorite-icon" onClick={() => handleFavoriteToggle(book.id)}>
-                          {favoriteBooks.has(book.id) ? (
-                            <FavoriteIcon style={{ cursor: "pointer", color: "red", fontSize: "24px", marginLeft: "-20px" }} />
-                          ) : (
-                            <FavoriteBorderIcon style={{ cursor: "pointer", color: "grey", fontSize: "24px", marginLeft: "-20px" }} />
-                          )}
-                        </span>
-                      </div>
-                      <p><strong>Author:</strong> {bookAuthors[book.id] ? bookAuthors[book.id].join(", ") : "Unknown Author"}</p>
-                      <p><strong>ISBN:</strong> {book.isbn}</p>
-                      <p><strong>Publication Date:</strong> {book.publicationDate}</p>
-                      <button onClick={() => alert("renew")}>Renew</button>
-                      <button onClick={() => alert("return")}>Return</button>
-                      <button onClick={() => alert("Edit")}>Edit</button>
+                      <div
+                        key={book.id}
+                        className="book-card"
+                        onClick={() => handleBookClick(book.id)} // Add click event
+                        style={{ cursor: "pointer" }}
+                      >
+                        {/* Title & Favorite Toggle in the Same Row */}
+                        <div className="book-title-container">
+                          <h3 className="book-title">{book.title}</h3>
+                          {/* Favorite icon with toggle functionality */}
+                          <span className="favorite-icon" onClick={() => handleFavoriteToggle(book.id)}>
+                            {favoriteBooks.has(book.id) ? (
+                              <FavoriteIcon style={{ cursor: "pointer", color: "red", fontSize: "24px", marginLeft: "-20px" }} />
+                            ) : (
+                              <FavoriteBorderIcon style={{ cursor: "pointer", color: "grey", fontSize: "24px", marginLeft: "-20px" }} />
+                            )}
+                          </span>
+                        </div>
+                        <p>
+                          <strong>ISBN:</strong> {book.isbn}
+                        </p>
+                        <p>
+                          <strong>Author:</strong>{" "}
+                          {bookAuthors[book.id]
+                            ? bookAuthors[book.id].join(", ")
+                            : "Unknown Author"}
+                        </p>
+                        <p>
+                          <strong>Genre:</strong>{" "}
+                          {bookGenres[book.id]
+                            ? bookGenres[book.id].join(", ")
+                            : "Unknown Genre"}
+                        </p>
+                        <p>
+                          <strong>Publication Date:</strong>{" "}
+                          {book.publicationDate}
+                        </p>
+                        <button
+                          onClick={(e) => {alert("renew")
+                            e.stopPropagation(); // Prevent click from triggering book navigation
+                          }}
+                        >
+                          Renew
+                        </button>
+                        <button
+                          onClick={(e) => {alert("return")
+                            e.stopPropagation(); // Prevent click from triggering book navigation
+                          }}
+                        >
+                          Return
+                        </button>
+                        <button onClick={() => alert("Edit")}>Edit</button>
                       </div>
                     ))}
                   </div>
