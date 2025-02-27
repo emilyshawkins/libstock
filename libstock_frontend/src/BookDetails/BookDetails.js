@@ -36,13 +36,13 @@ const BookDetails = () => {
           );
         }
 
-        // // Fetch genres for the book
-        // const genreResponse = await axios.get(
-        //   `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${bookId}`
-        // );
-        // if (genreResponse.data.length > 0) {
-        //   setGenres(genreResponse.data.map((g) => g.genreName).join(", "));
-        // }
+        // Fetch genres for the book
+        const genreResponse = await axios.get(
+          `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${bookId}`
+        );
+        if (genreResponse.data.length > 0) {
+          setGenres(genreResponse.data.map((genre) => genre.name).join(", "));
+        }
       } catch (error) {
         console.error("Error fetching book details:", error);
       }
@@ -59,13 +59,17 @@ const BookDetails = () => {
     <div className="book-details-container">
       <h1>{book.title}</h1>
       <p>
-        <strong>ID:</strong> {book.id}
-      </p>
-      <p>
         <strong>ISBN:</strong> {book.isbn}
       </p>
       <p>
         <strong>Summary:</strong> {book.summary}
+      </p>
+
+      <p>
+        <strong>Author(s):</strong> {author}
+      </p>
+      <p>
+        <strong>Genres:</strong> {genres}
       </p>
       <p>
         <strong>Publication Date:</strong> {book.publicationDate}
@@ -79,10 +83,6 @@ const BookDetails = () => {
       <p>
         <strong>Count:</strong> {book.count}
       </p>
-      <p>
-        <strong>Author(s):</strong> {author}
-      </p>
-      <p>{/* <strong>Genres:</strong> {genres} */}</p>
     </div>
   );
 };

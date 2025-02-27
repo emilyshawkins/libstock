@@ -306,14 +306,14 @@ const AdminInventory = () => {
                 <option value="">Select Genre</option>
                 {genres.map((genre) => (
                   <option key={genre.id} value={genre.id}>
-                    {genre.genreName}
+                    {genre.name}
                   </option>
                 ))}
               </select>
             </label>
             <ul>
               {selectedGenres.map((genre) => (
-                <li key={genre.id}>{genre.genreName}</li>
+                <li key={genre.id}>{genre.name}</li>
               ))}
             </ul>
             <button onClick={confirmAddBook}>Confirm Add</button>
