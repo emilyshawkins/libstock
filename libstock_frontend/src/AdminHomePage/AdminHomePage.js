@@ -9,6 +9,7 @@ const AdminHomePage = () => {
 
   // State for storing authors linked to books
   const [bookAuthors, setBookAuthors] = useState({});
+  const [bookGenres, setBookGenres] = useState({});
 
   // State for filtered books (for search functionality)
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -27,6 +28,7 @@ const AdminHomePage = () => {
     const fetchData = async () => {
       const books = await fetchBooks(); // Wait for books to load
       fetchBookAuthors(books); // Fetch authors only after books are available
+      fetchBookGenres(books);
     };
 
     fetchData();
@@ -41,6 +43,7 @@ const AdminHomePage = () => {
 
       // Call fetchBookAuthors after books are loaded
       fetchBookAuthors(response.data);
+      fetchBookGenres(response.data);
     } catch (error) {
       console.error("Error fetching books", error);
     }
@@ -80,29 +83,98 @@ const AdminHomePage = () => {
     }
   };
 
+  const fetchBookGenres = async (books) => {
+    if (!books || books.length === 0) return;
+
+    try {
+      const bookGenresMap = {};
+
+      for (const book of books) {
+        try {
+          const genreResponse = await axios.get(
+            `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${book.id}`
+          );
+
+          if (genreResponse.data.length > 0) {
+            const genreNames = genreResponse.data.map((genre) => genre.name);
+            bookGenresMap[book.id] = genreNames;
+          } else {
+            bookGenresMap[book.id] = ["Unknown Genre"];
+          }
+        } catch (error) {
+          console.error(`Error fetching genres for book ${book.id}:`, error);
+          bookGenresMap[book.id] = ["Unknown Genre"];
+        }
+      }
+
+      setBookGenres(bookGenresMap);
+    } catch (error) {
+      console.error("Error fetching book genres:", error);
+    }
+  };
+
   // Remove a book from the database
   const removeBook = async (bookId) => {
     try {
-      // Step 1: Fetch all book-author relationships for the book
+      console.log(`Fetching book-author relationships for book ID: ${bookId}`);
+
+      // 1️⃣ Fetch all book-author relationships for the book
       const bookAuthorResponse = await axios.get(
-        `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${bookId}`
+        `http://localhost:8080/bookauthor/get_ids?bookId=${bookId}`
       );
 
-      if (bookAuthorResponse.data.length > 0) {
-        // Step 2: Delete each book-author entry using bookauthorId
+      console.log("Book-Author response:", bookAuthorResponse.data);
+
+      if (
+        Array.isArray(bookAuthorResponse.data) &&
+        bookAuthorResponse.data.length > 0
+      ) {
+        // Delete each book-author entry using bookauthorId
         for (const entry of bookAuthorResponse.data) {
-          console.log(`Deleting book_author entry ID: ${entry.id}`); // Debugging
+          if (!entry.id) {
+            console.warn("Skipping delete: bookauthorId is undefined", entry);
+            continue;
+          }
+
+          console.log(`Deleting book_author entry ID: ${entry.id}`);
           await axios.delete(
             `http://localhost:8080/bookauthor/delete?id=${entry.id}`
           );
         }
       }
 
-      // Step 3: Delete the book itself
+      console.log(`Fetching book-genre relationships for book ID: ${bookId}`);
+
+      // 2️⃣ Fetch all book-genre relationships for the book
+      const bookGenreResponse = await axios.get(
+        `http://localhost:8080/bookgenre/get_ids?bookId=${bookId}`
+      );
+
+      console.log("Book-Genre response:", bookGenreResponse.data);
+
+      if (
+        Array.isArray(bookGenreResponse.data) &&
+        bookGenreResponse.data.length > 0
+      ) {
+        // Delete each book-genre entry using bookgenreId
+        for (const entry of bookGenreResponse.data) {
+          if (!entry.id) {
+            console.warn("Skipping delete: bookgenreId is undefined", entry);
+            continue;
+          }
+
+          console.log(`Deleting book_genre entry ID: ${entry.id}`);
+          await axios.delete(
+            `http://localhost:8080/bookgenre/delete?id=${entry.id}`
+          );
+        }
+      }
+
+      // 3️⃣ Delete the book itself
       console.log(`Deleting book ID: ${bookId}`);
       await axios.delete(`http://localhost:8080/book/delete?id=${bookId}`);
 
-      // Step 4: Update UI after deletion
+      // 4️⃣ Update UI after deletion
       setDatabaseBooks((prevBooks) =>
         prevBooks.filter((book) => book.id !== bookId)
       );
@@ -110,9 +182,9 @@ const AdminHomePage = () => {
         prevBooks.filter((book) => book.id !== bookId)
       );
 
-      alert("Book and associated author relationships removed successfully!");
+      alert("Book, authors, and genres removed successfully!");
     } catch (error) {
-      console.error("Error deleting book and author link:", error);
+      console.error("Error deleting book, author, and genre links:", error);
       alert("Failed to delete book.");
     }
   };
@@ -175,14 +247,21 @@ const AdminHomePage = () => {
                       >
                         <h3>{book.title}</h3>
                         <p>
+                          <strong>ISBN:</strong> {book.isbn}
+                        </p>
+                        <p>
                           <strong>Author:</strong>{" "}
                           {bookAuthors[book.id]
                             ? bookAuthors[book.id].join(", ")
                             : "Unknown Author"}
                         </p>
                         <p>
-                          <strong>ISBN:</strong> {book.isbn}
+                          <strong>Genre:</strong>{" "}
+                          {bookGenres[book.id]
+                            ? bookGenres[book.id].join(", ")
+                            : "Unknown Genre"}
                         </p>
+
                         <p>
                           <strong>Publication Date:</strong>{" "}
                           {book.publicationDate}
