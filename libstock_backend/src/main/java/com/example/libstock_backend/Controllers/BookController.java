@@ -76,9 +76,9 @@ public class BookController {
             else { // Check if the price is empty
                 book.setPrice(new java.math.BigDecimal("0.00"));
             }
-            if(book.getPurchaseable() != null) {} 
-            else { // Check if the purchaseable property is empty
-                book.setPurchaseable(false);
+            if(book.getPurchasable() != null) {} 
+            else { // Check if the purchasable property is empty
+                book.setPurchasable(false);
             }
             if(book.getCount() != null) {} 
             else { // Check if the count is empty
@@ -136,8 +136,8 @@ public class BookController {
         if (book.getPrice() != null) {
             existingBook.setPrice(book.getPrice());
         }
-        if (book.getPurchaseable() != null) {
-            existingBook.setPurchaseable(book.getPurchaseable());
+        if (book.getPurchasable() != null) {
+            existingBook.setPurchasable(book.getPurchasable());
         }
         if (book.getCount() != null) {
             existingBook.setCount(book.getCount());
