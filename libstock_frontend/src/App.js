@@ -18,8 +18,6 @@ import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePa
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
-import AccountSettings from "./AccountSetting/AccountSettings"; // Import AccountSettings
-import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
 
 function App() {
