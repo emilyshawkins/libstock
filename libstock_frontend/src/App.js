@@ -13,9 +13,14 @@ import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import ForgotPass from "./SignInPage/ForgotPass"; //Import ForgotPass
 import ResetPass from "./SignInPage/ResetPass"; //Import ResetPass
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
+
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
-import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
+import AccountSettings from "./AccountSetting/AccountSettings"; // Import User AccountSettings
+import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
+import WishList from "./WishList/WishList"; //Import Wishlist Page
+
+import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails

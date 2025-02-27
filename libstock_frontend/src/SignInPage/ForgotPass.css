@@ -28,7 +28,17 @@ input {
     border-radius: 5px;
 }
 
+.success-message {
+    color: green;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
 .error-message {
     color: red;
     font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
 }
+

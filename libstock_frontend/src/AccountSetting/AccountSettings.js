@@ -73,12 +73,17 @@ function UserSettings() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            if (response.status === 200) {
-                alert("Profile picture updated successfully!");
-                setShowUpdateButton(false); // Hide the button after successful upload
-                window.location.reload(); // Auto-reload page after update
+            if (response.data && response.data.success !== undefined) {
+                if (response.status == 200) {
+                    alert("Profile picture updated successfully!");
+                    setShowUpdateButton(false);
+                    window.location.reload();
+                } else {
+                    alert("Failed to update profile picture.");
+                }
             } else {
-                alert("Failed to update profile picture.");
+                console.log("Unexpected response format:", response.data);
+                alert("Unexpected response from server.");
             }
         } catch (error) {
             console.error("Error updating profile picture:", error);
