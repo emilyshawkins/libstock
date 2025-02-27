@@ -122,4 +122,15 @@ public class BookAuthorController {
         }
         return ResponseEntity.ok(authors);
     }
+
+    @GetMapping("/get_ids")
+    // Get all book author ids
+    public ResponseEntity<Iterable<String>> get_genre_ids(@RequestParam String bookId) {
+        Iterable<BookAuthor> bookAuthors = bookauthorRepository.findByBookId(bookId); // Get all authors by book id
+        List<String> bookauthorIds = new ArrayList<>(); // Create list to store genre ids
+        for (BookAuthor bookAuthor : bookAuthors) { // Loop through all book authors
+            bookauthorIds.add(bookAuthor.getId()); // Add genre id to list
+        }
+        return ResponseEntity.ok(bookauthorIds);
+    }
 }
