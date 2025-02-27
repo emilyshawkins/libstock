@@ -130,7 +130,7 @@ function AdminSettings() {
             return;
         }
 
-        const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+        const confirmDelete = window.confirm("Are you sure you want to delete your account?");
         if (!confirmDelete) return;
 
         try {

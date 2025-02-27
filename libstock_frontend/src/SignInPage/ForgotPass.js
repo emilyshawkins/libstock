@@ -1,12 +1,12 @@
 /* ./SignInPage/ForgotPass.js */
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ForgotPass.css";
 
 function ForgotPass() {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("");
     const [loading, setLoading] = useState(false);
 
     // Verify Email Exists
@@ -16,15 +16,19 @@ function ForgotPass() {
         setMessage("");
 
         try {
-            const response = await axios.post("http://localhost:8080/user/get", { email });
+            const response = await axios.get(`http://localhost:8080/user/forgot_password?email=${email}`);
             
-            if (response.data.success) {
-                setMessage("Check your email to reset password");
+            if (response.status == 200) {
+                setMessage("Check your email to reset password.");
+                setMessageType("success");
             } else {
                 setMessage("Email not found.");
+                setMessageType("error");
             }
         } catch (error) {
+            console.error("Error requesting password reset:", error);
             setMessage(error.response?.data?.message || "Error checking email.");
+            setMessageType("error");
         } finally {
             setLoading(false);
         }
@@ -33,7 +37,11 @@ function ForgotPass() {
     return (
         <div className="forgot-container">
             <h1>Forgot Password</h1>
-            {message && <p className="error-message">{message}</p>}
+            {message && (
+                <p className={messageType === "success" ? "success-message" : "error-message"}>
+                    {message}
+                </p>
+            )}
                 <form onSubmit={handleEmailSubmit} className="forgot-form">
                     <label htmlFor="email">Enter your email:</label>
                     <input
