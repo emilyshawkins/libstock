@@ -21,8 +21,6 @@ import WishList from "./WishList/WishList"; //Import Wishlist Page
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
-import AccountSettings from "./AccountSetting/AccountSettings"; // Import AccountSettings
-import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
 import AdminAccountSettings from "./AccountSetting/AdminAccountSettings"; // Import AdminAccountSettings
 
