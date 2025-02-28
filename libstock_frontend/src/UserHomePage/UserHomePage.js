@@ -22,7 +22,8 @@ const UserHomePage = () => {
 
   // State for add/remove favorite items
   const [favoriteBooks, setFavoriteBooks] = useState(new Set());
-
+  const [userId] = useState(localStorage.getItem("userId") || "");
+  const [wishlist, setWishlist] = useState(new Set());
   const navigate = useNavigate(); // Initialize navigate function
   const handleBookClick = (bookId) => {
     navigate(`/user/home/book?id=${bookId}`); // Navigate to book details page
@@ -35,6 +36,7 @@ const UserHomePage = () => {
     fetchBookAuthors(books); // Fetch authors only after books are available
     fetchBookGenres(books);
     fetchUserFavorites();
+    fetchUserWishlist();
     };
     fetchData();
   }, []);
@@ -114,7 +116,7 @@ const UserHomePage = () => {
     }
   };
 
-
+  //Favorite Handle
   const fetchUserFavorites = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -139,7 +141,7 @@ const UserHomePage = () => {
           params: { userId, bookId }  
         });
         setFavoriteBooks(prev => {
-          const updatedFavorites = new Set(prev);
+          const updatedFavorites = new Set([...prev, bookId]);
           updatedFavorites.delete(bookId);
           return updatedFavorites;
         });
@@ -157,6 +159,31 @@ const UserHomePage = () => {
     }
   };
 
+  //Wishlist Handle
+  const fetchUserWishlist = async () => {
+    if (!userId) return;
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/wishlist/get_wishlist_by_user?userId=${userId}`
+      );
+      const wishlistIds = new Set(response.data.map((book) => book.id));
+      setWishlist(wishlistIds);
+    } catch (error) {
+      console.error("Error fetching Wishlist:", error);
+    }
+  };
+
+  const handleWishlistToggle = async (bookId) => {
+    try {
+        await axios.post("http://localhost:8080/wishlist/create", { userId, bookId });
+        setWishlist((prev) => new Set(prev).add(bookId));
+        alert("Add to Wishlist success!")
+    }
+    catch (error) {
+      console.error("Error updating wishlist status:", error);
+    }
+  };
+
   // Handle search input and filter books
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
@@ -164,8 +191,10 @@ const UserHomePage = () => {
 
     // Filter books that match the search query
     const filtered = databaseBooks.filter((book) =>
-      book.title.toLowerCase().includes(query)
-    );
+      book.title.toLowerCase().includes(query)||
+      (bookAuthors[book.id] && bookAuthors[book.id].join(", ").toLowerCase().includes(query)) ||
+      (bookGenres[book.id] && bookGenres[book.id].join(", ").toLowerCase().includes(query))
+    ); 
     setFilteredBooks(filtered);
   };
 
@@ -216,8 +245,9 @@ const UserHomePage = () => {
                         {/* Title & Favorite Toggle in the Same Row */}
                         <div className="book-title-container">
                           <h3 className="book-title">{book.title}</h3>
+
                           {/* Favorite icon with toggle functionality */}
-                          <span className="favorite-icon" onClick={() => handleFavoriteToggle(book.id)}>
+                          <span className="favorite-icon" onClick={(e) => {handleFavoriteToggle(book.id); e.stopPropagation();}}>
                             {favoriteBooks.has(book.id) ? (
                               <FavoriteIcon style={{ cursor: "pointer", color: "red", fontSize: "24px", marginLeft: "-20px" }} />
                             ) : (
@@ -245,20 +275,28 @@ const UserHomePage = () => {
                           {book.publicationDate}
                         </p>
                         <button
-                          onClick={(e) => {alert("renew")
+                          onClick={(e) => {alert("Do you sure want to RENEW item?")
                             e.stopPropagation(); // Prevent click from triggering book navigation
                           }}
                         >
                           Renew
                         </button>
                         <button
-                          onClick={(e) => {alert("return")
+                          onClick={(e) => {alert("Do you sure want to RETURN item?")
                             e.stopPropagation(); // Prevent click from triggering book navigation
                           }}
                         >
                           Return
                         </button>
-                        <button onClick={() => alert("Edit")}>Edit</button>
+                        <button>Edit</button>
+
+                        {/* Wishlist with toggle functionality */}
+                        <button
+                          className="wishlist-button"
+                          onClick={(e) => {handleWishlistToggle(book.id) ; e.stopPropagation();}}
+                        >
+                          {wishlist.has(book.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+                        </button>
                       </div>
                     ))}
                   </div>

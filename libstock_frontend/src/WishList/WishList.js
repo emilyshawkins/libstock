@@ -1,57 +1,62 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import "./WishList.css";
 
 const WishListPage = () => {
-  const [favoriteBooks, setFavoriteBooks] = useState([]);
-  const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
+  const [wishlist, setWishlist] = useState([]);
+  const [userId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
 
   useEffect(() => {
-    fetchUserFavorites();
+    fetchUserWishlist();
   }, []);
 
-  // Fetch user's favorite books
-  const fetchUserFavorites = async () => {
+  // Fetch user's Wishlist books
+  const fetchUserWishlist = async () => {
     if (!userId) return;
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`
+        `http://localhost:8080/wishlist/get_wishlist_by_user?userId=${userId}`
       );
-      setFavoriteBooks(response.data);
+      setWishlist(response.data);
     } catch (error) {
-      console.error("Error fetching favorite books:", error);
+      console.error("Error fetching Wishlist:", error);
     }
   };
 
-  // Toggle favorite book
-  const handleFavoriteToggle = async (bookId) => {
+  // Toggle Wishlist book
+  const handleWishlistToggle = async (bookId) => {
     try {
-      if (favoriteBooks.some((book) => book.id === bookId)) {
-        // Remove from favorites
-        await axios.delete(`http://localhost:8080/favorite/delete`, {
+      if (wishlist.some((book) => book.id === bookId)) {
+        // Remove from Wishlist
+        await axios.delete(`http://localhost:8080/wishlist/delete`, {
           params: { userId, bookId },
         });
-        setFavoriteBooks((prev) => prev.filter((book) => book.id !== bookId));
+        setWishlist((prev) => prev.filter((book) => book.id !== bookId));
+      } else {
+        // Add to Wishlist
+        await axios.post(`http://localhost:8080/wishlist/add`, null, {
+          params: { userId, bookId },
+        });
+        fetchUserWishlist();
       }
     } catch (error) {
-      console.error("Error updating favorite status:", error);
+      console.error("Error updating wishlist status:", error);
     }
   };
 
   // Generate shareable link
   const generateShareLink = () => {
-    const link = `${window.location.origin}/shared-favorites?userId=${userId}`;
+    const link = `${window.location.origin}/shared-wishlist?userId=${userId}`;
     setShareLink(link);
     navigator.clipboard.writeText(link);
-    alert("Favorite books link copied to clipboard!");
+    alert("Wishlist link copied to clipboard!");
   };
 
   // Organize books alphabetically
-  const booksByLetter = favoriteBooks.reduce((acc, book) => {
+  const booksByLetter = wishlist.reduce((acc, book) => {
     const firstLetter = book.title[0].toUpperCase();
     if (!acc[firstLetter]) acc[firstLetter] = [];
     acc[firstLetter].push(book);
@@ -60,7 +65,7 @@ const WishListPage = () => {
 
   return (
     <div className="wishlist-container">
-      <h1>Your WishList Books</h1>
+      <h1>Your WishList</h1>
 
       <button className="share-button" onClick={generateShareLink}>
         <ShareIcon /> Share WishList
@@ -72,7 +77,7 @@ const WishListPage = () => {
         </p>
       )}
 
-      {favoriteBooks.length > 0 ? (
+      {wishlist.length > 0 ? (
         Object.keys(booksByLetter)
           .sort()
           .map((letter) => (
@@ -81,24 +86,9 @@ const WishListPage = () => {
               <div className="book-grid">
                 {booksByLetter[letter].map((book) => (
                   <div key={book.id} className="book-card">
-                    <div className="book-title-container">
-                      <h3 className="book-title">{book.title}</h3>
-                      <span
-                        className="favorite-icon"
-                        onClick={() => handleFavoriteToggle(book.id)}
-                      >
-                        <FavoriteIcon
-                          style={{
-                            cursor: "pointer",
-                            color: "red",
-                            fontSize: "24px",
-                          }}
-                        />
-                      </span>
-                    </div>
+                    <h3 className="book-title">{book.title}</h3>
                     <p>
-                      <strong>Author:</strong>{" "}
-                      {book.author || "Unknown Author"}
+                      <strong>Author:</strong> {book.author || "Unknown Author"}
                     </p>
                     <p>
                       <strong>ISBN:</strong> {book.isbn}
@@ -106,13 +96,21 @@ const WishListPage = () => {
                     <p>
                       <strong>Publication Date:</strong> {book.publicationDate}
                     </p>
+                    <button
+                      className="wishlist-button"
+                      onClick={() => handleWishlistToggle(book.id)}
+                    >
+                      {wishlist.some((b) => b.id === book.id)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"}
+                    </button>
                   </div>
                 ))}
               </div>
             </div>
           ))
       ) : (
-        <p>No favorite books yet.</p>
+        <p>No book in your wishlist yet.</p>
       )}
     </div>
   );

@@ -1,12 +1,17 @@
 /* src/Navbar/Topbar.css */
 .top-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 60px;
+    width: 100%;
+    background-color: whitesmoke;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #ffffff;
-    position: relative;
-}
+    padding: 0 20px;
+    z-index: 1000;
+  }
 
 .notification-icon {
     position: relative;

@@ -10,10 +10,6 @@
     text-align: center;
 }
 
-h1 {
-    color: #476778;
-}
-
 .favorite-list {
     display: flex;
     flex-direction: column;

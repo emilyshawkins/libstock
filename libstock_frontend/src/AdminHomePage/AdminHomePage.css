@@ -11,62 +11,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  text-align: center;
-  color: #476778;
-  margin-bottom: 20px;
-}
-
-.top-bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 60px;
-  width: 100%;
-  background-color: whitesmoke;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 20px;
-  z-index: 1000;
-}
-
-.left-bar {
-  position: fixed;
-  top: 60px; /* Start below the top bar */
-  left: 0;
-  width: 250px;
-  height: 100%;
-  background-color: whitesmoke;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0px 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  gap: 30px;
-}
-
-.left-bar-button {
-  width: 90%;
-  margin: 10px 0;
-  padding: 20px 50px;
-  font-size: 18px;
-  color: white;
-  background-color: #35505d;
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.left-bar-button:hover {
-  background-color: #2b404a;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .content {
   flex-grow: 1;
   margin-left: 250px; /* Space for the left sidebar */
