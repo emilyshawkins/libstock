@@ -33,21 +33,21 @@ import com.example.libstock_backend.Repositories.WishlistItemRepository;
 public class BookController {
 
     @Autowired
-    BookRepository BookRepository;
+    public BookRepository BookRepository;
     @Autowired
-    BookAuthorRepository BookAuthorRepository;
+    public BookAuthorRepository BookAuthorRepository;
     @Autowired
-    BookGenreRepository BookGenreRepository;
+    public BookGenreRepository BookGenreRepository;
     @Autowired
-    CheckoutRepository CheckoutRepository;
+    public CheckoutRepository CheckoutRepository;
     @Autowired
-    FavoriteRepository FavoriteRepository;
+    public FavoriteRepository FavoriteRepository;
     @Autowired
-    QueueRepository QueueRepository;
+    public QueueRepository QueueRepository;
     @Autowired
-    RatingRepository RatingRepository;
+    public RatingRepository RatingRepository;
     @Autowired
-    WishlistItemRepository WishlistItemRepository;
+    public WishlistItemRepository WishlistItemRepository;
 
     @PostMapping("/create")
     // Create a new book
