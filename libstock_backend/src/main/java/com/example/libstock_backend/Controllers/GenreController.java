@@ -22,9 +22,9 @@ import com.example.libstock_backend.Repositories.GenreRepository;
 public class GenreController {
 
     @Autowired
-    GenreRepository genreRepository; 
+    public GenreRepository genreRepository; 
     @Autowired
-    BookGenreRepository bookGenreRepository;
+    public BookGenreRepository bookGenreRepository;
 
     @PostMapping("/create")
     // Create a new genre
