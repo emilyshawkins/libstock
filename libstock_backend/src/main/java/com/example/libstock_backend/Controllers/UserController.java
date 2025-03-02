@@ -35,19 +35,19 @@ import com.example.libstock_backend.Repositories.WishlistItemRepository;
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
+    public UserRepository userRepository;
     @Autowired
-    CheckoutRepository checkoutRepository;
+    public CheckoutRepository checkoutRepository;
     @Autowired
-    FavoriteRepository favoriteRepository;
+    public FavoriteRepository favoriteRepository;
     @Autowired
-    NotificationRepository notificationRepository;
+    public NotificationRepository notificationRepository;
     @Autowired
-    QueueRepository queueRepository;
+    public QueueRepository queueRepository;
     @Autowired
-    RatingRepository ratingRepository;
+    public RatingRepository ratingRepository;
     @Autowired
-    WishlistItemRepository wishlistItemRepository;
+    public WishlistItemRepository wishlistItemRepository;
 
     @PostMapping("/admin_signup")
     // Create a new admin
