@@ -27,11 +27,11 @@ import com.example.libstock_backend.Repositories.WishlistItemRepository;
 public class WishlistItemController {
     
     @Autowired
-    private WishlistItemRepository wishlistItemRepository;
+    public WishlistItemRepository wishlistItemRepository;
     @Autowired
-    private BookRepository bookRepository;
+    public BookRepository bookRepository;
     @Autowired
-    private UserRepository userRepository;
+    public UserRepository userRepository;
 
     @PostMapping("/create")
     // Create a new wishlist item
