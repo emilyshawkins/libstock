@@ -22,9 +22,9 @@ import com.example.libstock_backend.Repositories.BookAuthorRepository;
 public class AuthorController {
 
     @Autowired
-    AuthorRepository authorRepository;
+    public AuthorRepository authorRepository;
     @Autowired
-    BookAuthorRepository bookAuthorRepository;
+    public BookAuthorRepository bookAuthorRepository;
 
     @PostMapping("/create")
     // Create a new author
