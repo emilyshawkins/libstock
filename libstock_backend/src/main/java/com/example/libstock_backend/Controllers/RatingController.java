@@ -23,11 +23,11 @@ import com.example.libstock_backend.Repositories.UserRepository;
 public class RatingController {
     
     @Autowired
-    RatingRepository ratingRepository;
+    public RatingRepository ratingRepository;
     @Autowired
-    BookRepository bookRepository;
+    public BookRepository bookRepository;
     @Autowired
-    UserRepository userRepository;
+    public UserRepository userRepository;
 
     @PostMapping("/create")
     // Create a new rating
