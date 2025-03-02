@@ -27,11 +27,11 @@ import com.example.libstock_backend.Repositories.UserRepository;
 public class FavoriteController {
 
     @Autowired
-    FavoriteRepository favoriteRepository;
+    public FavoriteRepository favoriteRepository;
     @Autowired
-    BookRepository bookRepository;
+    public BookRepository bookRepository;
     @Autowired
-    UserRepository userRepository;
+    public UserRepository userRepository;
 
     @PostMapping("/create")
     // Create a new favorite
