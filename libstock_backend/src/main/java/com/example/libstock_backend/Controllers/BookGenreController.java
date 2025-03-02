@@ -27,11 +27,11 @@ import com.example.libstock_backend.Repositories.GenreRepository;
 @RequestMapping("/bookgenre")
 public class BookGenreController {
     @Autowired
-    BookGenreRepository bookgenreRepository;
+    public BookGenreRepository bookgenreRepository;
     @Autowired
-    GenreRepository genreRepository;
+    public GenreRepository genreRepository;
     @Autowired
-    BookRepository bookRepository;
+    public BookRepository bookRepository;
 
     @PostMapping("/create")
     // Create a new book genre
