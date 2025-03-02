@@ -25,9 +25,9 @@ import com.example.libstock_backend.Repositories.UserRepository;
 public class NotificationController {
 
     @Autowired
-    NotificationRepository notificationRepository;
+    public NotificationRepository notificationRepository;
     @Autowired
-    UserRepository userRepository;
+    public UserRepository userRepository;
 
     @PostMapping("/create")
     // Create a new notification, will probably be exclusively used by the backend
