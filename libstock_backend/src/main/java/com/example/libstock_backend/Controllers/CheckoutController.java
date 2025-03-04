@@ -40,19 +40,19 @@ public class CheckoutController {
 
     @PostMapping("/create")
     // Create a new checkout
-    public ResponseEntity<Checkout> create_checkout(@RequestBody Checkout checkout) {
+    public ResponseEntity<Object> create_checkout(@RequestBody Checkout checkout) {
         if (checkout.getUserId() == null || checkout.getBookId() == null) { // Check if user and book are provided
             return ResponseEntity.badRequest().body(null);
         }
         Checkout existingCheckout = checkoutRepository.findByUserIdAndBookId(checkout.getUserId(), checkout.getBookId());
-        if (existingCheckout != null) { // Check if user already has the book checked out
+        if (existingCheckout != null && existingCheckout.getStatus() == "Checked Out") { // Check if user has already checked out the book
             return ResponseEntity.badRequest().body(null);
         }
         Book book = bookRepository.findById(checkout.getBookId()).orElse(null);
         if (queueRepository.countByBookId(checkout.getBookId()) > 0 || book.getCount() == 0) { // Check if there is a queue for the book
             Queue queue = new Queue(checkout.getUserId(), checkout.getBookId(), queueRepository.countByBookId(checkout.getBookId()) + 1);
             queueRepository.save(queue);
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("All copies of the book are checked out. You have been added to the queue.");
         }
 
         // Set due date to 14 days from checkout date
