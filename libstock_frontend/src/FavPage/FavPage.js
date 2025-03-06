@@ -1,4 +1,4 @@
-/* src/FavPage.js */
+/* src/FavPage/FavPage.js */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FavoriteIcon from "@mui/icons-material/Favorite";

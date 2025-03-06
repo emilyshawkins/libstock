@@ -1,3 +1,4 @@
+/* src/WishList/WishList.js */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ShareIcon from "@mui/icons-material/Share";
