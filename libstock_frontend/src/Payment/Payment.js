@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
-
 const products = [
   { name: "Smartphone", price: 15000 },
   { name: "Headphones", price: 5000 },
