@@ -27,14 +27,21 @@ const UserHomePage = () => {
   // State for add/remove favorite items
   const [favoriteBooks, setFavoriteBooks] = useState(new Set());
 
+  // State for storing book genres
+  const [bookGenres, setBookGenres] = useState({});
+
   // State for storing book quantities
   const [bookQuantities, setBookQuantities] = useState({});
 
   // Fetch books and authors when the component mounts
   useEffect(() => {
-    fetchBooks();
-    fetchBookAuthors();
-    fetchUserFavorites();
+    const fetchData = async () => {
+      const books = await fetchBooks(); // Wait for books to load
+      fetchBookAuthors(books); // Fetch authors only after books are available
+      fetchBookGenres(books);
+    };
+
+    fetchData();
   }, []);
 
   // Fetch all books from the database
@@ -43,40 +50,77 @@ const UserHomePage = () => {
       const response = await axios.get("http://localhost:8080/book/get_all");
       setDatabaseBooks(response.data);
       setFilteredBooks(response.data);
+
+      // Call fetchBookAuthors after books are loaded
+      fetchBookAuthors(response.data);
+      fetchBookGenres(response.data);
+      fetchUserFavorites();
     } catch (error) {
       console.error("Error fetching books", error);
     }
   };
 
   // Fetch book-author relationships and store them
-  const fetchBookAuthors = async () => {
+  const fetchBookAuthors = async (books) => {
+    if (!books || books.length === 0) return; // Prevent API call if no books exist
+
     try {
-      const response = await axios.get(
-        "http://localhost:8080/bookauthor/read_all"
-      );
-      const bookAuthorMappings = response.data;
+      const bookAuthorsMap = {}; // Store authors for each book
 
-      const authorDetails = {};
-
-      // Fetch each author linked to a book
-      for (const mapping of bookAuthorMappings) {
-        const authorResponse = await axios.get(
-          `http://localhost:8080/author/read?id=${mapping.authorId}`
-        );
-
-        if (authorResponse.data) {
-          if (!authorDetails[mapping.bookId]) {
-            authorDetails[mapping.bookId] = [];
-          }
-          authorDetails[mapping.bookId].push(
-            `${authorResponse.data.firstName} ${authorResponse.data.lastName}`
+      for (const book of books) {
+        try {
+          // Fetch authors for the given book ID
+          const authorResponse = await axios.get(
+            `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${book.id}`
           );
+
+          if (authorResponse.data.length > 0) {
+            const authorNames = authorResponse.data.map(
+              (author) => `${author.firstName} ${author.lastName}`
+            );
+            bookAuthorsMap[book.id] = authorNames;
+          } else {
+            bookAuthorsMap[book.id] = ["Unknown Author"];
+          }
+        } catch (error) {
+          console.error(`Error fetching authors for book ${book.id}:`, error);
+          bookAuthorsMap[book.id] = ["Unknown Author"];
         }
       }
 
-      setBookAuthors(authorDetails);
+      setBookAuthors(bookAuthorsMap); // Update state with book-author mapping
     } catch (error) {
       console.error("Error fetching book authors:", error);
+    }
+  };
+
+  const fetchBookGenres = async (books) => {
+    if (!books || books.length === 0) return;
+
+    try {
+      const bookGenresMap = {};
+
+      for (const book of books) {
+        try {
+          const genreResponse = await axios.get(
+            `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${book.id}`
+          );
+
+          if (genreResponse.data.length > 0) {
+            const genreNames = genreResponse.data.map((genre) => genre.name);
+            bookGenresMap[book.id] = genreNames;
+          } else {
+            bookGenresMap[book.id] = ["Unknown Genre"];
+          }
+        } catch (error) {
+          console.error(`Error fetching genres for book ${book.id}:`, error);
+          bookGenresMap[book.id] = ["Unknown Genre"];
+        }
+      }
+
+      setBookGenres(bookGenresMap);
+    } catch (error) {
+      console.error("Error fetching book genres:", error);
     }
   };
 
@@ -164,7 +208,7 @@ const UserHomePage = () => {
       const createPaymentRequest = {
         bookId: book.id,
         name: book.title,
-        amount: book.price, // Price in cents
+        amount: book.price * 100, // Convert to dollars
         quantity: quantity,
       };
 
@@ -272,8 +316,7 @@ const UserHomePage = () => {
                           {book.publicationDate}
                         </p>
                         <p>
-                          <strong>Price:</strong> $
-                          {(book.price / 100).toFixed(2)}
+                          <strong>Price:</strong> ${book.price.toFixed(2)}
                         </p>
                         <div className="quantity-controls">
                           <button
