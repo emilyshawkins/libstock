@@ -24,6 +24,8 @@ import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePa
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
+import Payment from "./Payment/Payment"; // Import Payment
+import "./App.css"; // Import CSS
 
 function App() {
   return (
@@ -81,12 +83,12 @@ function MainContent() {
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
         <Route path="/user/favorite" element={<FavPage />} />{" "}
-        <Route path="/user/wishlist" element={<WishList/>} />{" "}
+        <Route path="/user/wishlist" element={<WishList />} />{" "}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "} 
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
         <Route path="/admin/home/book" element={<BookDetails />} />{" "}
         {/* Admin Book Details */}
@@ -98,6 +100,7 @@ function MainContent() {
         {/* Account Settings */}
         <Route path="/user/inventory" element={<UserInventory />} />{" "}
         {/* User Inventory */}
+        <Route path="/user/payment" element={<Payment />} />{" "}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>

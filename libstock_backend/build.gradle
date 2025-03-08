@@ -22,7 +22,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation "com.stripe:stripe-java:28.4.0"
+	implementation "com.stripe:stripe-java:28.3.1"
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+	implementation group: 'com.sparkjava', name: 'spark-core', version: '2.9.4'
+	compileOnly 'org.projectlombok:lombok:1.18.36'
+	annotationProcessor 'org.projectlombok:lombok:1.18.36'
 }
 
 tasks.named('test') {
