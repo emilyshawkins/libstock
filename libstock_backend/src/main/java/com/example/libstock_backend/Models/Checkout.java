@@ -2,7 +2,7 @@ package com.example.libstock_backend.Models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
-import java.util.Date;
+import java.time.*;
 
 @Document(collection = "checkouts")
 public class Checkout {
@@ -12,17 +12,19 @@ public class Checkout {
     private String userId; // ID of the user
     private String bookId; // ID of the book
     
-    private Date checkoutDate; // Date of checkout
-    private Date dueDate; // Due date of the book
+    private Instant checkoutDate; // Date of checkout
+    private Instant dueDate; // Due date of the book
+    private Instant returnDate; // Date of return
     private String status; // Status of the checkout
 
     public Checkout() {}
 
-    public Checkout(String userId, String bookId, Date checkoutDate, Date dueDate, String status) {
+    public Checkout(String userId, String bookId, Instant checkoutDate, Instant dueDate, Instant returnDate, String status) {
         this.userId = userId;
         this.bookId = bookId;
         this.checkoutDate = checkoutDate;
         this.dueDate = dueDate;
+        this.returnDate = returnDate;
         this.status = status;
     }
 
@@ -38,12 +40,16 @@ public class Checkout {
         return bookId;
     }
 
-    public Date getCheckoutDate() {
+    public Instant getCheckoutDate() {
         return checkoutDate;
     }
 
-    public Date getDueDate() {
+    public Instant getDueDate() {
         return dueDate;
+    }
+
+    public Instant getReturnDate() {
+        return returnDate;
     }
 
     public String getStatus() {
@@ -58,12 +64,16 @@ public class Checkout {
         this.bookId = bookId;
     }
 
-    public void setCheckoutDate(Date checkoutDate) {
+    public void setCheckoutDate(Instant checkoutDate) {
         this.checkoutDate = checkoutDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(Instant dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public void setReturnDate(Instant returnDate) {
+        this.returnDate = returnDate;
     }
 
     public void setStatus(String status) {

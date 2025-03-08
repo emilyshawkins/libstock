@@ -83,6 +83,9 @@ const BookDetails = () => {
       <p>
         <strong>Count:</strong> {book.count}
       </p>
+      <p>
+        <strong>Checked Out:</strong> {book.numCheckedOut}
+      </p>
     </div>
   );
 };

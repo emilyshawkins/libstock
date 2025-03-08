@@ -197,7 +197,6 @@ const UserHomePage = () => {
       );
       const userCheckouts = new Set(response.data.map((checkout) => checkout.bookId));
       setUserCheckouts(userCheckouts);
-      console.log(userCheckouts);
     } catch (error) {
       console.error("Error fetching Wishlist:", error);
     }
@@ -206,7 +205,7 @@ const UserHomePage = () => {
   // Handle checkout
   const handleCheckout = async (bookId) => {
     try {
-      await axios.post("http://localhost:8080/checkout/create", { userId, bookId });
+      await axios.post(`http://localhost:8080/checkout/create?offset=${localStorage.getItem("timeOffset")}`, { userId, bookId });
       setUserCheckouts((prev) => new Set(prev).add(bookId));
       alert("Checkout success!")
     } catch (error) {

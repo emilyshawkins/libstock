@@ -1,7 +1,7 @@
 package com.example.libstock_backend.Controllers;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +43,7 @@ public class CheckoutController {
 
     @PostMapping("/create")
     // Create a new checkout
-    public ResponseEntity<Object> create_checkout(@RequestBody Checkout checkout) {
+    public ResponseEntity<Object> create_checkout(@RequestParam int offset, @RequestBody Checkout checkout) {
         if (checkout.getUserId() == null || checkout.getBookId() == null) { // Check if user and book are provided
             return ResponseEntity.badRequest().body(null);
         }
@@ -68,11 +68,21 @@ public class CheckoutController {
         }
 
         // Set due date to 14 days from checkout date
-        Date checkoutDate = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(checkoutDate);
-        c.add(Calendar.DATE, 14);
-        Date dueDate = c.getTime();
+        Instant checkoutDate = Instant.now(); // Get current date
+
+        Instant dueDate = Instant.now().plus(14, java.time.temporal.ChronoUnit.DAYS); // Get due date
+
+        if (offset == 0) {
+            dueDate = Instant.now().plus(14, java.time.temporal.ChronoUnit.DAYS); // Get due date for UTC
+        }
+        else if (offset > 0) {
+            dueDate = Instant.now().plus(15, java.time.temporal.ChronoUnit.DAYS); // Get due date for time zones +
+            dueDate = dueDate.atZone(ZoneOffset.UTC).withHour((23 + offset) % 24).withMinute(59).withSecond(59).withNano(999999999).toInstant();
+        }
+        else {
+            dueDate = Instant.now().plus(13, java.time.temporal.ChronoUnit.DAYS); // Get due date for time zones -
+            dueDate = dueDate.atZone(ZoneOffset.UTC).withHour((23 + offset) % 24).withMinute(59).withSecond(59).withNano(999999999).toInstant();
+        }
 
         checkout.setStatus("Checked Out"); // Set status to checked out
         checkout.setCheckoutDate(checkoutDate); // Set checkout date
@@ -162,11 +172,8 @@ public class CheckoutController {
         }
 
         // Set due date to 14 days from current date
-        Date currentDate = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(currentDate);
-        c.add(Calendar.DATE, 14);
-        Date dueDate = c.getTime();
+
+        Instant dueDate = existingCheckout.getDueDate().plus(14, java.time.temporal.ChronoUnit.DAYS);
 
         existingCheckout.setDueDate(dueDate);
         checkoutRepository.save(existingCheckout);
@@ -175,26 +182,34 @@ public class CheckoutController {
 
     @GetMapping("/check_due_date") // Will probably be called by a cron job rather than from the frontend
     // Check if a book is overdue
-    public ResponseEntity<Object> check_due_date() {
+    public void check_due_date() {
         Iterable<Checkout> checkouts = checkoutRepository.findByStatus("Checked Out");
 
+        Instant currentDate = Instant.now(); // Get current date
         for (Checkout checkout : checkouts) { // Iterate through all checkouts
-            Date currentDate = new Date(); // Get current date
-            if (currentDate.after(checkout.getDueDate())) { // Check if current date is after due date
+            if (currentDate.isAfter(checkout.getDueDate())) { // Check if current date is after due date
                 checkout.setStatus("Overdue"); // Set status to overdue
                 checkoutRepository.save(checkout); // Save checkout
 
                 // Create notification for user
                 Book book = bookRepository.findById(checkout.getBookId()).orElse(null);
-                Notification notification = new Notification(checkout.getUserId(), new Date(), // Create notification
+                Notification notification = new Notification(checkout.getUserId(), Instant.now(), // Create notification
                                                              "Book " + book.getTitle() + " is overdue", 
                                                              false);
                 notificationRepository.save(notification);
 
                 // TODO: Send email to user
             }
-        }
-        return ResponseEntity.ok("test"); // Return checkout
+            else if (currentDate.isAfter(checkout.getDueDate().minus(1, java.time.temporal.ChronoUnit.DAYS))) { // Check if current date is 1 day before due date
+                // Create notification for user
+                Book book = bookRepository.findById(checkout.getBookId()).orElse(null);
+                Notification notification = new Notification(checkout.getUserId(), Instant.now(), // Create notification
+                                                             "Book " + book.getTitle() + " is due tomorrow", 
+                                                             false);
+                notificationRepository.save(notification);
 
+                // TODO: Send email to user
+            }
+        }
     }
 }
