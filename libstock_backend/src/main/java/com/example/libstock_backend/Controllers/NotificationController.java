@@ -1,6 +1,6 @@
 package com.example.libstock_backend.Controllers;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +39,7 @@ public class NotificationController {
             return ResponseEntity.badRequest().body("User not found.");
         }
         
-        notification.setDate(new Date()); // Set date to epoch time
+        notification.setDate(Instant.now()); // Set date to epoch time
         notification.setRead(false); // Set read to false
 
         notificationRepository.save(notification);

@@ -205,9 +205,13 @@ const UserHomePage = () => {
   // Handle checkout
   const handleCheckout = async (bookId) => {
     try {
-      await axios.post(`http://localhost:8080/checkout/create?offset=${localStorage.getItem("timeOffset")}`, { userId, bookId });
+      const timeOffsetNow = new Date().getTimezoneOffset() / 60;
+
+      const response = await axios.post(`http://localhost:8080/checkout/create?offset=${timeOffsetNow}`, { userId, bookId });
+
+      const readable = new Date(response.data.dueDate);
       setUserCheckouts((prev) => new Set(prev).add(bookId));
-      alert("Checkout success!")
+      alert(`Checkout success! You have until ${readable} to return the book.`);
     } catch (error) {
       console.error("Error checking out book:", error);
       alert("Error checking out book. Please try again.");

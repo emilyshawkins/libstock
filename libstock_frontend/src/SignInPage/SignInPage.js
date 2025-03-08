@@ -43,8 +43,6 @@ function SignInPage() {
                 localStorage.setItem("userName", name);
                 localStorage.setItem("isAdmin", admin);
 
-                const timeOffset = new Date().getTimezoneOffset() / 60;
-                localStorage.setItem("timeOffset", timeOffset);
                 if (token) {
                     localStorage.setItem("token", token);
                 }
