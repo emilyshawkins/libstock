@@ -200,7 +200,8 @@ public class CheckoutController {
 
                 // TODO: Send email to user
             }
-            else if (currentDate.isAfter(checkout.getDueDate().minus(1, java.time.temporal.ChronoUnit.DAYS))) { // Check if current date is 1 day before due date
+            else if (currentDate.isAfter(checkout.getDueDate().minus(48, java.time.temporal.ChronoUnit.HOURS)) &&
+                     currentDate.isBefore(checkout.getDueDate().minus(47, java.time.temporal.ChronoUnit.HOURS))) { // Check if book is due tomorrow
                 // Create notification for user
                 Book book = bookRepository.findById(checkout.getBookId()).orElse(null);
                 Notification notification = new Notification(checkout.getUserId(), Instant.now(), // Create notification
