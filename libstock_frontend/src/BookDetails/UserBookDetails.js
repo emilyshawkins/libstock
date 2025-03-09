@@ -166,6 +166,9 @@ const handleWishlistToggle = async (bookId) => {
       <p>
         <strong>Count:</strong> {book.count}
       </p>
+      <p>
+        <strong>Checked Out:</strong> {book.numCheckedOut}
+      </p>
       {/* Wishlist with toggle functionality */}
       <button
         className="wishlist-button"

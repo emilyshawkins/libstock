@@ -42,6 +42,7 @@ function SignInPage() {
                 localStorage.setItem("userId", id);
                 localStorage.setItem("userName", name);
                 localStorage.setItem("isAdmin", admin);
+
                 if (token) {
                     localStorage.setItem("token", token);
                 }

@@ -15,6 +15,9 @@ const UserHomePage = () => {
   const [bookAuthors, setBookAuthors] = useState({});
   const [bookGenres, setBookGenres] = useState({});
 
+  // State for user checkouts
+  const [userCheckouts, setUserCheckouts] = useState(new Set());
+
   // State for filtered books (for search functionality)
   const [filteredBooks, setFilteredBooks] = useState([]);
 
@@ -38,6 +41,7 @@ const UserHomePage = () => {
     fetchBookGenres(books);
     fetchUserFavorites();
     fetchUserWishlist();
+    fetchUserCheckouts();
     };
     fetchData();
   }, []);
@@ -185,6 +189,81 @@ const UserHomePage = () => {
     }
   };
 
+  // Fetch user checkouts
+  const fetchUserCheckouts = async () => {
+    if (!userId) return;
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/checkout/get_all_checked_out?userId=${userId}`
+      );
+      const userCheckouts = new Set(response.data.map((checkout) => checkout.bookId));
+      setUserCheckouts(userCheckouts);
+    } catch (error) {
+      console.error("Error fetching Wishlist:", error);
+    }
+  };
+
+  // Handle checkout
+  const handleCheckout = async (bookId) => {
+    try {
+      const timeOffsetNow = new Date().getTimezoneOffset() / 60;
+
+      const response = await axios.post(`http://localhost:8080/checkout/create?offset=${timeOffsetNow}`, { userId, bookId });
+
+      const readable = new Date(response.data.dueDate).toLocaleString();
+      setUserCheckouts((prev) => new Set(prev).add(bookId));
+      alert("Checkout success! You have until " + readable + " to return the book.");
+    } catch (error) {
+      console.error("Error checking out book:", error);
+      alert("Error checking out book. Please try again.");
+    }
+  };
+
+  // Handle return
+  const handleReturn = async (bookId) => {
+    try {
+      await axios.get("http://localhost:8080/checkout/return", { params: { userId, bookId } });
+      setUserCheckouts((prev) => {
+        const updatedCheckouts = new Set(prev);
+        updatedCheckouts.delete(bookId);
+        return updatedCheckouts;
+      });
+      alert("Return success!")
+    } catch (error) {
+      console.error("Error returning book:", error);
+      alert("Error returning book. Please try again.");
+    }
+  };
+
+  // Handle renew
+  const handleRenew = async (bookId) => {
+    try {
+      const response = await axios.get("http://localhost:8080/checkout/renew", { params: { userId, bookId } });
+      const readable = new Date(response.data.dueDate).toLocaleString();
+      alert("Renew success! You have until " + readable + " to return the book.");
+    } catch (error) {
+      console.error("Error renewing book:", error);
+      alert("Error renewing book. Please try again.");
+    }
+  };
+    
+
+  const renderCheckoutButton = (bookId) => {
+    if (userCheckouts.has(bookId)) {
+      return ( <>
+        <button onClick={(e) => {handleReturn(bookId); e.stopPropagation();}}>Return</button>
+        <button onClick={(e) => {handleRenew(bookId); e.stopPropagation();}}>Renew</button>
+        <br></br>
+      </>)
+    } else {
+      return (<>
+        <button onClick={(e) => {handleCheckout(bookId); e.stopPropagation();}}>Checkout</button>
+        <br></br>
+      </>)
+    }
+  };
+
+
   // Handle search input and filter books
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
@@ -275,20 +354,7 @@ const UserHomePage = () => {
                           <strong>Publication Date:</strong>{" "}
                           {book.publicationDate}
                         </p>
-                        <button
-                          onClick={(e) => {alert("Do you sure want to RENEW item?")
-                            e.stopPropagation(); // Prevent click from triggering book navigation
-                          }}
-                        >
-                          Renew
-                        </button>
-                        <button
-                          onClick={(e) => {alert("Do you sure want to RETURN item?")
-                            e.stopPropagation(); // Prevent click from triggering book navigation
-                          }}
-                        >
-                          Return
-                        </button>
+                        {renderCheckoutButton(book.id)}
                         <button>Edit</button>
 
                         {/* Wishlist with toggle functionality */}
