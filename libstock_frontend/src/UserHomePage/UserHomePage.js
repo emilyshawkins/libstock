@@ -209,9 +209,9 @@ const UserHomePage = () => {
 
       const response = await axios.post(`http://localhost:8080/checkout/create?offset=${timeOffsetNow}`, { userId, bookId });
 
-      const readable = new Date(response.data.dueDate);
+      const readable = new Date(response.data.dueDate).toLocaleString();
       setUserCheckouts((prev) => new Set(prev).add(bookId));
-      alert(`Checkout success! You have until ${readable} to return the book.`);
+      alert("Checkout success! You have until " + readable + " to return the book.");
     } catch (error) {
       console.error("Error checking out book:", error);
       alert("Error checking out book. Please try again.");
