@@ -16,7 +16,7 @@ const WishListPage = () => {
   // Fetch user's Wishlist books
   const fetchUserWishlist = async () => {
     if (!userId) return;
-
+  
     try {
       const response = await axios.get(
         `http://localhost:8080/wishlist/get_wishlist_by_user?userId=${userId}`
@@ -38,7 +38,7 @@ const WishListPage = () => {
         setWishlist((prev) => prev.filter((book) => book.id !== bookId));
       } else {
         // Add to Wishlist
-        await axios.post(`http://localhost:8080/wishlist/add`, null, {
+        await axios.post(`http://localhost:8080/wishlist/create`, null, {
           params: { userId, bookId },
         });
         fetchUserWishlist();

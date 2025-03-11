@@ -180,11 +180,20 @@ const UserHomePage = () => {
 
   const handleWishlistToggle = async (bookId) => {
     try {
-        await axios.post("http://localhost:8080/wishlist/create", { userId, bookId });
+      if (wishlist.has(bookId)) {
+        await axios.delete(`http://localhost:8080/wishlist/delete?userId=${userId}&bookId=${bookId}`);
+      setWishlist((prev) => {
+        const updatedWishlist = new Set(prev);
+        updatedWishlist.delete(bookId);
+        return updatedWishlist;
+      });
+      } else {
+        await axios.post("http://localhost:8080/wishlist/create", 
+          { userId, bookId }, 
+          { headers: { "Content-Type": "application/json" } }
+        );
         setWishlist((prev) => new Set(prev).add(bookId));
-        alert("Add to Wishlist success!")
-    }
-    catch (error) {
+      }} catch (error) {
       console.error("Error updating wishlist status:", error);
     }
   };

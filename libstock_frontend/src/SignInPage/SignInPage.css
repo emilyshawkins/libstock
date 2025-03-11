@@ -41,6 +41,7 @@ h2 {
     position: relative;
     display: flex;
     align-items: center;
+    padding: 5px;
 }
 
 .password-container input {
@@ -53,7 +54,7 @@ h2 {
 
 .eye-icon {
     position: absolute;
-    right: 20px;
+    right: 10px;
     cursor: pointer;
     font-size: 18px;
     color: #476778;
