@@ -364,8 +364,6 @@ const UserHomePage = () => {
                           {book.publicationDate}
                         </p>
                         {renderCheckoutButton(book.id)}
-                        <button>Edit</button>
-
                         {/* Wishlist with toggle functionality */}
                         <button
                           className="wishlist-button"

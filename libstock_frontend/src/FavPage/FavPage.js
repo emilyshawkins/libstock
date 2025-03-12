@@ -7,7 +7,7 @@ import "./FavPage.css";
 
 const FavPage = () => {
   const [favoriteBooks, setFavoriteBooks] = useState([]);
-  const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
+  const [userId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
 
   useEffect(() => {

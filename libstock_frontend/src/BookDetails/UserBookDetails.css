@@ -18,6 +18,35 @@ strong {
   margin-bottom: 0;
 }
 
+/* Wishlist Button */
+.wishlist-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #476778;
+  color: white;
+  transition: background 0.3s ease;
+}
+button.checkout-button {
+  background-color: #28a745;
+  color: white;
+}
+
+button.return-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+button.renew-button {
+  background-color: #007bff;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .book-details-container {
     max-width: 90%;
