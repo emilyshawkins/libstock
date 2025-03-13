@@ -4,8 +4,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { loadStripe } from "@stripe/stripe-js";
+
 import "./UserHomePage.css";
 
+// Load Stripe instance
+const stripePromise = loadStripe(
+  "pk_test_51Qx1ss2eFvgnA4OILQbHkVQ4zM98oi6lvJoXZ1p3Cs5zqSGhjRPA6KOKUljpwaMCAjDoM5fZZtdFJG3oQklL9j6Y00DlqGvgJa"
+);
 
 const UserHomePage = () => {
   // State for storing books from the database
@@ -23,7 +29,8 @@ const UserHomePage = () => {
 
   // State for search input
   const [searchQuery, setSearchQuery] = useState("");
-
+  // State for storing book quantities
+  const [bookQuantities, setBookQuantities] = useState({});
   // State for add/remove favorite items
   const [favoriteBooks, setFavoriteBooks] = useState(new Set());
   const [userId] = useState(localStorage.getItem("userId") || "");
@@ -36,12 +43,12 @@ const UserHomePage = () => {
   // Fetch books and authors when the component mounts
   useEffect(() => {
     const fetchData = async () => {
-    const books = await fetchBooks(); // Wait for books to load
-    fetchBookAuthors(books); // Fetch authors only after books are available
-    fetchBookGenres(books);
-    fetchUserFavorites();
-    fetchUserWishlist();
-    fetchUserCheckouts();
+      const books = await fetchBooks(); // Wait for books to load
+      fetchBookAuthors(books); // Fetch authors only after books are available
+      fetchBookGenres(books);
+      fetchUserFavorites();
+      fetchUserWishlist();
+      fetchUserCheckouts();
     };
     fetchData();
   }, []);
@@ -52,6 +59,11 @@ const UserHomePage = () => {
       const response = await axios.get("http://localhost:8080/book/get_all");
       setDatabaseBooks(response.data);
       setFilteredBooks(response.data);
+
+      // Call fetchBookAuthors after books are loaded
+      fetchBookAuthors(response.data);
+      fetchBookGenres(response.data);
+      fetchUserFavorites();
     } catch (error) {
       console.error("Error fetching books", error);
     }
@@ -126,9 +138,10 @@ const UserHomePage = () => {
     try {
       const userId = localStorage.getItem("userId");
       if (!userId) return;
-
-      const response = await axios.get(`http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`);
-      const favoriteId = new Set(response.data.map(book => book.id));
+      const response = await axios.get(
+        `http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`
+      );
+      const favoriteId = new Set(response.data.map((book) => book.id));
       setFavoriteBooks(favoriteId);
     } catch (error) {
       console.error("Error fetching favorite books:", error);
@@ -143,17 +156,20 @@ const UserHomePage = () => {
 
       if (favoriteBooks.has(bookId)) {
         await axios.delete(`http://localhost:8080/favorite/delete`, {
-          params: { userId, bookId }  
+          params: { userId, bookId },
         });
-        setFavoriteBooks(prev => {
-          const updatedFavorites = new Set([...prev, bookId]);
+        setFavoriteBooks((prev) => {
+          const updatedFavorites = new Set(prev);
           updatedFavorites.delete(bookId);
           return updatedFavorites;
         });
       } else {
         // Add to favorites
-        await axios.post(`http://localhost:8080/favorite/create`, { userId, bookId });
-        setFavoriteBooks(prev => {
+        await axios.post(`http://localhost:8080/favorite/create`, {
+          userId,
+          bookId,
+        });
+        setFavoriteBooks((prev) => {
           const updatedFavorites = new Set(prev);
           updatedFavorites.add(bookId);
           return updatedFavorites;
@@ -181,19 +197,23 @@ const UserHomePage = () => {
   const handleWishlistToggle = async (bookId) => {
     try {
       if (wishlist.has(bookId)) {
-        await axios.delete(`http://localhost:8080/wishlist/delete?userId=${userId}&bookId=${bookId}`);
-      setWishlist((prev) => {
-        const updatedWishlist = new Set(prev);
-        updatedWishlist.delete(bookId);
-        return updatedWishlist;
-      });
+        await axios.delete(
+          `http://localhost:8080/wishlist/delete?userId=${userId}&bookId=${bookId}`
+        );
+        setWishlist((prev) => {
+          const updatedWishlist = new Set(prev);
+          updatedWishlist.delete(bookId);
+          return updatedWishlist;
+        });
       } else {
-        await axios.post("http://localhost:8080/wishlist/create", 
-          { userId, bookId }, 
+        await axios.post(
+          "http://localhost:8080/wishlist/create",
+          { userId, bookId },
           { headers: { "Content-Type": "application/json" } }
         );
         setWishlist((prev) => new Set(prev).add(bookId));
-      }} catch (error) {
+      }
+    } catch (error) {
       console.error("Error updating wishlist status:", error);
     }
   };
@@ -205,7 +225,9 @@ const UserHomePage = () => {
       const response = await axios.get(
         `http://localhost:8080/checkout/get_all_checked_out?userId=${userId}`
       );
-      const userCheckouts = new Set(response.data.map((checkout) => checkout.bookId));
+      const userCheckouts = new Set(
+        response.data.map((checkout) => checkout.bookId)
+      );
       setUserCheckouts(userCheckouts);
     } catch (error) {
       console.error("Error fetching Wishlist:", error);
@@ -217,11 +239,16 @@ const UserHomePage = () => {
     try {
       const timeOffsetNow = new Date().getTimezoneOffset() / 60;
 
-      const response = await axios.post(`http://localhost:8080/checkout/create?offset=${timeOffsetNow}`, { userId, bookId });
+      const response = await axios.post(
+        `http://localhost:8080/checkout/create?offset=${timeOffsetNow}`,
+        { userId, bookId }
+      );
 
       const readable = new Date(response.data.dueDate).toLocaleString();
       setUserCheckouts((prev) => new Set(prev).add(bookId));
-      alert("Checkout success! You have until " + readable + " to return the book.");
+      alert(
+        "Checkout success! You have until " + readable + " to return the book."
+      );
     } catch (error) {
       console.error("Error checking out book:", error);
       alert("Error checking out book. Please try again.");
@@ -231,13 +258,15 @@ const UserHomePage = () => {
   // Handle return
   const handleReturn = async (bookId) => {
     try {
-      await axios.get("http://localhost:8080/checkout/return", { params: { userId, bookId } });
+      await axios.get("http://localhost:8080/checkout/return", {
+        params: { userId, bookId },
+      });
       setUserCheckouts((prev) => {
         const updatedCheckouts = new Set(prev);
         updatedCheckouts.delete(bookId);
         return updatedCheckouts;
       });
-      alert("Return success!")
+      alert("Return success!");
     } catch (error) {
       console.error("Error returning book:", error);
       alert("Error returning book. Please try again.");
@@ -247,31 +276,58 @@ const UserHomePage = () => {
   // Handle renew
   const handleRenew = async (bookId) => {
     try {
-      const response = await axios.get("http://localhost:8080/checkout/renew", { params: { userId, bookId } });
+      const response = await axios.get("http://localhost:8080/checkout/renew", {
+        params: { userId, bookId },
+      });
       const readable = new Date(response.data.dueDate).toLocaleString();
-      alert("Renew success! You have until " + readable + " to return the book.");
+      alert(
+        "Renew success! You have until " + readable + " to return the book."
+      );
     } catch (error) {
       console.error("Error renewing book:", error);
       alert("Error renewing book. Please try again.");
     }
   };
-    
 
   const renderCheckoutButton = (bookId) => {
     if (userCheckouts.has(bookId)) {
-      return ( <>
-        <button onClick={(e) => {handleReturn(bookId); e.stopPropagation();}}>Return</button>
-        <button onClick={(e) => {handleRenew(bookId); e.stopPropagation();}}>Renew</button>
-        <br></br>
-      </>)
+      return (
+        <>
+          <button
+            onClick={(e) => {
+              handleReturn(bookId);
+              e.stopPropagation();
+            }}
+          >
+            Return
+          </button>
+          <button
+            onClick={(e) => {
+              handleRenew(bookId);
+              e.stopPropagation();
+            }}
+          >
+            Renew
+          </button>
+          <br></br>
+        </>
+      );
     } else {
-      return (<>
-        <button onClick={(e) => {handleCheckout(bookId); e.stopPropagation();}}>Checkout</button>
-        <br></br>
-      </>)
+      return (
+        <>
+          <button
+            onClick={(e) => {
+              handleCheckout(bookId);
+              e.stopPropagation();
+            }}
+          >
+            Checkout
+          </button>
+          <br></br>
+        </>
+      );
     }
   };
-
 
   // Handle search input and filter books
   const handleSearchChange = (e) => {
@@ -279,12 +335,25 @@ const UserHomePage = () => {
     setSearchQuery(query);
 
     // Filter books that match the search query
-    const filtered = databaseBooks.filter((book) =>
-      book.title.toLowerCase().includes(query)||
-      (bookAuthors[book.id] && bookAuthors[book.id].join(", ").toLowerCase().includes(query)) ||
-      (bookGenres[book.id] && bookGenres[book.id].join(", ").toLowerCase().includes(query))
-    ); 
+    const filtered = databaseBooks.filter(
+      (book) =>
+        book.title.toLowerCase().includes(query) ||
+        (bookAuthors[book.id] &&
+          bookAuthors[book.id].join(", ").toLowerCase().includes(query)) ||
+        (bookGenres[book.id] &&
+          bookGenres[book.id].join(", ").toLowerCase().includes(query))
+    );
     setFilteredBooks(filtered);
+  };
+
+  // Handle quantity change for book
+  const handleQuantityChange = (bookId, amount) => {
+    setBookQuantities((prev) => {
+      const updatedQuantities = { ...prev };
+      const currentQuantity = updatedQuantities[bookId] || 1;
+      updatedQuantities[bookId] = Math.max(1, currentQuantity + amount);
+      return updatedQuantities;
+    });
   };
 
   // Organize books alphabetically
@@ -294,6 +363,47 @@ const UserHomePage = () => {
     acc[firstLetter].push(book);
     return acc;
   }, {});
+
+  // Handle checkout process
+  const handlePayment = async (book) => {
+    try {
+      const quantity = bookQuantities[book.id] || 1;
+      const createPaymentRequest = {
+        bookId: book.id,
+        name: book.title,
+        amount: book.price * 100, // Convert to dollars
+        quantity: quantity,
+      };
+
+      const response = await fetch(
+        "http://localhost:8080/product/v1/checkout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(createPaymentRequest),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const stripeResponse = await response.json();
+      const stripe = await stripePromise;
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: stripeResponse.sessionId,
+      });
+
+      if (result.error) {
+        console.error("Stripe Checkout Error:", result.error.message);
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
+  };
 
   return (
     <div className="user-home-container">
@@ -336,11 +446,31 @@ const UserHomePage = () => {
                           <h3 className="book-title">{book.title}</h3>
 
                           {/* Favorite icon with toggle functionality */}
-                          <span className="favorite-icon" onClick={(e) => {handleFavoriteToggle(book.id); e.stopPropagation();}}>
+                          <span
+                            className="favorite-icon"
+                            onClick={(e) => {
+                              handleFavoriteToggle(book.id);
+                              e.stopPropagation();
+                            }}
+                          >
                             {favoriteBooks.has(book.id) ? (
-                              <FavoriteIcon style={{ cursor: "pointer", color: "red", fontSize: "24px", marginLeft: "-20px" }} />
+                              <FavoriteIcon
+                                style={{
+                                  cursor: "pointer",
+                                  color: "red",
+                                  fontSize: "24px",
+                                  marginLeft: "-20px",
+                                }}
+                              />
                             ) : (
-                              <FavoriteBorderIcon style={{ cursor: "pointer", color: "grey", fontSize: "24px", marginLeft: "-20px" }} />
+                              <FavoriteBorderIcon
+                                style={{
+                                  cursor: "pointer",
+                                  color: "grey",
+                                  fontSize: "24px",
+                                  marginLeft: "-20px",
+                                }}
+                              />
                             )}
                           </span>
                         </div>
@@ -367,9 +497,41 @@ const UserHomePage = () => {
                         {/* Wishlist with toggle functionality */}
                         <button
                           className="wishlist-button"
-                          onClick={(e) => {handleWishlistToggle(book.id) ; e.stopPropagation();}}
+                          onClick={(e) => {
+                            handleWishlistToggle(book.id);
+                            e.stopPropagation();
+                          }}
                         >
-                          {wishlist.has(book.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+                          {wishlist.has(book.id)
+                            ? "Remove from Wishlist"
+                            : "Add to Wishlist"}
+                        </button>
+                        <p>
+                          <strong>Price:</strong> ${book.price.toFixed(2)}
+                        </p>
+                        <div className="quantity-controls">
+                          <button
+                            className="btn btn-outline-secondary"
+                            onClick={() => handleQuantityChange(book.id, -1)}
+                          >
+                            -
+                          </button>
+                          <span>{bookQuantities[book.id] || 1}</span>
+                          <button
+                            className="btn btn-outline-secondary"
+                            onClick={() => handleQuantityChange(book.id, 1)}
+                          >
+                            +
+                          </button>
+                        </div>
+                        <button onClick={() => alert("renew")}>Renew</button>
+                        <button onClick={() => alert("return")}>Return</button>
+                        <button onClick={() => alert("Edit")}>Edit</button>
+                        <button
+                          className="btn btn-primary btn-lg w-100 mt-2"
+                          onClick={() => handlePayment(book)}
+                        >
+                          Pay
                         </button>
                       </div>
                     ))}

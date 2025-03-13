@@ -78,19 +78,21 @@ function MainContent() {
         <Route path="/reset-password" element={<ResetPass />} />{" "}
         {/* Forgot Password Page*/}
         <Route path="/signup" element={<SignUpPage />} /> {/* Sign Up page */}
-
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
         <Route path="/user/favorite" element={<FavPage />} />{" "}
-        <Route path="/user/wishlist" element={<WishList/>} />{" "}
+        <Route path="/user/wishlist" element={<WishList />} />{" "}
         <Route path="/user/home/book" element={<UserBookDetails />} />{" "}
         {/* User Book Details */}
         <Route path="/user/inventory" element={<UserInventory />} />{" "}
         {/* User Inventory */}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
-
-        <Route path="/admin/home" element={<AdminHomePage />} />{" "} 
+        <Route path="/user/settings" element={<AccountSettings />} />{" "}
+        {/* Account Settings */}
+        <Route path="/user/home" element={<UserHomePage />} />{" "}
+        {/* User Home page */}
+        <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
         <Route path="/admin/home/book" element={<BookDetails />} />{" "}
         {/* Admin Book Details */}
@@ -100,7 +102,8 @@ function MainContent() {
         {/* Admin Add Book Manually */}
         <Route path="/admin/settings" element={<AdminAccountSettings />} />{" "}
         {/* Account Settings */}
-
+        <Route path="/user/inventory" element={<UserInventory />} />{" "}
+        {/* User Inventory */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>
