@@ -3,6 +3,7 @@ package com.example.libstock_backend.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.access.prepost.PreAuthorize; // used to authorize use of certain methods only for admins //
+import org.springframework.web.bind.annotation.RestController; // used to authorize use of certain methods only for admins //
 
 import com.example.libstock_backend.Models.Genre;
 import com.example.libstock_backend.Repositories.GenreRepository;
@@ -24,17 +24,22 @@ public class GenreController {
     GenreRepository genreRepository; 
 
     @PostMapping("/create")
+    // Create a new Genre
     @PreAuthorize("principal.isAdmin == true")
-    public ResponseEntity<Genre> create_genre(@RequestBody Genre genre) {
-        Genre existingGenre = genreRepository.findByName(genre.getName());
-        if (existingGenre != null) {
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<Object> create_genre(@RequestBody Genre genre) {
+        if (genre.getName() == null) { // Name is required
+            return ResponseEntity.badRequest().body("Name is required");
         }
-        genreRepository.save(genre);
+        Genre existingGenre = genreRepository.findByName(genre.getName()); // Check if genre already exists
+        if (existingGenre != null) { // Genre already exists
+            return ResponseEntity.badRequest().body("Genre already exists");
+        }
+        genreRepository.save(genre); // Save genre
         return ResponseEntity.ok(genre);
     }
 
     @GetMapping("/read")
+    // Read a book by id
     public ResponseEntity<Genre> read_genre(@RequestParam String id) {
         Genre existingGenre = genreRepository.findById(id).orElse(null);
         if (existingGenre == null) {
@@ -44,6 +49,7 @@ public class GenreController {
     }
 
     @PatchMapping("/update")
+    // Update a Genre
     @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Genre> update_genre(@RequestBody Genre genre) {
         Genre existingGenre = genreRepository.findById(genre.getId()).orElse(null);
@@ -56,6 +62,7 @@ public class GenreController {
     }
 
     @DeleteMapping("/delete")
+    // Delete a Genre
     @PreAuthorize("principal.isAdmin == true")
     public ResponseEntity<Genre> delete_genre(@RequestParam String id) {
         Genre existingGenre = genreRepository.findById(id).orElse(null);
@@ -64,5 +71,11 @@ public class GenreController {
         }
         genreRepository.delete(existingGenre);
         return ResponseEntity.ok().body(null);
+    }
+
+    @GetMapping("/get_all")
+    // Get all genres
+    public ResponseEntity<Iterable<Genre>> get_all_genres() {
+        return ResponseEntity.ok(genreRepository.findAll());
     }
 }

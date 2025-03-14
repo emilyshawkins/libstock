@@ -11,17 +11,17 @@ public class Card {
     @Id
     private String id;
 
-    private String userEmail;
+    private String userId; // ID of the user
 
-    private int cardNumber;
-    private int cvv;
-    private YearMonth expirationDate;
+    private int cardNumber; // Card number
+    private int cvv; // Card verification value
+    private YearMonth expirationDate; // Expiration date of the card
 
     public Card() {}
 
-    public Card(int cardNumber, String userEmail, int cvv, YearMonth expirationDate) {
+    public Card(int cardNumber, String userId, int cvv, YearMonth expirationDate) {
         this.cardNumber = cardNumber;
-        this.userEmail = userEmail;
+        this.userId = userId;
         this.cvv = cvv;
         this.expirationDate = expirationDate;
     }
@@ -34,8 +34,8 @@ public class Card {
         return cardNumber;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
     public int getCvv() {
@@ -54,8 +54,8 @@ public class Card {
         this.cardNumber = cardNumber;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setCvv(int cvv) {

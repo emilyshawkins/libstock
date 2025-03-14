@@ -28,19 +28,22 @@ public class SecurityConfig {
         http.csrf().disable()
             .authorizeHttpRequests(auth -> auth
                 // open endpoints for public use //
-                .requestMatchers("/user/login").permitAll()
-                .requestMatchers("/user/user_signup").permitAll()
-                .requestMatchers("/user/admin_signup").permitAll()
+                .requestMatchers("/user/login", "/user/user_signup", "/user/admin_signup").permitAll()
+                .requestMatchers("/author/read", "/author/get_all").permitAll()
+                .requestMatchers("/bookauthor/read").permitAll()
+                .requestMatchers("/book/read", "/book/get_all").permitAll()
+                .requestMatchers("/bookgenre/read").permitAll()
+                .requestMatchers("/genre/read").permitAll()
 
                 // endpoints for controllers to ensure authentication //
-                .requestMatchers("/author/**").authenticated()
-                .requestMatchers("/bookauthor/**").authenticated()
-                .requestMatchers("/book/**").authenticated()
-                .requestMatchers("/bookgenre/**").authenticated()
-                .requestMatchers("/checkout/**").authenticated()
-                .requestMatchers("/genre/**").authenticated()
-                .requestMatchers("/notification/**").authenticated()
-                .requestMatchers("/queue/**").authenticated()
+                .requestMatchers("/author/create", "/author/update", "/author/delete").authenticated()
+                .requestMatchers("/bookauthor/create", "/bookauthor/update", "/bookauthor/delete").authenticated()
+                .requestMatchers("/book/create", "/book/update", "/book/delete").authenticated()
+                .requestMatchers("/bookgenre/create", "/bookgenre/update", "/bookgenre/delete").authenticated()
+                .requestMatchers("/checkout/create", "/checkout/update", "/checkout/delete").authenticated()
+                .requestMatchers("/genre/create", "/genre/update", "/genre/leteate").authenticated()
+                .requestMatchers("/notification/create", "/notification/update", "/notification/delete").authenticated()
+                .requestMatchers("/queue/create", "/queue/update", "/queue/delete").authenticated()
                 // .requestMatchers("").authenticated() //
 
                 // all other requests made must be authenticated //

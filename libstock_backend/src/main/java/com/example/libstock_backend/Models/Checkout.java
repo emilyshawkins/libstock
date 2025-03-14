@@ -1,28 +1,31 @@
 package com.example.libstock_backend.Models;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
-import java.util.Date;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "checkouts")
 public class Checkout {
     @Id
     private String id;
 
-    private String userEmail;
-    private int ISBN;
+    private String userId; // ID of the user
+    private String bookId; // ID of the book
     
-    private Date checkoutDate;
-    private Date dueDate;
-    private String status;
+    private Instant checkoutDate; // Date of checkout
+    private Instant dueDate; // Due date of the book
+    private Instant returnDate; // Date of return
+    private String status; // Status of the checkout
 
     public Checkout() {}
 
-    public Checkout(String userEmail, int ISBN, Date checkoutDate, Date dueDate, String status) {
-        this.userEmail = userEmail;
-        this.ISBN = ISBN;
+    public Checkout(String userId, String bookId, Instant checkoutDate, Instant dueDate, Instant returnDate, String status) {
+        this.userId = userId;
+        this.bookId = bookId;
         this.checkoutDate = checkoutDate;
         this.dueDate = dueDate;
+        this.returnDate = returnDate;
         this.status = status;
     }
 
@@ -30,40 +33,48 @@ public class Checkout {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return bookId;
     }
 
-    public Date getCheckoutDate() {
+    public Instant getCheckoutDate() {
         return checkoutDate;
     }
 
-    public Date getDueDate() {
+    public Instant getDueDate() {
         return dueDate;
+    }
+
+    public Instant getReturnDate() {
+        return returnDate;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public void setISBN(int ISBN) {
-        this.ISBN = ISBN;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
-    public void setCheckoutDate(Date checkoutDate) {
+    public void setCheckoutDate(Instant checkoutDate) {
         this.checkoutDate = checkoutDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(Instant dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public void setReturnDate(Instant returnDate) {
+        this.returnDate = returnDate;
     }
 
     public void setStatus(String status) {

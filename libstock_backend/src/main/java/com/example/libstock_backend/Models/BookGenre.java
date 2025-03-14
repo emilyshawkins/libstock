@@ -1,7 +1,7 @@
 package com.example.libstock_backend.Models;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "book_genres")
 public class BookGenre {

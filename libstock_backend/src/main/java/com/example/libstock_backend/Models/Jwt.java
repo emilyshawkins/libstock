@@ -2,7 +2,7 @@
 // This is the model for the JWT token, used to authenticate user and user session //
 package com.example.libstock_backend.Models;
 
-import java.util.Date; // used to keep track of token experation // 
+import java.util.LocalDateTime; // used to keep track of token experation // 
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,9 +13,9 @@ public class Jwt {
     private String id; // mongo-db unique identifier for token //
     private String token; // the token itself //
     private String user; // refrence user with a token //
-    private Date expiration; // keeps track of refresh token expiration //
+    private LocalDateTime expiration; // keeps track of refresh token expiration //
 
-    public Jwt(String token, String user, Date expiration) {
+    public Jwt(String token, String user, LocalDateTime expiration) {
         this.token = token;
         this.user = user;
         this.expiration = expiration;
@@ -39,10 +39,10 @@ public class Jwt {
         this.user = user;
     }
 
-    public Date getExpiration() {
+    public LocalDateTime getExpiration() {
         return expiration;
     }
-    public void setExpiration(Date expiration) {
+    public void setExpiration(LocalDateTime expiration) {
         this.expiration = expiration;
     }
 }

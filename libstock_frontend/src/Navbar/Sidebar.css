@@ -1,12 +1,25 @@
 /* src/Navbar/Sidebar.css */
-.left-bar-button {
-    display: flex; /* Make it behave like a button */
-    justify-content: center;
+
+.left-bar {
+    position: fixed;
+    top: 60px; /* Start below the top bar */
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    width: 80%;
+    padding: 0px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    gap: 30px;
+  }
+  
+  .left-bar-button {
+    width: 90%;
     margin: 10px 0;
-    padding: 15px;
-    font-size: 16px;
+    padding: 20px 50px;
+    font-size: 18px;
     color: white;
     background-color: #35505d;
     border: none;
@@ -14,9 +27,30 @@
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    text-decoration: none; /* Remove underline from links */
+  }
+  
+  .left-bar-button:hover {
+    background-color: #2b404a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+/* Sidebar button container */
+.left-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
 
-.left-bar-button:hover {
+/* Active link styling */
+.left-bar-button.active {
     background-color: #2b404a;
+    font-weight: bold;
+}
+
+.home-container {
+    margin-left: 70px; /* Pushes content down to avoid being hidden behind the Sidebar */
+    padding: 20px;
 }

@@ -1,20 +1,31 @@
 package com.example.libstock_backend.DTOs;
 
+// Data Transfer Object for profile
 public class ProfileDTO {
 
     private String id;
     private String email;
-    private String password;
+    private String currentPassword;
+    private String newPassword;
     private String firstName;
     private String lastName;
+    private byte[] image;
+    private String resetToken; 
+    private LocalDateTime expiration; 
+
 
     public ProfileDTO() {}
 
-    public ProfileDTO(String id, String email, String password, String firstName, String lastName) {
+    public ProfileDTO(String id, String email, String currentPassword, String newPassword, String firstName, String lastName, byte[] image, String resetToken, LocalDateTime expiration) {
         this.id = id;
-        this.password = password;
+        this.email = email;
+        this.currentPassword = currentPassword;
+        this.newPassword = newPassword;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.image = image;
+        this.resetToken = resetToken;
+        this.expiration = expiration;
     }
 
     public String getId() {
@@ -33,12 +44,20 @@ public class ProfileDTO {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getCurrentPassword() {
+        return currentPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public String getFirstName() {
@@ -56,5 +75,28 @@ public class ProfileDTO {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getResetToken(String resetToken) {
+        return resetToken;
+    }
+
+    public void setResetToken(){
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getExpiration(LocalDateTime expiration) {
+        return expiration;
+    }
     
+    public void setExpiration() {
+        this.expiration = expiration;
+    }
 }

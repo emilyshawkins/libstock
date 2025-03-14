@@ -1,8 +1,11 @@
 // Brandon Gascon - modified, removed crossorigin, added PreAuthorization for admin methods //
 package com.example.libstock_backend.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.access.prepost.PreAuthorize; // used to authorize use of certain methods only for admins //
 
+import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.Queue;
+import com.example.libstock_backend.Repositories.BookRepository;
+import com.example.libstock_backend.Repositories.CheckoutRepository;
 import com.example.libstock_backend.Repositories.QueueRepository;
+import org.springframework.security.access.prepost.PreAuthorize; // used to authorize use of certain methods only for admins //
 
 @RestController
 @RequestMapping("/queue")
@@ -66,5 +72,30 @@ public class QueueController {
         }
         queueRepository.delete(existingQueue);
         return ResponseEntity.ok(existingQueue);
+    }
+
+    @GetMapping("/update_positions")
+    // Update the positions of the users in the queue
+    public ResponseEntity<String> update_positions(@RequestParam String bookId) {
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (book.getCount() > 0) { // Check if there are books available
+            
+            List<Queue> queues = queueRepository.findByBookId(bookId); // Get all queues for the book
+            for (int i = 0; i < queues.size(); i++) { // Iterate through queues
+                if (queues.get(i).getPosition() == 1) { // Check if the first person in the queue
+                    Queue queue = queues.get(i); // Get the first person in the queue
+                    queueRepository.delete(queue); // Remove the first person from the queue
+                    book.setCount(book.getCount() - 1); // Decrement the book count
+                    bookRepository.save(book); // Save the book
+                    queueRepository.save(null); // Save the queue
+                }
+                else {
+                    Queue queue = queues.get(i); // Get the person in the queue
+                    queue.setPosition(queue.getPosition() - 1); // Decrement the position
+                    queueRepository.save(queue); // Save the queue
+                }
+            }
+        }
+        return ResponseEntity.ok("Positions updated");
     }
 }

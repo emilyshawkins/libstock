@@ -3,22 +3,23 @@ package com.example.libstock_backend.Models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//Ratings for books
 @Document(collection = "ratings")
 public class Rating {
     @Id
     private String id;
 
-    private String userEmail;
-    private int ISBN;
+    private String userId; // ID of the user
+    private String bookId; // ID of the book
 
-    private int stars;
+    private Integer stars;
     private String comment;
 
     public Rating() {}
 
-    public Rating(String userEmail, int ISBN, int stars, String comment) {
-        this.userEmail = userEmail;
-        this.ISBN = ISBN;
+    public Rating(String userId, String bookId, Integer stars, String comment) {
+        this.userId = userId;
+        this.userId = bookId;
         this.stars = stars;
         this.comment = comment;
     }
@@ -27,15 +28,15 @@ public class Rating {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserId() {
+        return userId;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return bookId;
     }
 
-    public int getStars() {
+    public Integer getStars() {
         return stars;
     }
 
@@ -43,11 +44,19 @@ public class Rating {
         return comment;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setStars(int stars) {
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    public void setStars(Integer stars) {
         this.stars = stars;
     }
 
