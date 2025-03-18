@@ -18,8 +18,7 @@ strong {
   margin-bottom: 0;
 }
 
-/* Wishlist Button */
-.wishlist-button {
+.payment-btn {
   display: block;
   width: 100%;
   padding: 10px;

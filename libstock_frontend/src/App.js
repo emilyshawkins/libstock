@@ -20,7 +20,7 @@ import UserInventory from "./UserInventory/UserInventory"; // Import UserInvento
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
 import WishList from "./WishList/WishList"; //Import Wishlist Page
 import UserBookDetails from "./BookDetails/UserBookDetails"; // Import BookDetails
-
+import CollectionPage from "./Collection/CollectionPage"; // Import CollectionPage
 import AdminHomePage from "./AdminHomePage/AdminHomePage"; // Import AdminHomePage
 import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
@@ -92,6 +92,8 @@ function MainContent() {
         {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
+        <Route path="/user/collection" element={<CollectionPage />} />{" "}
+        {/* User Collection */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
         <Route path="/admin/home/book" element={<BookDetails />} />{" "}
@@ -102,8 +104,6 @@ function MainContent() {
         {/* Admin Add Book Manually */}
         <Route path="/admin/settings" element={<AdminAccountSettings />} />{" "}
         {/* Account Settings */}
-        <Route path="/user/inventory" element={<UserInventory />} />{" "}
-        {/* User Inventory */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>

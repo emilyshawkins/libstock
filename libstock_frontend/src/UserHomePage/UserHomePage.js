@@ -5,13 +5,94 @@ import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { loadStripe } from "@stripe/stripe-js";
-
 import "./UserHomePage.css";
 
 // Load Stripe instance
 const stripePromise = loadStripe(
   "pk_test_51Qx1ss2eFvgnA4OILQbHkVQ4zM98oi6lvJoXZ1p3Cs5zqSGhjRPA6KOKUljpwaMCAjDoM5fZZtdFJG3oQklL9j6Y00DlqGvgJa"
 );
+
+// Function to render checkout buttons
+export const renderCheckoutButton = (bookId, userCheckouts, handleReturn, handleRenew, handleCheckout) => {
+  if (userCheckouts.has(bookId)) {
+    return (
+      <>
+        <button
+          onClick={(e) => {
+            handleReturn(bookId);
+            e.stopPropagation();
+          }}
+        >
+          Return
+        </button>
+        <button
+          onClick={(e) => {
+            handleRenew(bookId);
+            e.stopPropagation();
+          }}
+        >
+          Renew
+        </button>
+        <br />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <button
+          onClick={(e) => {
+            handleCheckout(bookId);
+            e.stopPropagation();
+          }}
+        >
+          Checkout
+        </button>
+        <br />
+      </>
+    );
+  }
+};
+
+// Handle checkout process
+export const handlePayment = async (book, bookQuantities) => {
+  try {
+    const quantity = bookQuantities[book.id] || 1;
+    const createPaymentRequest = {
+      bookId: book.id,
+      name: book.title,
+      amount: book.price * 100, // Convert to dollars
+      quantity: quantity,
+    };
+
+    const response = await fetch(
+      "http://localhost:8080/product/v1/checkout",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(createPaymentRequest),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const stripeResponse = await response.json();
+    const stripe = await stripePromise;
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: stripeResponse.sessionId,
+    });
+
+    if (result.error) {
+      console.error("Stripe Checkout Error:", result.error.message);
+    }
+  } catch (error) {
+    console.error("Error during checkout:", error);
+  }
+};
 
 const UserHomePage = () => {
   // State for storing books from the database
@@ -29,8 +110,6 @@ const UserHomePage = () => {
 
   // State for search input
   const [searchQuery, setSearchQuery] = useState("");
-  // State for storing book quantities
-  const [bookQuantities, setBookQuantities] = useState({});
   // State for add/remove favorite items
   const [favoriteBooks, setFavoriteBooks] = useState(new Set());
   const [userId] = useState(localStorage.getItem("userId") || "");
@@ -289,46 +368,6 @@ const UserHomePage = () => {
     }
   };
 
-  const renderCheckoutButton = (bookId) => {
-    if (userCheckouts.has(bookId)) {
-      return (
-        <>
-          <button
-            onClick={(e) => {
-              handleReturn(bookId);
-              e.stopPropagation();
-            }}
-          >
-            Return
-          </button>
-          <button
-            onClick={(e) => {
-              handleRenew(bookId);
-              e.stopPropagation();
-            }}
-          >
-            Renew
-          </button>
-          <br></br>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <button
-            onClick={(e) => {
-              handleCheckout(bookId);
-              e.stopPropagation();
-            }}
-          >
-            Checkout
-          </button>
-          <br></br>
-        </>
-      );
-    }
-  };
-
   // Handle search input and filter books
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
@@ -346,16 +385,6 @@ const UserHomePage = () => {
     setFilteredBooks(filtered);
   };
 
-  // Handle quantity change for book
-  const handleQuantityChange = (bookId, amount) => {
-    setBookQuantities((prev) => {
-      const updatedQuantities = { ...prev };
-      const currentQuantity = updatedQuantities[bookId] || 1;
-      updatedQuantities[bookId] = Math.max(1, currentQuantity + amount);
-      return updatedQuantities;
-    });
-  };
-
   // Organize books alphabetically
   const booksByLetter = filteredBooks.reduce((acc, book) => {
     const firstLetter = book.title[0].toUpperCase();
@@ -363,47 +392,6 @@ const UserHomePage = () => {
     acc[firstLetter].push(book);
     return acc;
   }, {});
-
-  // Handle checkout process
-  const handlePayment = async (book) => {
-    try {
-      const quantity = bookQuantities[book.id] || 1;
-      const createPaymentRequest = {
-        bookId: book.id,
-        name: book.title,
-        amount: book.price * 100, // Convert to dollars
-        quantity: quantity,
-      };
-
-      const response = await fetch(
-        "http://localhost:8080/product/v1/checkout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(createPaymentRequest),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const stripeResponse = await response.json();
-      const stripe = await stripePromise;
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: stripeResponse.sessionId,
-      });
-
-      if (result.error) {
-        console.error("Stripe Checkout Error:", result.error.message);
-      }
-    } catch (error) {
-      console.error("Error during checkout:", error);
-    }
-  };
 
   return (
     <div className="user-home-container">
@@ -493,11 +481,12 @@ const UserHomePage = () => {
                           <strong>Publication Date:</strong>{" "}
                           {book.publicationDate}
                         </p>
-                        {renderCheckoutButton(book.id)}
-                        {/* Wishlist with toggle functionality */}
-                        <button
-                          className="wishlist-button"
-                          onClick={(e) => {
+                        <p>
+                          <strong>Price:</strong> ${book.price.toFixed(2)}
+                        </p>
+                           {/* Wishlist with toggle functionality */}
+                           <button
+                            onClick={(e) => {
                             handleWishlistToggle(book.id);
                             e.stopPropagation();
                           }}
@@ -506,32 +495,12 @@ const UserHomePage = () => {
                             ? "Remove from Wishlist"
                             : "Add to Wishlist"}
                         </button>
-                        <p>
-                          <strong>Price:</strong> ${book.price.toFixed(2)}
-                        </p>
-                        <div className="quantity-controls">
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => handleQuantityChange(book.id, -1)}
-                          >
-                            -
-                          </button>
-                          <span>{bookQuantities[book.id] || 1}</span>
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => handleQuantityChange(book.id, 1)}
-                          >
-                            +
-                          </button>
-                        </div>
-                        <button onClick={() => alert("renew")}>Renew</button>
-                        <button onClick={() => alert("return")}>Return</button>
-                        <button onClick={() => alert("Edit")}>Edit</button>
+                        {renderCheckoutButton(book.id, userCheckouts, handleReturn, handleRenew, handleCheckout)}
                         <button
-                          className="btn btn-primary btn-lg w-100 mt-2"
+                          className="payment-btn"
                           onClick={() => handlePayment(book)}
                         >
-                          Pay
+                          Buy This Book
                         </button>
                       </div>
                     ))}

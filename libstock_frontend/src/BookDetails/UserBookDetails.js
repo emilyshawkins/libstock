@@ -4,6 +4,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import axios from "axios";
 import "./UserBookDetails.css";
+import { renderCheckoutButton, handlePayment } from "../UserHomePage/UserHomePage"; 
+
 
 const BookDetails = () => {
   const [book, setBook] = useState(null);
@@ -55,7 +57,7 @@ const BookDetails = () => {
         setLoading(false);
       }
     };
-
+    fetchUserCheckouts();
     fetchBookDetails();
   }, [bookId]);
 
@@ -127,23 +129,7 @@ const BookDetails = () => {
       alert("Error renewing book. Please try again.");
     }
   };
-    
 
-  const renderCheckoutButton = (bookId) => {
-    if (userCheckouts.has(bookId)) {
-      return ( <>
-        <button onClick={(e) => {handleReturn(bookId); e.stopPropagation();}}>Return</button>
-        <button onClick={(e) => {handleRenew(bookId); e.stopPropagation();}}>Renew</button>
-        <br></br>
-      </>)
-    } else {
-      return (<>
-        <button onClick={(e) => {handleCheckout(bookId); e.stopPropagation();}}>Checkout</button>
-        <br></br>
-      </>)
-    }
-  };
-  
   const fetchUserWishlist = async () => {
     if (!userId) return;
 
@@ -219,10 +205,16 @@ const BookDetails = () => {
       <p><strong>Purchasable:</strong> {book.purchasable ? "Yes" : "No"}</p>
       <p><strong>Count:</strong> {book.count}</p>
       <p><strong>Checked Out:</strong> {book.numCheckedOut}</p>
-      {renderCheckoutButton(book.id)}
       {/* Wishlist Button */}
-      <button className="wishlist-button" onClick={handleWishlistToggle}>
+      <button onClick={handleWishlistToggle}>
         {wishlist.has(book.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+      </button>
+      {renderCheckoutButton(book.id, userCheckouts, handleReturn, handleRenew, handleCheckout)}
+      <button
+        className="payment-btn"
+        onClick={() => handlePayment(book)}
+      >
+        Buy This Book
       </button>
     </div>
   );
