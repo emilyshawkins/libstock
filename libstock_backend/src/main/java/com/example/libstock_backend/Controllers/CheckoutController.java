@@ -71,18 +71,9 @@ public class CheckoutController {
         Instant checkoutDate = Instant.now(); // Get current date
 
         Instant dueDate = Instant.now().plus(14, java.time.temporal.ChronoUnit.DAYS); // Get due date
-
-        if (offset == 0) {
-            dueDate = Instant.now().plus(14, java.time.temporal.ChronoUnit.DAYS); // Get due date for UTC
-        }
-        else if (offset > 0) {
-            dueDate = Instant.now().plus(15, java.time.temporal.ChronoUnit.DAYS); // Get due date for time zones +
-            dueDate = dueDate.atZone(ZoneOffset.UTC).withHour((23 + offset) % 24).withMinute(59).withSecond(59).withNano(999999999).toInstant();
-        }
-        else {
-            dueDate = Instant.now().plus(13, java.time.temporal.ChronoUnit.DAYS); // Get due date for time zones -
-            dueDate = dueDate.atZone(ZoneOffset.UTC).withHour((23 + offset) % 24).withMinute(59).withSecond(59).withNano(999999999).toInstant();
-        }
+        dueDate = dueDate.atZone(ZoneOffset.UTC).withHour(23).withMinute(59).withSecond(59).withNano(999).toInstant();
+        dueDate = dueDate.plus(offset, java.time.temporal.ChronoUnit.HOURS); // Add offset to due date
+        
 
         checkout.setStatus("Checked Out"); // Set status to checked out
         checkout.setCheckoutDate(checkoutDate); // Set checkout date
@@ -92,6 +83,9 @@ public class CheckoutController {
         bookRepository.save(book);
 
         checkoutRepository.save(checkout);
+
+        System.out.println(checkout.getCheckoutDate());
+        System.out.println(checkout.getDueDate());
         return ResponseEntity.ok(checkout); 
     }
 

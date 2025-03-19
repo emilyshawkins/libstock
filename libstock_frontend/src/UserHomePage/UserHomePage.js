@@ -237,14 +237,16 @@ const UserHomePage = () => {
   // Handle checkout
   const handleCheckout = async (bookId) => {
     try {
-      const timeOffsetNow = new Date().getTimezoneOffset() / 60;
+      const dueDate = new Date();
+      dueDate.setDate(dueDate.getDate() + 14); // Due in 14 days
+      const timeOffsetNow = dueDate.getTimezoneOffset() / 60;
 
       const response = await axios.post(
         `http://localhost:8080/checkout/create?offset=${timeOffsetNow}`,
         { userId, bookId }
       );
 
-      const readable = new Date(response.data.dueDate).toLocaleString();
+      const readable = new Date(response.data.dueDate * 1000).toLocaleString();
       setUserCheckouts((prev) => new Set(prev).add(bookId));
       alert(
         "Checkout success! You have until " + readable + " to return the book."
