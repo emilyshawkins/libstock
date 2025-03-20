@@ -121,7 +121,7 @@ public class CollectionController {
         return ResponseEntity.ok(collection);
     }
 
-    @GetMapping("/get_all_collections")
+    @GetMapping("/get_users")
     // Get all collections
     public ResponseEntity<Object> get_all_collections(@RequestParam String userId) {
         if (userId == null || userId.isBlank() || userId == "") { // Check if the user ID is null or blank
@@ -131,6 +131,12 @@ public class CollectionController {
             return ResponseEntity.badRequest().body("User does not exist.");
         }
         return ResponseEntity.ok(collectionRepository.findByUserId(userId));
+    }
+
+    @GetMapping("/get_visible")
+    // Get all visible collections
+    public ResponseEntity<Object> get_visible_collections() {
+        return ResponseEntity.ok(collectionRepository.findByVisible(true));
     }
 
     @GetMapping("get_collection_books")
