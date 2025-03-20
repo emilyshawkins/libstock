@@ -18,6 +18,7 @@ import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import User AccountSettings
 import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
+import FavPageShare from './FavPage/FavPageShare';
 import WishList from "./WishList/WishList"; //Import Wishlist Page
 import UserBookDetails from "./BookDetails/UserBookDetails"; // Import BookDetails
 import CollectionPage from "./Collection/CollectionPage"; // Import CollectionPage
@@ -81,6 +82,7 @@ function MainContent() {
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
         <Route path="/user/favorite" element={<FavPage />} />{" "}
+        <Route path="/shared-favorites" element={<FavPageShare />} />{" "}
         <Route path="/user/wishlist" element={<WishList />} />{" "}
         <Route path="/user/home/book" element={<UserBookDetails />} />{" "}
         {/* User Book Details */}

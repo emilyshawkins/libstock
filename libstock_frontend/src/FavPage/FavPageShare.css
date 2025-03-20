@@ -1,0 +1,97 @@
+.fav-share-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.fav-share-container h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.fav-share-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.fav-share-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.fav-share-card:hover {
+  transform: translateY(-5px);
+}
+
+.fav-share-card h2 {
+  color: #333;
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+}
+
+.collection-description {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.collection-books {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.collection-books h3 {
+  color: #444;
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.collection-books ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.collection-books li {
+  color: #666;
+  padding: 5px 0;
+  font-size: 0.9rem;
+}
+
+.fav-share-loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.fav-share-error {
+  text-align: center;
+  padding: 40px;
+  color: #dc3545;
+  font-size: 1.1rem;
+}
+
+.fav-share-empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .fav-share-container {
+    padding: 15px;
+  }
+
+  .fav-share-grid {
+    grid-template-columns: 1fr;
+  }
+} 
