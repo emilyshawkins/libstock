@@ -92,7 +92,7 @@ function MainContent() {
         {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
-        <Route path="/user/collection" element={<CollectionPage />} />{" "}
+        <Route path="/collection" element={<CollectionPage />} />{" "}
         {/* User Collection */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}

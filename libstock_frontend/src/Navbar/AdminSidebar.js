@@ -21,7 +21,7 @@ function Sidebar() {
           Dashboard
         </button>
         <button
-          onClick={() => navigate("/admin/collection")}
+          onClick={() => navigate("/collection")}
           className="left-bar-button"
         >
           Collection
