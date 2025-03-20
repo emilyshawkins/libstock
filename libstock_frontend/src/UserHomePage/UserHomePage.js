@@ -17,6 +17,7 @@ export const renderCheckoutButton = (bookId, userCheckouts, handleReturn, handle
   if (userCheckouts.has(bookId)) {
     return (
       <>
+        <br></br>
         <button
           onClick={(e) => {
             handleReturn(bookId);
@@ -39,6 +40,7 @@ export const renderCheckoutButton = (bookId, userCheckouts, handleReturn, handle
   } else {
     return (
       <>
+      <br></br>
         <button
           onClick={(e) => {
             handleCheckout(bookId);
@@ -360,7 +362,7 @@ const UserHomePage = () => {
       const response = await axios.get("http://localhost:8080/checkout/renew", {
         params: { userId, bookId },
       });
-      const readable = new Date(response.data.dueDate).toLocaleString();
+      const readable = new Date(response.data.dueDate * 1000).toLocaleString();
       alert(
         "Renew success! You have until " + readable + " to return the book."
       );
