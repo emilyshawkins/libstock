@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./FavPageShare.css";
+import "./WishListShare.css";
 
-const FavPageShare = () => {
-  const [favorites, setFavorites] = useState([]);
+const WishListShare = () => {
+  const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
-    const fetchSharedFavorites = async () => {
+    const fetchSharedWishlist = async () => {
       try {
         // Get userId from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
@@ -25,21 +25,21 @@ const FavPageShare = () => {
               lastName: userId.lastName || "",
           });
         }
-        const response = await axios.get(`http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`);
-        setFavorites(response.data);
+        const response = await axios.get(`http://localhost:8080/wishlist/get_wishlist_by_user?userId=${userId}`);
+        setWishlist(response.data);
       } catch (error) {
-        console.error("Error fetching favorites:", error);
-        setError("Failed to load favorites");
+        console.error("Error fetching wishlist:", error);
+        setError("Failed to load wishlist");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSharedFavorites();
+    fetchSharedWishlist();
   }, []);
 
   if (loading) {
-    return <div className="fav-share-loading">Loading favorites...</div>;
+    return <div className="fav-share-loading">Loading wishlist...</div>;
   }
 
   if (error) {
@@ -47,7 +47,7 @@ const FavPageShare = () => {
   }
 
   // Group books by their first letter
-  const booksByLetter = favorites.reduce((acc, book) => {
+  const booksByLetter = wishlist.reduce((acc, book) => {
     const firstLetter = book.title.charAt(0).toUpperCase();
     if (!acc[firstLetter]) {
       acc[firstLetter] = [];
@@ -58,8 +58,8 @@ const FavPageShare = () => {
 
   return (
     <div className="fav-container"> 
-      <h1><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong>'s Favorite Books</h1>  
-      {favorites.length > 0 ? (
+      <h1><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong>'s Wishlist</h1>  
+      {wishlist.length > 0 ? (
         Object.keys(booksByLetter)
           .sort()
           .map((letter) => (
@@ -87,10 +87,10 @@ const FavPageShare = () => {
             </div>
           ))
       ) : (
-        <p>No favorite books yet.</p>
+        <p>No wishlist books yet.</p>
       )}
     </div>
   );
 };
 
-export default FavPageShare; 
+export default WishListShare; 

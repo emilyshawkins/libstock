@@ -1,0 +1,97 @@
+.wishlist-share-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+  }
+  
+  .wishlist-share-container h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .wishlist-share-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .wishlist-share-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .wishlist-share-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .wishlist-share-card h2 {
+    color: #333;
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+  }
+  
+  .wishlist-share-description {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+  }
+  
+  .wishlist-share-books {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+  }
+  
+  .wishlist-share-books h3 {
+    color: #444;
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+  }
+  
+  .wishlist-share-books ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .wishlist-share-books li {
+    color: #666;
+    padding: 5px 0;
+    font-size: 0.9rem;
+  }
+  
+  .wishlist-share-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 1.1rem;
+  }
+  
+  .wishlist-share-error {
+    text-align: center;
+    padding: 40px;
+    color: #dc3545;
+    font-size: 1.1rem;
+  }
+  
+  .wishlist-share-empty {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 1.1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 768px) {
+    .wishlist-share-container {
+      padding: 15px;
+    }
+  
+    .wishlist-share-grid {
+      grid-template-columns: 1fr;
+    }
+  } 
