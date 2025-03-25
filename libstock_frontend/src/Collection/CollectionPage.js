@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CollectionPage.css";
 
 const CollectionPage = () => {
+  const navigate = useNavigate();
   const [collections, setCollections] = useState([]); // List of collections
   const [newCollectionName, setNewCollectionName] = useState(""); // New collection name
   const [newCollectionDescription, setNewCollectionDescription] = useState(""); // New collection description
@@ -12,6 +14,7 @@ const CollectionPage = () => {
   const [userId] = useState(localStorage.getItem("userId") || ""); // Get user ID from localStorage
   const [collectionSearchQuery, setCollectionSearchQuery] = useState(""); // Search query for collections
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [expandedCollection, setExpandedCollection] = useState(null); // Track which collection is expanded
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -65,6 +68,16 @@ const CollectionPage = () => {
       return;
     }
 
+    // Check if collection name already exists
+    const collectionExists = collections.some(
+      collection => collection.name.toLowerCase() === newCollectionName.trim().toLowerCase()
+    );
+
+    if (collectionExists) {
+      alert("A collection with this name already exists. Please choose a different name.");
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:8080/admin_collection/create", {
         userId,
@@ -80,25 +93,6 @@ const CollectionPage = () => {
     } catch (error) {
       console.error("Error creating collection:", error);
       alert("Error creating collection. Please try again.");
-    }
-  };
-
-  // Edit collection details
-  const handleEditCollection = async (collectionId) => {
-    try {
-      const response = await axios.patch("http://localhost:8080/admin_collection/update", {
-        id: collectionId,
-        name: newCollectionName,
-        description: newCollectionDescription,
-        visible: false
-      });
-
-      setCollections(collections.map(collection => 
-        collection.id === collectionId ? response.data : collection
-      ));
-    } catch (error) {
-      console.error("Error updating collection:", error);
-      alert("Error updating collection. Please try again.");
     }
   };
 
@@ -151,22 +145,9 @@ const CollectionPage = () => {
     }
   };
 
-  // Add this new function to handle the Done button click
-  const handleDone = async () => {
-    if (selectedBooks.length === 0) {
-      alert("Please select at least one book!");
-      return;
-    }
-
-    try {
-      await handleAddBooksToCollection(selectedBooks);
-      setSelectedBooks([]); // Clear selected books
-      fetchUserCollections(); // Refresh collections
-      fetchBooks(); // Refresh books list
-    } catch (error) {
-      console.error("Error updating collection:", error);
-      alert("Error updating collection. Please try again.");
-    }
+  // Function to handle book click and navigate to details
+  const handleBookClick = (bookId) => {
+    navigate(`/user/home/book?id=${bookId}`);
   };
 
   return (
@@ -275,9 +256,6 @@ const CollectionPage = () => {
             })}
           </div>
         </div>
-        <button className="collection-button" onClick={handleDone}>
-          Done ({selectedBooks.length})
-        </button>
       </div>
 
       {/* Existing Collections */}
@@ -285,14 +263,46 @@ const CollectionPage = () => {
         <h2>List Collections</h2>
         <div className="collection-grid">
           {collections.map((collection) => (
-            <div key={collection.id} className="collection-card">
+            <div 
+              key={collection.id} 
+              className={`collection-card ${expandedCollection === collection.id ? 'expanded' : ''}`}
+              onClick={() => setExpandedCollection(expandedCollection === collection.id ? null : collection.id)}
+            >
               <h3>{collection.name}</h3>
               <p>{collection.description}</p>
               <p>Books: {collection.books.length}</p>
               <div className="collection-actions">
-                <button onClick={() => handleEditCollection(collection.id)}>Edit</button>
-                <button onClick={() => handleDeleteCollection(collection.id)}>Delete</button>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteCollection(collection.id);
+                  }}
+                >
+                  Delete
+                </button>
               </div>
+              {expandedCollection === collection.id && (
+                <div className="collection-books">
+                  <h4>Books in Collection:</h4>
+                  <div className="books-list">
+                    {books
+                      .filter(book => collection.books.includes(book.id))
+                      .map(book => (
+                        <div 
+                          key={book.id} 
+                          className="book-item-in-collection"
+                          onClick={(e) => handleBookClick(book.id)}
+                        >
+                          <span>{book.title}</span>
+                        </div>
+                      ))
+                    }
+                    {collection.books.length === 0 && (
+                      <p className="no-books">No books in this collection</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

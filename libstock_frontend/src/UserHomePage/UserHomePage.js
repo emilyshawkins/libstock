@@ -400,7 +400,6 @@ const UserHomePage = () => {
   return (
     <div className="user-home-container">
       <h1>Welcome to Your Dashboard</h1>
-
       <div className="main-content">
         {/* Search bar for filtering books */}
         <div className="search-bar">

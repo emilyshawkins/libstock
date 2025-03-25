@@ -17,8 +17,8 @@ function Sidebar() {
                 <button onClick={() => navigate("/user/home")} className="left-bar-button">
                     Dashboard
                 </button>
-                <button onClick={() => navigate("/collection")} className="left-bar-button">
-                    Collection
+                <button onClick={() => navigate("/user/Renting")} className="left-bar-button">
+                    Renting
                 </button>
                 <button onClick={() => navigate("/user/wishlist")} className="left-bar-button">
                     Wishlist
