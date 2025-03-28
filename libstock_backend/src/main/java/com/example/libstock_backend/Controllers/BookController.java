@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.libstock_backend.Models.Book;
+import com.example.libstock_backend.Models.Favorite;
 import com.example.libstock_backend.Repositories.BookAuthorRepository;
 import com.example.libstock_backend.Repositories.BookGenreRepository;
 import com.example.libstock_backend.Repositories.BookRepository;
@@ -165,11 +166,19 @@ public class BookController {
         BookAuthorRepository.deleteAllByBookId(id); 
         BookGenreRepository.deleteAllByBookId(id);
         CheckoutRepository.deleteAllByBookId(id);
-        FavoriteRepository.deleteAllByBookId(id);
+        // FavoriteRepository.deleteAllByBookId(id);
         QueueRepository.deleteAllByBookId(id);
         RatingRepository.deleteAllByBookId(id);
         WishlistItemRepository.deleteAllByBookId(id);
         BookRepository.delete(existingBook);
+
+        for (Favorite favorite : FavoriteRepository.findAll()) {
+            if (favorite.getBooks().contains(id)) {
+                favorite.getBooks().remove(id); // Remove the book from the user's favorites
+                FavoriteRepository.save(favorite); // Save the updated favorite list
+            }
+            
+        }
 
         return ResponseEntity.ok(existingBook);
     }

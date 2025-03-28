@@ -1,5 +1,7 @@
 package com.example.libstock_backend.Models;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,13 +12,13 @@ public class Favorite {
     private String id;
 
     private String userId; // ID of the user
-    private String bookId; // ID of the book
+    private ArrayList<String> books; // ID of the book
 
     public Favorite() {}
 
-    public Favorite(String userId, String bookId) {
+    public Favorite(String userId, ArrayList<String> books) {
         this.userId = userId;
-        this.bookId = bookId;
+        this.books = books;
     }
 
     public String getId() {
@@ -27,8 +29,8 @@ public class Favorite {
         return userId;
     }
 
-    public String getBookId() {
-        return bookId;
+    public ArrayList<String> getBooks() {
+        return books;
     }
 
     public void setId(String id) {
@@ -39,7 +41,7 @@ public class Favorite {
         this.userId = userId;
     }
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
+    public void setBooks(ArrayList<String> books) {
+        this.books = books;
     }
 }

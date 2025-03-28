@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,22 +33,35 @@ public class FavoriteController {
 
     @PostMapping("/create")
     // Create a new favorite
-    public ResponseEntity<Object> create_favorite(@RequestBody Favorite favorite) {
-        if (favorite.getUserId() == null || favorite.getBookId() == null) { // Check if user ID and book ID are provided
+    public ResponseEntity<Object> create_favorite(@RequestParam String userId, @RequestParam String bookId) {
+        if (userId == null || userId == null) { // Check if user ID and book ID are provided
             return ResponseEntity.badRequest().body("User ID and Book ID are required.");
         }
-        if(bookRepository.findById(favorite.getBookId()).orElse(null) == null) { // Check if book exists
+        if(bookRepository.findById(bookId).orElse(null) == null) { // Check if book exists
             return ResponseEntity.badRequest().body("Book not found.");
         }
-        if(userRepository.findById(favorite.getUserId()).orElse(null) == null) { // Check if user exists
+        if(userRepository.findById(userId).orElse(null) == null) { // Check if user exists
             return ResponseEntity.badRequest().body("User not found.");
         }
-        Favorite existingFavorite = favoriteRepository.findByUserIdAndBookId(favorite.getUserId(), favorite.getBookId());
-        if (existingFavorite != null) { // Check if favorite already exists
-            return ResponseEntity.badRequest().body("Favorite already exists.");
+        Favorite existingFavorite = favoriteRepository.findByUserId(userId); // Check if favorite already exists
+        if (existingFavorite == null) { // Create a new favorite if it doesn't exist
+            ArrayList<String> books = new ArrayList<>();
+            books.add(bookId);
+            existingFavorite = new Favorite(userId, books);
         }
-        favoriteRepository.save(favorite);
-        return ResponseEntity.ok(favorite);
+        else { // Add book to existing favorite
+            if (existingFavorite.getBooks() == null) {
+                existingFavorite.setBooks(new ArrayList<>());
+            }
+            if (!existingFavorite.getBooks().contains(bookId)) {
+                existingFavorite.getBooks().add(bookId);
+            } else {
+                return ResponseEntity.badRequest().body("Book already in favorites.");
+            }
+        }
+        
+        favoriteRepository.save(existingFavorite); // Save favorite to database
+        return ResponseEntity.ok(existingFavorite); // Return favorite
     }
 
     @GetMapping("/read")
@@ -63,24 +74,24 @@ public class FavoriteController {
         return ResponseEntity.ok(favorite);
     }
 
-    @PatchMapping("/update")
-    // Update a favorite
-    public ResponseEntity<Favorite> update_favorite(@RequestBody Favorite favorite) { // Delete will probably be a better option
-        Favorite existingFavorite = favoriteRepository.findById(favorite.getId()).orElse(null);
-        if (existingFavorite == null) {
-            return ResponseEntity.notFound().build();
-        }
+    // @PatchMapping("/update")
+    // // Update a favorite
+    // public ResponseEntity<Favorite> update_favorite(@RequestBody Favorite favorite) { // Delete will probably be a better option
+    //     Favorite existingFavorite = favoriteRepository.findById(favorite.getId()).orElse(null);
+    //     if (existingFavorite == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
 
-        if (favorite.getUserId() != null) {
-            existingFavorite.setUserId(favorite.getUserId());
-        }
-        if (favorite.getBookId() != null) {
-            existingFavorite.setBookId(favorite.getBookId());
-        }
+    //     if (favorite.getUserId() != null) {
+    //         existingFavorite.setUserId(favorite.getUserId());
+    //     }
+    //     if (favorite.getBookId() != null) {
+    //         existingFavorite.setBookId(favorite.getBookId());
+    //     }
 
-        favoriteRepository.save(favorite);
-        return ResponseEntity.ok(favorite);
-    }
+    //     favoriteRepository.save(favorite);
+    //     return ResponseEntity.ok(favorite);
+    // }
 
     // @DeleteMapping("/delete")
     // // Delete a favorite
@@ -95,10 +106,10 @@ public class FavoriteController {
 
     @DeleteMapping("/delete")
     // Delete a favorite by user and book ID
-    public ResponseEntity<Favorite> delete_favorite_by_ids(@RequestParam String userId, @RequestParam String bookId) {
-        Favorite favorite = favoriteRepository.findByUserIdAndBookId(userId, bookId);
+    public ResponseEntity<Object> delete_favorite_by_ids(@RequestParam String userId, @RequestParam String bookId) {
+        Favorite favorite = favoriteRepository.findByUserId(userId); // Find favorite by user ID
         if (favorite == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok().body("Favorite not found.");
         }
         favoriteRepository.delete(favorite);
         return ResponseEntity.ok(favorite);
@@ -107,10 +118,10 @@ public class FavoriteController {
     @GetMapping("/get_favorites_by_user")
     // Get all favorites by user
     public ResponseEntity<Iterable<Book>> get_favorites_by_user(@RequestParam String userId) {
-        Iterable<Favorite> favorites = favoriteRepository.findByUserId(userId);
+        Favorite favorite = favoriteRepository.findByUserId(userId);
         List<Book> books = new ArrayList<>();
-        for (Favorite favorite : favorites) { // Get all books from favorites
-            Book book = bookRepository.findById(favorite.getBookId()).orElse(null);
+        for (String bookId : favorite.getBooks()) { // Get all books from favorites
+            Book book = bookRepository.findById(bookId).orElse(null);
             if (book != null) {
                 books.add(book);
             }
