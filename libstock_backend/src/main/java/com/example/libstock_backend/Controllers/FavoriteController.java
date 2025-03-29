@@ -111,7 +111,10 @@ public class FavoriteController {
         if (favorite == null) {
             return ResponseEntity.ok().body("Favorite not found.");
         }
-        favoriteRepository.delete(favorite);
+
+        favorite.getBooks().remove(bookId); // Remove book from favorites
+        favoriteRepository.save(favorite); // Save favorite to database
+        
         return ResponseEntity.ok(favorite);
     }
 
@@ -130,5 +133,23 @@ public class FavoriteController {
         return ResponseEntity.ok(books);
     }
 
+    @GetMapping("/share")
+    // Share a favorite by ID
+    public ResponseEntity<Iterable<Book>> share_favorite(@RequestParam String id) {
+        Favorite favorite = favoriteRepository.findById(id).orElse(null);
+        if (favorite == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Book> books = new ArrayList<>();
+        for (String bookId : favorite.getBooks()) { // Get all books from favorites
+            Book book = bookRepository.findById(bookId).orElse(null);
+            if (book != null) {
+                books.add(book);
+            }
+        }
+
+        return ResponseEntity.ok(books);
+    }
     
 }

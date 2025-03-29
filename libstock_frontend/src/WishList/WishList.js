@@ -38,9 +38,7 @@ const WishListPage = () => {
         setWishlist((prev) => prev.filter((book) => book.id !== bookId));
       } else {
         // Add to Wishlist
-        await axios.post(`http://localhost:8080/wishlist/create`, null, {
-          params: { userId, bookId },
-        });
+        await axios.post(`http://localhost:8080/wishlist/create?userId=${userId}&bookId=${bookId}`);
         fetchUserWishlist();
       }
     } catch (error) {

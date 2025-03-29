@@ -153,7 +153,7 @@ const BookDetails = () => {
           return new Set(updatedFavorites);
         });
       } else {
-        await axios.post(`http://localhost:8080/favorite/create`, { userId, bookId });
+        await axios.post(`http://localhost:8080/favorite/create?userId=${userId}&bookId=${bookId}`);
         setFavoriteBooks((prev) => new Set([...prev, bookId]));
       }
     } catch (error) {
@@ -173,7 +173,7 @@ const BookDetails = () => {
           return new Set(updatedWishlist);
         });
       } else {
-        await axios.post("http://localhost:8080/wishlist/create", { userId, bookId });
+        await axios.post(`http://localhost:8080/wishlist/create?userId=${userId}&bookId=${bookId}`);
         setWishlist((prev) => new Set([...prev, bookId]));
         alert("Added to Wishlist!");
       }

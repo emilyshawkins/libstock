@@ -236,9 +236,7 @@ const UserHomePage = () => {
       if (!userId) return;
 
       if (favoriteBooks.has(bookId)) {
-        await axios.delete(`http://localhost:8080/favorite/delete`, {
-          params: { userId, bookId },
-        });
+        await axios.delete(`http://localhost:8080/favorite/delete?userId=${userId}&bookId=${bookId}`);
         setFavoriteBooks((prev) => {
           const updatedFavorites = new Set(prev);
           updatedFavorites.delete(bookId);
@@ -246,10 +244,7 @@ const UserHomePage = () => {
         });
       } else {
         // Add to favorites
-        await axios.post(`http://localhost:8080/favorite/create`, {
-          userId,
-          bookId,
-        });
+        await axios.post(`http://localhost:8080/favorite/create?userId=${userId}&bookId=${bookId}`);
         setFavoriteBooks((prev) => {
           const updatedFavorites = new Set(prev);
           updatedFavorites.add(bookId);
@@ -287,11 +282,7 @@ const UserHomePage = () => {
           return updatedWishlist;
         });
       } else {
-        await axios.post(
-          "http://localhost:8080/wishlist/create",
-          { userId, bookId },
-          { headers: { "Content-Type": "application/json" } }
-        );
+        await axios.post(`http://localhost:8080/wishlist/create?userId=${userId}&bookId=${bookId}`);
         setWishlist((prev) => new Set(prev).add(bookId));
       }
     } catch (error) {
