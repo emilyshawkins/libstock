@@ -65,10 +65,10 @@ public class WishlistItemController {
         return ResponseEntity.ok(existingWishlistItem);
     }
 
-    @GetMapping("/read")
+    @GetMapping("/get")
     // Read a wishlist item by id
-    public ResponseEntity<WishlistItem> read_wishlist_item(@RequestParam String id) {
-        WishlistItem wishlistItem = wishlistItemRepository.findById(id).orElse(null);
+    public ResponseEntity<WishlistItem> read_wishlist_item(@RequestParam String userId) {
+        WishlistItem wishlistItem = wishlistItemRepository.findByUserId(userId);
         if (wishlistItem == null) {
             return ResponseEntity.notFound().build();
         }

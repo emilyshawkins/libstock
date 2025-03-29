@@ -64,10 +64,10 @@ public class FavoriteController {
         return ResponseEntity.ok(existingFavorite); // Return favorite
     }
 
-    @GetMapping("/read")
+    @GetMapping("/get")
     // Read a favorite
-    public ResponseEntity<Favorite> read_favorite(@RequestParam String id) { 
-        Favorite favorite = favoriteRepository.findById(id).orElse(null);
+    public ResponseEntity<Favorite> read_favorite(@RequestParam String userId) { 
+        Favorite favorite = favoriteRepository.findByUserId(userId); // Find favorite by user ID
         if (favorite == null) {
             return ResponseEntity.notFound().build();
         }
