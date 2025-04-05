@@ -212,7 +212,7 @@ public class UserControllerTest {
         doNothing().when(checkoutRepository).deleteAllByUserId("1");
         doNothing().when(favoriteRepository).deleteAllByUserId("1");
         doNothing().when(notificationRepository).deleteAllByUserId("1");
-        doNothing().when(queueRepository).deleteAllByUserId("1");
+        doNothing().when(queueRepository).findAll();
         doNothing().when(ratingRepository).deleteAllByUserId("1");
         doNothing().when(wishlistItemRepository).deleteAllByUserId("1");
 
