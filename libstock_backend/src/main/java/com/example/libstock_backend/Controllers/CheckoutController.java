@@ -60,12 +60,12 @@ public class CheckoutController {
         }
 
         Book book = bookRepository.findById(checkout.getBookId()).orElse(null);
-        if (book.getCount() == book.getNumCheckedOut()) { // Check if all copies of the book are checked out, if so add user to queue
-            Queue queue = new Queue(checkout.getUserId(), checkout.getBookId(), queueRepository.countByBookId(checkout.getBookId()) + 1);
-            queueRepository.save(queue);
-            return ResponseEntity.badRequest().body("All copies of the book are checked out. You have been added to the queue.");
+        // if (book.getCount() == book.getNumCheckedOut()) { // Check if all copies of the book are checked out, if so add user to queue
+        //     Queue queue = new Queue(checkout.getUserId(), checkout.getBookId(), queueRepository.countByBookId(checkout.getBookId()) + 1);
+        //     queueRepository.save(queue);
+        //     return ResponseEntity.badRequest().body("All copies of the book are checked out. You have been added to the queue.");
             
-        }
+        // }
 
         // Set due date to 14 days from checkout date
         Instant checkoutDate = Instant.now(); // Get current date
@@ -154,6 +154,19 @@ public class CheckoutController {
 
         existingCheckout.setStatus("Returned"); // Set status to returned
         checkoutRepository.save(existingCheckout);
+
+        Queue queue = queueRepository.findByBookId(bookId); // Find queue
+        if (queue != null && queue.getQueueList().size() > 0) { // Check if there are users in the queue
+            Checkout queueCheckout = new Checkout(queueRepository.findByBookId(bookId).getQueueList().get(0), bookId, Instant.now(), Instant.now().plus(14, java.time.temporal.ChronoUnit.DAYS), Instant.now(), "Checked Out"); // Create checkout for user in queue
+            this.create_checkout(0, queueCheckout); // Create checkout for user in queue
+            queueRepository.findByBookId(bookId).getQueueList().remove(0); // Remove user from queue
+
+            queueRepository.save(queue); // Save queue
+
+            //TODO: Send email to user in queue
+            // Create notification for user in queue
+        }
+
         return ResponseEntity.ok(existingCheckout);
     }
 
