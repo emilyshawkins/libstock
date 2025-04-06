@@ -1,7 +1,7 @@
 /* src/UserHomePage/UserHomePage.js */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { loadStripe } from "@stripe/stripe-js";
@@ -13,7 +13,8 @@ const stripePromise = loadStripe(
 );
 
 // Function to render checkout buttons
-export const renderCheckoutButton = (bookId, userCheckouts, handleReturn, handleRenew, handleCheckout) => {
+export const renderCheckoutButton = (bookId, userCheckouts, userQueue, handleReturn, handleRenew, handleCheckout, handleQueue, databaseBooks) => {
+  const book = databaseBooks.find((book) => book.id === bookId);
   if (userCheckouts.has(bookId)) {
     return (
       <>
@@ -33,6 +34,37 @@ export const renderCheckoutButton = (bookId, userCheckouts, handleReturn, handle
           }}
         >
           Renew
+        </button>
+        <br />
+      </>
+    );
+  } else if (userQueue.find((queue) => queue.bookId === bookId)) {
+    return (
+      <>
+        <br></br>
+        <p>Position in Queue: {userQueue.find((queue) => queue.bookId === bookId).position}</p>
+        <button
+          onClick={(e) => {
+            handleQueue(bookId);
+            e.stopPropagation();
+          }}
+        >
+          Leave Queue
+        </button>
+        <br />
+      </>
+    );
+  } else if (book && book.count === book.numCheckedOut) {
+    return (
+      <>
+        <br></br>
+        <button
+          onClick={(e) => {
+            handleQueue(bookId);
+            e.stopPropagation();
+          }}
+        >
+          Join Queue
         </button>
         <br />
       </>
@@ -107,6 +139,9 @@ const UserHomePage = () => {
   // State for user checkouts
   const [userCheckouts, setUserCheckouts] = useState(new Set());
 
+  // State for user checkouts in queue
+  const [userQueue, setUserQueue] = useState([]);
+
   // State for filtered books (for search functionality)
   const [filteredBooks, setFilteredBooks] = useState([]);
 
@@ -130,6 +165,7 @@ const UserHomePage = () => {
       fetchUserFavorites();
       fetchUserWishlist();
       fetchUserCheckouts();
+      fetchUserQueue();
     };
     fetchData();
   }, []);
@@ -306,6 +342,17 @@ const UserHomePage = () => {
     }
   };
 
+  // Fetch user queue
+  const fetchUserQueue = async () => {
+    if (!userId) return;
+    try {
+      const response = await axios.get(`http://localhost:8080/queue/get_waiting?userId=${userId}`);
+      setUserQueue(response.data);
+    } catch (error) {
+      console.error("Error fetching user queue:", error);
+    }
+  };
+
   // Handle checkout
   const handleCheckout = async (bookId) => {
     try {
@@ -360,6 +407,32 @@ const UserHomePage = () => {
     } catch (error) {
       console.error("Error renewing book:", error);
       alert("Error renewing book. Please try again.");
+    }
+  };
+
+  // Handle queuing
+  const handleQueue = async (bookId) => {
+    
+    try {
+      if (userQueue.find((queue) => queue.bookId === bookId)) {
+        await axios.delete(`http://localhost:8080/queue/delete?userId=${userId}&bookId=${bookId}`);
+        setUserQueue((prev) => {
+          const updatedQueue = prev.filter((queue) => queue.bookId !== bookId);
+          return updatedQueue;
+        });
+        alert("You have been removed from the queue for this book.");
+      }
+      else {
+        const response = await axios.post(`http://localhost:8080/queue/create?userId=${userId}&bookId=${bookId}`);
+        setUserQueue((prev) => {
+          const updatedQueue = [...prev, response.data];
+          return updatedQueue;
+        });
+        alert("You have been added to the queue for this book.");
+      }
+    } catch (error) {
+      console.error("Queuing Error:", error);
+      alert("Queuing Error. Please try again.");
     }
   };
 
@@ -489,7 +562,7 @@ const UserHomePage = () => {
                             ? "Remove from Wishlist"
                             : "Add to Wishlist"}
                         </button>
-                        {renderCheckoutButton(book.id, userCheckouts, handleReturn, handleRenew, handleCheckout)}
+                        {renderCheckoutButton(book.id, userCheckouts, userQueue, handleReturn, handleRenew, handleCheckout, handleQueue,databaseBooks)}
                         <button
                           className="payment-btn"
                           onClick={() => handlePayment(book)}

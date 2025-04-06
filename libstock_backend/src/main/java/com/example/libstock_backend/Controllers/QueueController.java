@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.libstock_backend.DTOs.QueueDTO;
-import com.example.libstock_backend.Models.Book;
+// import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.Queue;
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.CheckoutRepository;
@@ -66,7 +66,7 @@ public class QueueController {
 
     @GetMapping("/read")
     // Read a queue by id
-    public ResponseEntity<Object> read_queue(@RequestParam String bookId, @RequestParam String userId) {
+    public ResponseEntity<Object> read_queue(@RequestParam String userId, @RequestParam String bookId) {
         Queue existingQueue = queueRepository.findByBookId(bookId); // Find queue by book ID
         if (existingQueue == null) {
             return ResponseEntity.notFound().build(); // Return 404 if queue not found
@@ -95,7 +95,7 @@ public class QueueController {
 
     @DeleteMapping("/delete")
     // Delete a queue
-    public ResponseEntity<Object> delete_queue(@RequestParam String bookId, @RequestParam String userId) {
+    public ResponseEntity<Object> delete_queue(@RequestParam String userId, @RequestParam String bookId) {
         Queue existingQueue = queueRepository.findByBookId(bookId); // Find queue by book ID
         if (existingQueue == null) {
             return ResponseEntity.notFound().build(); // Return 404 if queue not found
@@ -105,6 +105,8 @@ public class QueueController {
         }
         existingQueue.getQueueList().remove(userId); // Remove user ID from the queue
 
+        queueRepository.save(existingQueue); // Save the updated queue
+
         return ResponseEntity.ok("User removed from queue."); // Return success message
     }
 
@@ -113,14 +115,11 @@ public class QueueController {
     public ResponseEntity<Object> get_waiting_list(@RequestParam String userId) {
         List<Queue> queues = queueRepository.findByQueueListContaining(userId); // Find queues containing user ID
         
-        List<Book> books = new ArrayList<>(); // List to store books in the queue
+        List<QueueDTO> positions = new ArrayList<>(); // List to store books in the queue
         for (Queue queue : queues) {
-            Book book = bookRepository.findById(queue.getBookId()).orElse(null); // Find book by ID
-            if (book != null) {
-                books.add(book); // Add book to the list
-            }
+            positions.add(new QueueDTO(queue.getBookId(), userId, queue.getQueueList().indexOf(userId) + 1)); // Add book ID and position to the list
         }
 
-        return ResponseEntity.ok(books); // Return list of books in the queue
+        return ResponseEntity.ok(positions); // Return list of books in the queue
     }
 }
