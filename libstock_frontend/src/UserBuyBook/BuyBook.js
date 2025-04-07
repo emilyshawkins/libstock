@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import axios from "axios";
-import "./UserBookDetails.css";
 import {
   renderCheckoutButton,
   handlePayment,
@@ -18,7 +17,6 @@ const BookDetails = () => {
   const [userCheckouts, setUserCheckouts] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showIframe, setShowIframe] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -104,11 +102,6 @@ const BookDetails = () => {
     }
   };
 
-  // Toggle iframe visibility
-  const toggleIframe = () => {
-    setShowIframe(!showIframe);
-  };
-
   // Handle checkout
   const handleCheckout = async (bookId) => {
     try {
@@ -191,9 +184,10 @@ const BookDetails = () => {
           return new Set(updatedFavorites);
         });
       } else {
-        await axios.post(
-          `http://localhost:8080/favorite/create?userId=${userId}&bookId=${bookId}`
-        );
+        await axios.post(`http://localhost:8080/favorite/create`, {
+          userId,
+          bookId,
+        });
         setFavoriteBooks((prev) => new Set([...prev, bookId]));
       }
     } catch (error) {
@@ -215,9 +209,10 @@ const BookDetails = () => {
           return new Set(updatedWishlist);
         });
       } else {
-        await axios.post(
-          `http://localhost:8080/wishlist/create?userId=${userId}&bookId=${bookId}`
-        );
+        await axios.post("http://localhost:8080/wishlist/create", {
+          userId,
+          bookId,
+        });
         setWishlist((prev) => new Set([...prev, bookId]));
         alert("Added to Wishlist!");
       }
@@ -281,26 +276,6 @@ const BookDetails = () => {
       <p>
         <strong>Checked Out:</strong> {book.numCheckedOut}
       </p>
-
-      {/* BooksPrice.com iframe */}
-      <div className="books-price-iframe-container">
-        <h3>Compare Prices on BooksPrice.com</h3>
-        <button onClick={toggleIframe} className="toggle-iframe-btn">
-          {showIframe ? "Hide Price Comparison" : "Show Price Comparison"}
-        </button>
-
-        {showIframe && (
-          <div className="iframe-wrapper">
-            <iframe
-              src={`https://www.booksprice.com/comparePrice.do?l=y&searchType=compare&inputData=${book.isbn}`}
-              title="BooksPrice.com Price Comparison"
-              className="books-price-iframe"
-              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-            />
-          </div>
-        )}
-      </div>
-
       {/* Wishlist Button */}
       <button onClick={handleWishlistToggle}>
         {wishlist.has(book.id) ? "Remove from Wishlist" : "Add to Wishlist"}
