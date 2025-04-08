@@ -225,28 +225,27 @@ const BookDetails = () => {
 
   return (
     <div className="UserBook-details-container">
-      {/* Favorite Icon */}
-      <span className="favorite-icon" onClick={handleFavoriteToggle}>
-        {favoriteBooks.has(book.id) ? (
-          <FavoriteIcon
-            style={{
-              cursor: "pointer",
-              color: "red",
-              fontSize: "24px",
-              marginLeft: "580px",
-            }}
-          />
-        ) : (
-          <FavoriteBorderIcon
-            style={{
-              cursor: "pointer",
-              color: "grey",
-              fontSize: "24px",
-              marginLeft: "-20px",
-            }}
-          />
-        )}
-      </span>
+      <div className="favorite-icon-container">
+        <span className="favorite-icon" onClick={handleFavoriteToggle}>
+          {favoriteBooks.has(book.id) ? (
+            <FavoriteIcon
+              style={{
+                cursor: "pointer",
+                color: "red",
+                fontSize: "24px",
+              }}
+            />
+          ) : (
+            <FavoriteBorderIcon
+              style={{
+                cursor: "pointer",
+                color: "grey",
+                fontSize: "24px",
+              }}
+            />
+          )}
+        </span>
+      </div>
       <h1>{book.title}</h1>
       <p>
         <strong>ISBN:</strong> {book.isbn}
@@ -290,19 +289,21 @@ const BookDetails = () => {
       </div>
 
       {/* Wishlist Button */}
-      <button onClick={handleWishlistToggle}>
-        {wishlist.has(book.id) ? "Remove from Wishlist" : "Add to Wishlist"}
-      </button>
-      {renderCheckoutButton(
-        book.id,
-        userCheckouts,
-        handleReturn,
-        handleRenew,
-        handleCheckout
-      )}
-      <button className="payment-btn" onClick={() => handlePayment(book)}>
-        Buy This Book
-      </button>
+      <div className="bookdetail-button-container">
+        <button onClick={handleWishlistToggle}>
+          {wishlist.has(book.id) ? "Remove from Wishlist" : "Add to Wishlist"}
+        </button>
+        {renderCheckoutButton(
+          book.id,
+          userCheckouts,
+          handleReturn,
+          handleRenew,
+          handleCheckout
+        )}
+        <button className="payment-btn" onClick={() => handlePayment(book)}>
+          Buy This Book
+        </button>
+      </div>
     </div>
   );
 };

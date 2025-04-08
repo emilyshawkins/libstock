@@ -9,6 +9,19 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
+  position: relative;
+}
+
+.favorite-icon-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.favorite-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 strong {
@@ -19,32 +32,39 @@ strong {
   margin-bottom: 0;
 }
 
-.payment-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
+.bookdetail-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.bookdetail-button-container button {
+  padding: 8px 31px;
   cursor: pointer;
   background-color: #476778;
   color: white;
-  transition: background 0.3s ease;
+  border: none;
+  border-radius: 5px;
+  margin: 20px 40.5px;
 }
-button.checkout-button {
+
+.button-container button:hover {
+  background-color: #35505d;
+}
+
+.payment-btn {
+  background-color: #476778;
+}
+
+.checkout-button {
   background-color: #28a745;
-  color: white;
 }
 
-button.return-button {
+.return-button {
   background-color: #dc3545;
-  color: white;
 }
 
-button.renew-button {
+.renew-button {
   background-color: #007bff;
-  color: white;
 }
 
 @media (max-width: 768px) {
