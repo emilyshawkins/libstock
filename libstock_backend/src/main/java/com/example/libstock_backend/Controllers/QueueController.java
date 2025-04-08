@@ -35,6 +35,7 @@ public class QueueController {
     @PostMapping("/create")
     // Create a new queue
     public ResponseEntity<Object> create_queue(@RequestParam String userId, @RequestParam String bookId) {
+        System.out.println("Creating queue for user: " + userId + " and book: " + bookId); // Log user ID and book ID
         if (userId == null || bookId == null) { // Check if user ID and book ID are provided
             return ResponseEntity.badRequest().body("User ID and Book ID are required.");
         }
@@ -56,6 +57,7 @@ public class QueueController {
             }
             if (!existingQueue.getQueueList().contains(userId)) {
                 existingQueue.getQueueList().add(userId); // Add user ID to the queue
+                queueRepository.save(existingQueue); // Save the updated queue
                 return ResponseEntity.ok(new QueueDTO(bookId, userId, existingQueue.getQueueList().size())); // Return the queue
             } else {
                 return ResponseEntity.badRequest().body("User already in queue.");
