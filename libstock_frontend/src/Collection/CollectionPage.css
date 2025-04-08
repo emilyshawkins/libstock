@@ -104,7 +104,6 @@
   }
   
   .book-list {
-    max-height: 300px;
     overflow-y: auto;
     padding: 5px;
     background: #f8f9fa;

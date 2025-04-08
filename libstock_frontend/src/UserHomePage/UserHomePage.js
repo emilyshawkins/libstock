@@ -6,7 +6,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { loadStripe } from "@stripe/stripe-js";
 import "./UserHomePage.css";
-import Chatbot from "../ChatBot/ChatBot"; // Adjust path as needed
 
 // Load Stripe instance
 const stripePromise = loadStripe(
@@ -413,7 +412,6 @@ const UserHomePage = () => {
         </div>
         <div className="user-home-container">
           {/* ...existing content... */}
-          <Chatbot /> {/* ✅ Floating chat assistant appears here */}
         </div>
         {/* Display books in the database */}
         <div className="book-list">
