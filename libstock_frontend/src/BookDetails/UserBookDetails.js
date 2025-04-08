@@ -289,15 +289,12 @@ const BookDetails = () => {
         </button>
 
         {showIframe && (
-          <div className="iframe-wrapper">
-            <iframe
-              src={`https://www.booksprice.com/comparePrice.do?l=y&searchType=compare&inputData=${book.isbn}`}
-              title="BooksPrice.com Price Comparison"
-              className="books-price-iframe"
-              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-            />
-          </div>
-        )}
+        <iframe
+          src={`https://www.booksprice.com/comparePrice.do?l=y&searchType=compare&inputData=${book.isbn}`}
+          title="BooksPrice.com Price Comparison"
+          className="price-comparison-iframe"
+          sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+        />)}
       </div>
 
       {/* Wishlist Button */}

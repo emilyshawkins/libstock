@@ -33,8 +33,10 @@ strong {
 }
 
 .bookdetail-button-container {
+
   display: flex;
   align-items: center;
+  margin: 20px 300px;
 }
 
 .bookdetail-button-container button {
@@ -144,20 +146,6 @@ strong {
   background-color: #0b7dda;
 }
 
-/* BooksPrice.com link */
-.books-price-iframe-container {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #f5f5f5;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.books-price-iframe-container h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #333;
-}
 
 .price-comparison-link {
   display: inline-block;
@@ -174,4 +162,26 @@ strong {
   background-color: #45a049;
   text-decoration: none;
   color: white;
+}
+
+.books-price-iframe-container {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.books-price-iframe-container h3 {
+  color: #476778;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.price-comparison-iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+  border-radius: 4px;
+  background-color: white;
 }
