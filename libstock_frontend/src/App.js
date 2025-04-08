@@ -28,14 +28,11 @@ import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
 import AdminAccountSettings from "./AccountSetting/AdminAccountSettings"; // Import User AccountSettings
-import ChatBot from "./components/ChatBot";
-import TestCors from "./components/TestCors";
 
 function App() {
   return (
     <Router>
       <MainContent />
-      <ChatBot />
     </Router>
   );
 }
@@ -95,6 +92,8 @@ function MainContent() {
         {/* User Inventory */}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
+        <Route path="/user/settings" element={<AccountSettings />} />{" "}
+        {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
         <Route path="/collection" element={<CollectionPage />} />{" "}
@@ -109,7 +108,6 @@ function MainContent() {
         {/* Admin Add Book Manually */}
         <Route path="/admin/settings" element={<AdminAccountSettings />} />{" "}
         {/* Account Settings */}
-        <Route path="/test-cors" element={<TestCors />} />
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>

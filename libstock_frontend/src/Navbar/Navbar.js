@@ -25,11 +25,6 @@ function Navbar() {
           <button className="nav-button">Contact</button>
         </div>
         <div className="button-container">
-          <Link to="/test-cors">
-            <button className="nav-button">Test CORS</button>
-          </Link>
-        </div>
-        <div className="button-container">
           <Link to="/signin">
             <button className="nav-button">Sign In</button>
           </Link>
