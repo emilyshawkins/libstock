@@ -9,6 +9,7 @@ const FavPage = () => {
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const [userId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
+  const [favoriteId, setFavoriteId] = useState("");
 
   useEffect(() => {
     fetchUserFavorites();
@@ -19,6 +20,13 @@ const FavPage = () => {
     if (!userId) return;
 
     try {
+      // First get the favorite ID
+      const favResponse = await axios.get(
+        `http://localhost:8080/favorite/get?userId=${userId}`
+      );
+      setFavoriteId(favResponse.data.id);
+
+      // Then get the favorite books details
       const response = await axios.get(
         `http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`
       );
@@ -45,7 +53,7 @@ const FavPage = () => {
 
   // Generate shareable link
   const generateShareLink = () => {
-    const link = `${window.location.origin}/favorite/share?id=${userId}`;
+    const link = `${window.location.origin}/favorite/share?id=${favoriteId}`;
     setShareLink(link);
     navigator.clipboard.writeText(link);
     alert("Favorite books link copied to clipboard!");

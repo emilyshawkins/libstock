@@ -8,6 +8,7 @@ const WishListPage = () => {
   const [wishlist, setWishlist] = useState([]);
   const [userId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
+  const [wishlistId, setWishlistId] = useState("");
 
   useEffect(() => {
     fetchUserWishlist();
@@ -18,6 +19,13 @@ const WishListPage = () => {
     if (!userId) return;
   
     try {
+      // First get the Wishlist ID
+      const wishResponse = await axios.get(
+        `http://localhost:8080/wishlist/get?userId=${userId}`
+      );
+      setWishlistId(wishResponse.data.id);
+      
+      // Then get the Wishlist books details
       const response = await axios.get(
         `http://localhost:8080/wishlist/get_wishlist_by_user?userId=${userId}`
       );
@@ -48,7 +56,7 @@ const WishListPage = () => {
 
   // Generate shareable link
   const generateShareLink = () => {
-    const link = `${window.location.origin}/wishlist/share?id=${userId}`;
+    const link = `${window.location.origin}/wishlist/share?id=${wishlistId}`;
     setShareLink(link);
     navigator.clipboard.writeText(link);
     alert("Wishlist link copied to clipboard!");

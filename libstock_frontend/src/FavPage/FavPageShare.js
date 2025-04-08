@@ -6,36 +6,32 @@ const FavPageShare = () => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     const fetchSharedFavorites = async () => {
       try {
-        // Get favoriteId from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const favoriteId = urlParams.get('id');
-        
+        const favoriteId = urlParams.get("id");
+
         if (!favoriteId) {
           setError("No favorite ID provided");
           setLoading(false);
           return;
         }
 
-        // Fetch favorites using favoriteId
-        const response = await axios.get(`http://localhost:8080/favorite/share?id=${favoriteId}`);
-        setFavorites(response.data);
+        const response = await axios.get(
+          `http://localhost:8080/favorite/share?id=${favoriteId}`
+        );
 
-        // If the response includes user info, set it
-        if (response.data.userInfo) {
-          setUserInfo({
-            firstName: response.data.userInfo.firstName || "Unknown",
-            lastName: response.data.userInfo.lastName || "",
-          });
+        if (Array.isArray(response.data)) {
+          setFavorites(response.data);
+        } else {
+          console.warn("Expected an array but got:", response.data);
+          setFavorites([]);
         }
-
-      } catch (error) {
-        console.error("Error fetching favorites:", error);
-        setError("Failed to load favorites");
+      } catch (fetchError) {
+        console.error("Error fetching shared favorites:", fetchError);
+        setError("Failed to load shared favorites.");
       } finally {
         setLoading(false);
       }
@@ -63,8 +59,8 @@ const FavPageShare = () => {
   }, {});
 
   return (
-    <div className="fav-container"> 
-      <h1><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong>'s Favorite Books</h1>  
+    <div className="fav-container">
+      <h1> My Favorite Books Shared</h1>
       {favorites.length > 0 ? (
         Object.keys(booksByLetter)
           .sort()
@@ -77,26 +73,19 @@ const FavPageShare = () => {
                     <div className="book-title-container">
                       <h3 className="book-title">{book.title}</h3>
                     </div>
-                    <p>
-                      <strong>Author:</strong>{" "}
-                      {book.author || "Unknown Author"}
-                    </p>
-                    <p>
-                      <strong>ISBN:</strong> {book.isbn}
-                    </p>
-                    <p>
-                      <strong>Publication Date:</strong> {book.publicationDate}
-                    </p>
+                    <p><strong>Author:</strong> {book.author || "Unknown Author"}</p>
+                    <p><strong>ISBN:</strong> {book.isbn}</p>
+                    <p><strong>Publication Date:</strong> {book.publicationDate}</p>
                   </div>
                 ))}
               </div>
             </div>
           ))
       ) : (
-        <p>No favorite books yet.</p>
+        <p>No favorite books found.</p>
       )}
     </div>
   );
 };
 
-export default FavPageShare; 
+export default FavPageShare;
