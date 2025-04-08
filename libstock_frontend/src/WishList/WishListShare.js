@@ -6,36 +6,32 @@ const WishListShare = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     const fetchSharedWishlist = async () => {
       try {
-        // Get wishlistId from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const wishlistId = urlParams.get('id');
-        
+        const wishlistId = urlParams.get("id");
+
         if (!wishlistId) {
-          setError("No wishlist ID provided");
+          setError("No wishlist ID provided.");
           setLoading(false);
           return;
         }
 
-        // Fetch wishlist using wishlistId
-        const response = await axios.get(`http://localhost:8080/wishlist/share?id=${wishlistId}`);
-        setWishlist(response.data);
+        const response = await axios.get(
+          `http://localhost:8080/wishlist/share?id=${wishlistId}`
+        );
 
-        // If the response includes user info, set it
-        if (response.data.userInfo) {
-          setUserInfo({
-            firstName: response.data.userInfo.firstName || "Unknown",
-            lastName: response.data.userInfo.lastName || "",
-          });
+        if (Array.isArray(response.data)) {
+          setWishlist(response.data);
+        } else {
+          console.warn("Expected an array but got:", response.data);
+          setWishlist([]);
         }
-
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-        setError("Failed to load wishlist");
+      } catch (fetchError) {
+        console.error("Error fetching shared wishlist:", fetchError);
+        setError("Failed to load shared wishlist.");
       } finally {
         setLoading(false);
       }
@@ -52,7 +48,6 @@ const WishListShare = () => {
     return <div className="fav-share-error">{error}</div>;
   }
 
-  // Group books by their first letter
   const booksByLetter = wishlist.reduce((acc, book) => {
     const firstLetter = book.title.charAt(0).toUpperCase();
     if (!acc[firstLetter]) {
@@ -63,8 +58,8 @@ const WishListShare = () => {
   }, {});
 
   return (
-    <div className="fav-container"> 
-      <h1><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong>'s Wishlist</h1>  
+    <div className="wishlist-share-container">
+      <h1>My Wishlist Books Share</h1>
       {wishlist.length > 0 ? (
         Object.keys(booksByLetter)
           .sort()
@@ -77,26 +72,19 @@ const WishListShare = () => {
                     <div className="book-title-container">
                       <h3 className="book-title">{book.title}</h3>
                     </div>
-                    <p>
-                      <strong>Author:</strong>{" "}
-                      {book.author || "Unknown Author"}
-                    </p>
-                    <p>
-                      <strong>ISBN:</strong> {book.isbn}
-                    </p>
-                    <p>
-                      <strong>Publication Date:</strong> {book.publicationDate}
-                    </p>
+                    <p><strong>Author:</strong> {book.author || "Unknown Author"}</p>
+                    <p><strong>ISBN:</strong> {book.isbn}</p>
+                    <p><strong>Publication Date:</strong> {book.publicationDate}</p>
                   </div>
                 ))}
               </div>
             </div>
           ))
       ) : (
-        <p>No wishlist books yet.</p>
+        <p>No books found in this wishlist.</p>
       )}
     </div>
   );
 };
 
-export default WishListShare; 
+export default WishListShare;

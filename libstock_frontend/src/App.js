@@ -83,9 +83,9 @@ function MainContent() {
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
         <Route path="/user/favorite" element={<FavPage />} />{" "}
-        <Route path="/shared-favorites" element={<FavPageShare />} />{" "}
+        <Route path="/favorite/share" element={<FavPageShare />} />{" "}
         <Route path="/user/wishlist" element={<WishList />} />{" "}
-        <Route path="/shared-wishlist" element={<WishListShare />} />{" "}
+        <Route path="/wishlist/share" element={<WishListShare />} />{" "}
         <Route path="/user/home/book" element={<UserBookDetails />} />{" "}
         {/* User Book Details */}
         <Route path="/user/inventory" element={<UserInventory />} />{" "}
