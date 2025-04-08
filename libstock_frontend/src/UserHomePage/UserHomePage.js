@@ -6,6 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { loadStripe } from "@stripe/stripe-js";
 import "./UserHomePage.css";
+import Chatbot from "../ChatBot/ChatBot"; // Adjust path as needed
 
 // Load Stripe instance
 const stripePromise = loadStripe(
@@ -13,7 +14,13 @@ const stripePromise = loadStripe(
 );
 
 // Function to render checkout buttons
-export const renderCheckoutButton = (bookId, userCheckouts, handleReturn, handleRenew, handleCheckout) => {
+export const renderCheckoutButton = (
+  bookId,
+  userCheckouts,
+  handleReturn,
+  handleRenew,
+  handleCheckout
+) => {
   if (userCheckouts.has(bookId)) {
     return (
       <>
@@ -40,7 +47,7 @@ export const renderCheckoutButton = (bookId, userCheckouts, handleReturn, handle
   } else {
     return (
       <>
-      <br></br>
+        <br></br>
         <button
           onClick={(e) => {
             handleCheckout(bookId);
@@ -66,16 +73,13 @@ export const handlePayment = async (book, bookQuantities) => {
       quantity: quantity,
     };
 
-    const response = await fetch(
-      "http://localhost:8080/product/v1/checkout",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(createPaymentRequest),
-      }
-    );
+    const response = await fetch("http://localhost:8080/product/v1/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(createPaymentRequest),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -236,7 +240,9 @@ const UserHomePage = () => {
       if (!userId) return;
 
       if (favoriteBooks.has(bookId)) {
-        await axios.delete(`http://localhost:8080/favorite/delete?userId=${userId}&bookId=${bookId}`);
+        await axios.delete(
+          `http://localhost:8080/favorite/delete?userId=${userId}&bookId=${bookId}`
+        );
         setFavoriteBooks((prev) => {
           const updatedFavorites = new Set(prev);
           updatedFavorites.delete(bookId);
@@ -244,7 +250,9 @@ const UserHomePage = () => {
         });
       } else {
         // Add to favorites
-        await axios.post(`http://localhost:8080/favorite/create?userId=${userId}&bookId=${bookId}`);
+        await axios.post(
+          `http://localhost:8080/favorite/create?userId=${userId}&bookId=${bookId}`
+        );
         setFavoriteBooks((prev) => {
           const updatedFavorites = new Set(prev);
           updatedFavorites.add(bookId);
@@ -282,7 +290,9 @@ const UserHomePage = () => {
           return updatedWishlist;
         });
       } else {
-        await axios.post(`http://localhost:8080/wishlist/create?userId=${userId}&bookId=${bookId}`);
+        await axios.post(
+          `http://localhost:8080/wishlist/create?userId=${userId}&bookId=${bookId}`
+        );
         setWishlist((prev) => new Set(prev).add(bookId));
       }
     } catch (error) {
@@ -401,7 +411,10 @@ const UserHomePage = () => {
             onChange={handleSearchChange}
           />
         </div>
-
+        <div className="user-home-container">
+          {/* ...existing content... */}
+          <Chatbot /> {/* ✅ Floating chat assistant appears here */}
+        </div>
         {/* Display books in the database */}
         <div className="book-list">
           <h2>Books in Database</h2>
@@ -478,9 +491,9 @@ const UserHomePage = () => {
                         <p>
                           <strong>Price:</strong> ${book.price.toFixed(2)}
                         </p>
-                           {/* Wishlist with toggle functionality */}
-                           <button
-                            onClick={(e) => {
+                        {/* Wishlist with toggle functionality */}
+                        <button
+                          onClick={(e) => {
                             handleWishlistToggle(book.id);
                             e.stopPropagation();
                           }}
@@ -489,7 +502,13 @@ const UserHomePage = () => {
                             ? "Remove from Wishlist"
                             : "Add to Wishlist"}
                         </button>
-                        {renderCheckoutButton(book.id, userCheckouts, handleReturn, handleRenew, handleCheckout)}
+                        {renderCheckoutButton(
+                          book.id,
+                          userCheckouts,
+                          handleReturn,
+                          handleRenew,
+                          handleCheckout
+                        )}
                         <button
                           className="payment-btn"
                           onClick={() => handlePayment(book)}
