@@ -18,7 +18,6 @@ const BookDetails = () => {
   const [userCheckouts, setUserCheckouts] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showIframe, setShowIframe] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -102,11 +101,6 @@ const BookDetails = () => {
     } catch (error) {
       console.error("Error fetching Wishlist:", error);
     }
-  };
-
-  // Toggle iframe visibility
-  const toggleIframe = () => {
-    setShowIframe(!showIframe);
   };
 
   // Handle checkout
@@ -282,23 +276,17 @@ const BookDetails = () => {
         <strong>Checked Out:</strong> {book.numCheckedOut}
       </p>
 
-      {/* BooksPrice.com iframe */}
+      {/* BooksPrice.com link instead of iframe */}
       <div className="books-price-iframe-container">
         <h3>Compare Prices on BooksPrice.com</h3>
-        <button onClick={toggleIframe} className="toggle-iframe-btn">
-          {showIframe ? "Hide Price Comparison" : "Show Price Comparison"}
-        </button>
-
-        {showIframe && (
-          <div className="iframe-wrapper">
-            <iframe
-              src={`https://www.booksprice.com/comparePrice.do?l=y&searchType=compare&inputData=${book.isbn}`}
-              title="BooksPrice.com Price Comparison"
-              className="books-price-iframe"
-              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-            />
-          </div>
-        )}
+        <a
+          href={`https://www.booksprice.com/comparePrice.do?l=y&searchType=compare&inputData=${book.isbn}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="price-comparison-link"
+        >
+          Compare Prices on BooksPrice.com
+        </a>
       </div>
 
       {/* Wishlist Button */}
