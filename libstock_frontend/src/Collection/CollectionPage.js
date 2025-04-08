@@ -12,7 +12,8 @@ const CollectionPage = () => {
   const [books, setBooks] = useState([]); // Available books to add
   const [selectedBooks, setSelectedBooks] = useState([]); // Selected books to add/remove
   const [userId] = useState(localStorage.getItem("userId") || ""); // Get user ID from localStorage
-  const [collectionSearchQuery, setCollectionSearchQuery] = useState(""); // Search query for collections
+  const [collectionSearchQuery, setCollectionSearchQuery] = useState("");
+  const [bookSearchQuery, setBookSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [expandedCollection, setExpandedCollection] = useState(null); // Track which collection is expanded
   const dropdownRef = useRef(null);
@@ -39,6 +40,11 @@ const CollectionPage = () => {
   // Filter collections based on search query
   const filteredCollections = collections.filter(collection =>
     collection.name.toLowerCase().includes(collectionSearchQuery.toLowerCase())
+  );
+
+  // Filter books based on search query
+  const filteredBooks = books.filter(book =>
+    book.title.toLowerCase().includes(bookSearchQuery.toLowerCase())
   );
 
   // Fetch user's collections from the backend
@@ -178,7 +184,7 @@ const CollectionPage = () => {
           <div className="dropdown-header">
             <input
               type="text"
-              placeholder="Search or select collection..."
+              placeholder={selectedCollection ? collections.find(c => c.id === selectedCollection)?.name : "Search or select collection..."}
               value={collectionSearchQuery}
               onChange={(e) => {
                 setCollectionSearchQuery(e.target.value);
@@ -197,6 +203,7 @@ const CollectionPage = () => {
                   className={`dropdown-item ${selectedCollection === collection.id ? 'selected' : ''}`}
                   onClick={() => {
                     setSelectedCollection(collection.id);
+                    setCollectionSearchQuery("");
                     setIsDropdownOpen(false);
                   }}
                 >
@@ -212,30 +219,32 @@ const CollectionPage = () => {
           )}
         </div>
 
+        {selectedCollection && (
+          <div className="selected-collection-info">
+            <h4>Selected Collection: {collections.find(c => c.id === selectedCollection)?.name}</h4>
+          </div>
+        )}
+
         <div className="book-selection">
           <div className="book-selection-header">
             <h3>Select Books</h3>
+            <div className="book-search">
+              <input
+                type="text"
+                placeholder="Search books..."
+                value={bookSearchQuery}
+                onChange={(e) => setBookSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
           <div className="book-list">
-            {books.map((book) => {
+            {filteredBooks.map((book) => {
               const isInCollection = selectedCollection && 
                 collections.find(c => c.id === selectedCollection)?.books.includes(book.id);
               
               return (
                 <div key={book.id} className="book-item">
-                  <label htmlFor={`book-${book.id}`}>{book.title}</label>
-                  <input
-                    type="checkbox"
-                    id={`book-${book.id}`}
-                    checked={selectedBooks.includes(book.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedBooks([...selectedBooks, book.id]);
-                      } else {
-                        setSelectedBooks(selectedBooks.filter(id => id !== book.id));
-                      }
-                    }}
-                  />
+                  <label className="book-title">{book.title}</label>
                   {selectedCollection && (
                     <button 
                       className={`book-action-btn ${isInCollection ? 'remove-btn' : 'add-btn'}`}
@@ -256,6 +265,21 @@ const CollectionPage = () => {
             })}
           </div>
         </div>
+
+        {selectedCollection && (
+          <div className="collection-select-footer">
+            <button 
+              className="done-button"
+              onClick={() => {
+                setSelectedCollection(null);
+                setCollectionSearchQuery("");
+                setBookSearchQuery("");
+              }}
+            >
+              Done
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Existing Collections */}
