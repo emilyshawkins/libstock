@@ -8,7 +8,7 @@ import "./UserBookDetails.css";
 import { renderCheckoutButton } from "../UserHomePage/UserHomePage";
 
 const stripePromise = loadStripe(
-  "pk_test_51Qx1ss2eFvgnA4OILQbHkVQ4zM98oi6lvJoXZ1p3Cs5zqSGhjRPA6KOKUljpwaMCAjDoM5fZZtdFJG3oQklL9j6Y00DlqGvgJa"
+  "pk_test_51RBkqmHFDEq2iN7KZotziYZW8TZLyT586iWVyQFwfvNOpAssg7mSOHNUzWbB9Ndsu5Wu6ep2o8HLrE3HdQun2eoT00KmSUzpPl"
 );
 
 // Handle checkout process

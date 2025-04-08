@@ -22,7 +22,7 @@ public class StripeService {
         public StripeResponse checkoutProducts(ProductRequest productRequest) {
                 // Set your secret key. Remember to switch to your live secret key in
                 // production!
-                Stripe.apiKey = "sk_test_51Qx1ss2eFvgnA4OIJIDAKZ8SK9MUT9KqAXkCLPJ5eHWbJa0A4HD7YqsugEM4HqipfZ3Hwgh77rZiqkpyvuila24U00ddVE4o1q";
+                Stripe.apiKey = "sk_test_51RBkqmHFDEq2iN7KnXS66uBSaajOf7cKTkOYaAdyzebya52gFWs0rQMWQO8hg6e95lVFb0YwddHd75wM7cQp1f1p00BfmmLKcz";
 
                 // Create a PaymentIntent with the order amount and currency
                 SessionCreateParams.LineItem.PriceData.ProductData productData = SessionCreateParams.LineItem.PriceData.ProductData
