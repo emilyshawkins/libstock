@@ -3,11 +3,51 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
 import "./UserBookDetails.css";
-import {
-  renderCheckoutButton,
-  handlePayment,
-} from "../UserHomePage/UserHomePage";
+import { renderCheckoutButton } from "../UserHomePage/UserHomePage";
+
+const stripePromise = loadStripe(
+  "pk_test_51Qx1ss2eFvgnA4OILQbHkVQ4zM98oi6lvJoXZ1p3Cs5zqSGhjRPA6KOKUljpwaMCAjDoM5fZZtdFJG3oQklL9j6Y00DlqGvgJa"
+);
+
+// Handle checkout process
+export const handlePayment = async (book, bookQuantities) => {
+  try {
+    const quantity = 1;
+    const createPaymentRequest = {
+      bookId: book.id,
+      name: book.title,
+      amount: book.price * 100, // Convert to dollars
+      quantity: quantity,
+    };
+
+    const response = await fetch("http://localhost:8080/product/v1/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(createPaymentRequest),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const stripeResponse = await response.json();
+    const stripe = await stripePromise;
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: stripeResponse.sessionId,
+    });
+
+    if (result.error) {
+      console.error("Stripe Checkout Error:", result.error.message);
+    }
+  } catch (error) {
+    console.error("Error during checkout:", error);
+  }
+};
 
 const BookDetails = () => {
   const [book, setBook] = useState(null);
@@ -26,6 +66,8 @@ const BookDetails = () => {
 
   const queryParams = new URLSearchParams(location.search);
   const bookId = queryParams.get("id");
+
+  // Load Stripe instance
 
   useEffect(() => {
     if (!bookId) return;
@@ -289,12 +331,13 @@ const BookDetails = () => {
         </button>
 
         {showIframe && (
-        <iframe
-          src={`https://www.booksprice.com/comparePrice.do?l=y&searchType=compare&inputData=${book.isbn}`}
-          title="BooksPrice.com Price Comparison"
-          className="price-comparison-iframe"
-          sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-        />)}
+          <iframe
+            src={`https://www.booksprice.com/comparePrice.do?l=y&searchType=compare&inputData=${book.isbn}`}
+            title="BooksPrice.com Price Comparison"
+            className="price-comparison-iframe"
+            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+          />
+        )}
       </div>
 
       {/* Wishlist Button */}

@@ -61,44 +61,6 @@ export const renderCheckoutButton = (
   }
 };
 
-// Handle checkout process
-export const handlePayment = async (book, bookQuantities) => {
-  try {
-    const quantity = bookQuantities[book.id] || 1;
-    const createPaymentRequest = {
-      bookId: book.id,
-      name: book.title,
-      amount: book.price * 100, // Convert to dollars
-      quantity: quantity,
-    };
-
-    const response = await fetch("http://localhost:8080/product/v1/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(createPaymentRequest),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const stripeResponse = await response.json();
-    const stripe = await stripePromise;
-
-    const result = await stripe.redirectToCheckout({
-      sessionId: stripeResponse.sessionId,
-    });
-
-    if (result.error) {
-      console.error("Stripe Checkout Error:", result.error.message);
-    }
-  } catch (error) {
-    console.error("Error during checkout:", error);
-  }
-};
-
 const UserHomePage = () => {
   // State for storing books from the database
   const [databaseBooks, setDatabaseBooks] = useState([]);
@@ -507,12 +469,6 @@ const UserHomePage = () => {
                           handleRenew,
                           handleCheckout
                         )}
-                        <button
-                          className="payment-btn"
-                          onClick={() => handlePayment(book)}
-                        >
-                          Buy This Book
-                        </button>
                       </div>
                     ))}
                   </div>
