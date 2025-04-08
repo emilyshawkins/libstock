@@ -45,7 +45,7 @@ const FavPage = () => {
 
   // Generate shareable link
   const generateShareLink = () => {
-    const link = `${window.location.origin}/shared-favorites?userId=${userId}`;
+    const link = `${window.location.origin}/favorite/share?id=${userId}`;
     setShareLink(link);
     navigator.clipboard.writeText(link);
     alert("Favorite books link copied to clipboard!");

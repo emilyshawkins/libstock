@@ -48,7 +48,7 @@ const WishListPage = () => {
 
   // Generate shareable link
   const generateShareLink = () => {
-    const link = `${window.location.origin}/shared-wishlist?userId=${userId}`;
+    const link = `${window.location.origin}/wishlist/share?id=${userId}`;
     setShareLink(link);
     navigator.clipboard.writeText(link);
     alert("Wishlist link copied to clipboard!");

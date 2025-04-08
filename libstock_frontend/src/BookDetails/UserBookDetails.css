@@ -1,8 +1,9 @@
 /* src/BookDetails/UserBookDetails.css */
 
 .UserBook-details-container {
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 1600px;
+  margin-top: 50px;
+  margin-left: 260px;
   padding: 20px;
   background: white;
   border-radius: 10px;

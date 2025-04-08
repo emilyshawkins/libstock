@@ -7,26 +7,32 @@ const FavPageShare = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userInfo, setUserInfo] = useState({});
+
   useEffect(() => {
     const fetchSharedFavorites = async () => {
       try {
-        // Get userId from URL parameters
+        // Get favoriteId from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('userId');
-        if (!userId) {
-          setError("No user ID provided");
+        const favoriteId = urlParams.get('id');
+        
+        if (!favoriteId) {
+          setError("No favorite ID provided");
           setLoading(false);
           return;
         }
-        // Parse userInfo if it exists
-        if (userId) {
+
+        // Fetch favorites using favoriteId
+        const response = await axios.get(`http://localhost:8080/favorite/share?id=${favoriteId}`);
+        setFavorites(response.data);
+
+        // If the response includes user info, set it
+        if (response.data.userInfo) {
           setUserInfo({
-              firstName: userId.firstName || "Unknown",
-              lastName: userId.lastName || "",
+            firstName: response.data.userInfo.firstName || "Unknown",
+            lastName: response.data.userInfo.lastName || "",
           });
         }
-        const response = await axios.get(`http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`);
-        setFavorites(response.data);
+
       } catch (error) {
         console.error("Error fetching favorites:", error);
         setError("Failed to load favorites");
