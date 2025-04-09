@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.libstock_backend.DTOs.ShareDTO;
 import com.example.libstock_backend.Models.Book;
+import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Models.WishlistItem;
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.UserRepository;
@@ -124,7 +126,7 @@ public class WishlistItemController {
 
     @GetMapping("/share")
     // Share a wishlist item by id
-    public ResponseEntity<Iterable<Book>> share_wishlist_item(@RequestParam String id) {
+    public ResponseEntity<Object> share_wishlist_item(@RequestParam String id) {
         WishlistItem wishlist = wishlistItemRepository.findById(id).orElse(null);
         if (wishlist == null) {
             return ResponseEntity.notFound().build();
@@ -137,6 +139,9 @@ public class WishlistItemController {
                 books.add(book);
             }
         }
-        return ResponseEntity.ok(books);
+
+        User user = userRepository.findById(wishlist.getUserId()).orElse(null);
+
+        return ResponseEntity.ok(new ShareDTO(user.getFirstName(), user.getLastName(), books));
     }
 }

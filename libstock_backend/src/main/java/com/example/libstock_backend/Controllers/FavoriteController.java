@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.libstock_backend.DTOs.ShareDTO;
 import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.Favorite;
+import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.FavoriteRepository;
 import com.example.libstock_backend.Repositories.UserRepository;
@@ -135,7 +137,7 @@ public class FavoriteController {
 
     @GetMapping("/share")
     // Share a favorite by ID
-    public ResponseEntity<Iterable<Book>> share_favorite(@RequestParam String id) {
+    public ResponseEntity<Object> share_favorite(@RequestParam String id) {
         Favorite favorite = favoriteRepository.findById(id).orElse(null);
         if (favorite == null) {
             return ResponseEntity.notFound().build();
@@ -149,7 +151,9 @@ public class FavoriteController {
             }
         }
 
-        return ResponseEntity.ok(books);
+        User user = userRepository.findById(favorite.getUserId()).orElse(null);
+
+        return ResponseEntity.ok(new ShareDTO(user.getFirstName(), user.getLastName(), books)); // Return shared favorite
     }
     
 }
