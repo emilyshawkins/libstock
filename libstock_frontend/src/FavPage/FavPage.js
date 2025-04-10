@@ -10,6 +10,8 @@ const FavPage = () => {
   const [userId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
   const [favoriteId, setFavoriteId] = useState("");
+  const [bookAuthors, setBookAuthors] = useState({});
+  const [bookGenres, setBookGenres] = useState({});
 
   useEffect(() => {
     fetchUserFavorites();
@@ -31,10 +33,69 @@ const FavPage = () => {
         `http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`
       );
       setFavoriteBooks(response.data);
+      // Fetch authors and genres for each book
+      fetchAuthorsForBooks(response.data);
+      fetchGenresForBooks(response.data);
     } catch (error) {
       console.error("Error fetching favorite books:", error);
     }
   };
+
+// Fetch book-author relationships and store them
+const fetchAuthorsForBooks = async (books) => {
+  if (!books || books.length === 0) return;
+
+  try {
+    const bookAuthorsMap = {};
+    for (const book of books) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${book.id}`
+        );
+        if (response.data && Array.isArray(response.data)) {
+          bookAuthorsMap[book.id] = response.data.map(author => 
+            `${author.firstName} ${author.lastName}`
+          );
+        } else {
+          bookAuthorsMap[book.id] = ["Unknown Author"];
+        }
+      } catch (error) {
+        console.error(`Error fetching authors for book ${book.id}:`, error);
+        bookAuthorsMap[book.id] = ["Unknown Author"];
+      }
+    }
+    setBookAuthors(bookAuthorsMap);
+  } catch (error) {
+    console.error("Error fetching book authors:", error);
+  }
+};
+
+// Fetch book-genre relationships and store them
+const fetchGenresForBooks = async (books) => {
+  if (!books || books.length === 0) return;
+
+  try {
+    const bookGenresMap = {};
+    for (const book of books) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${book.id}`
+        );
+        if (response.data && Array.isArray(response.data)) {
+          bookGenresMap[book.id] = response.data.map(genre => genre.name);
+        } else {
+          bookGenresMap[book.id] = ["Unknown Genre"];
+        }
+      } catch (error) {
+        console.error(`Error fetching genres for book ${book.id}:`, error);
+        bookGenresMap[book.id] = ["Unknown Genre"];
+      }
+    }
+    setBookGenres(bookGenresMap);
+  } catch (error) {
+    console.error("Error fetching book genres:", error);
+  }
+};
 
   // Toggle favorite book
   const handleFavoriteToggle = async (bookId) => {
@@ -106,14 +167,21 @@ const FavPage = () => {
                       </span>
                     </div>
                     <p>
-                      <strong>Author:</strong>{" "}
-                      {book.author || "Unknown Author"}
-                    </p>
-                    <p>
                       <strong>ISBN:</strong> {book.isbn}
                     </p>
                     <p>
+                      <strong>Author:</strong>{" "}
+                      {bookAuthors[book.id] ? bookAuthors[book.id].join(", ") : "Unknown Author"}
+                    </p>
+                    <p>
+                      <strong>Genre:</strong>{" "}
+                      {bookGenres[book.id] ? bookGenres[book.id].join(", ") : "Unknown Genre"}
+                    </p>
+                    <p>
                       <strong>Publication Date:</strong> {book.publicationDate}
+                    </p>
+                    <p>
+                      <strong>Price:</strong> ${book.price ? book.price.toFixed(2) : "N/A"}
                     </p>
                   </div>
                 ))}

@@ -40,37 +40,31 @@ function App() {
 function MainContent() {
   const location = useLocation(); // Get the current route path
 
-  // Show Navbar ONLY on "/", "/signin", "/signup", and "/forgot-password"
-  const isNavbarVisible = [
-    "/",
-    "/signin",
-    "/signup",
-    "/forgot-password",
-    "/reset-password",
-  ].includes(location.pathname);
+  // Show Navbar on all pages EXCEPT "/user/*" and "/admin/*" routes
+  const isNavbarVisible = !location.pathname.startsWith("/user") && !location.pathname.startsWith("/admin");
 
   // Show AdminSidebar ONLY on "/admin/*" routes
-  const isAdminSidebar = location.pathname.startsWith("/admin");
+  const isAdminSidebarVisible = location.pathname.startsWith("/admin");
 
-  // Show Sidebar on all pages except "/", "/signin", "/signup", and path start with "/admin"
-  const isTopbarVisible = !isNavbarVisible;
+  // Show Sidebar ONLY on "/user/*" routes
+  const isSidebarVisible = location.pathname.startsWith("/user");
 
-  // Show Sidebar on all pages except "/", "/signin", "/signup", and path start with "/admin"
-  const isSidebarVisible = !isNavbarVisible && !isAdminSidebar;
+  // Show Topbar ONLY on "/user/*" and "/admin/*" routes
+  const isTopbarVisible = location.pathname.startsWith("/user") || location.pathname.startsWith("/admin");
 
   return (
     <>
-      {/* Display Navbar only on specific pages */}
+      {/* Display Navbar on all pages except user and admin pages */}
       {isNavbarVisible && <Navbar />}
 
-      {/* Display Sidebar and Topbar except on specific pages */}
+      {/* Display Sidebar only on user pages */}
       {isSidebarVisible && <Sidebar />}
 
-      {/* Display Topbar except on specific pages */}
+      {/* Display Topbar only on user and admin pages */}
       {isTopbarVisible && <Topbar />}
 
       {/* Display Admin Sidebar for admin related pages */}
-      {isAdminSidebar && <AdminSidebar />}
+      {isAdminSidebarVisible && <AdminSidebar />}
 
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home page */}
@@ -96,7 +90,7 @@ function MainContent() {
         {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
-        <Route path="/collection" element={<CollectionPage />} />{" "}
+        <Route path="/admin/collection" element={<CollectionPage />} />{" "}
         {/* User Collection */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
         {/* Admin Home page */}
