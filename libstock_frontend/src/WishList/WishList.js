@@ -1,10 +1,12 @@
 /* src/WishList/WishList.js */
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ShareIcon from "@mui/icons-material/Share";
 import "./WishList.css";
 
 const WishListPage = () => {
+  const navigate = useNavigate();
   const [wishlist, setWishlist] = useState([]);
   const [userId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
@@ -126,6 +128,10 @@ const WishListPage = () => {
     }
   };
 
+  const handleBookClick = (bookId) => {
+    navigate(`/user/home/book?id=${bookId}`); // Navigate to book details page
+  }
+
   // Generate shareable link
   const generateShareLink = () => {
     const link = `${window.location.origin}/wishlist/share?id=${wishlistId}`;
@@ -164,7 +170,9 @@ const WishListPage = () => {
               <h2 className="section-title">{letter}</h2>
               <div className="book-grid">
                 {booksByLetter[letter].map((book) => (
-                  <div key={book.id} className="book-card">
+                  <div key={book.id} className="book-card"
+                    onClick={(e) => handleBookClick(book.id)}
+                    >
                     <h3 className="book-title">{book.title}</h3>
                     <p>
                       <strong>ISBN:</strong> {book.isbn}

@@ -1,11 +1,13 @@
 /* src/FavPage/FavPage.js */
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import "./FavPage.css";
 
 const FavPage = () => {
+  const navigate = useNavigate();
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const [userId] = useState(localStorage.getItem("userId") || "");
   const [shareLink, setShareLink] = useState("");
@@ -112,6 +114,10 @@ const fetchGenresForBooks = async (books) => {
     }
   };
 
+  const handleBookClick = (bookId) => {
+    navigate(`/user/home/book?id=${bookId}`); // Navigate to book details page
+  }
+
   // Generate shareable link
   const generateShareLink = () => {
     const link = `${window.location.origin}/favorite/share?id=${favoriteId}`;
@@ -150,7 +156,9 @@ const fetchGenresForBooks = async (books) => {
               <h2 className="section-title">{letter}</h2>
               <div className="book-grid">
                 {booksByLetter[letter].map((book) => (
-                  <div key={book.id} className="book-card">
+                  <div key={book.id} className="book-card"
+                    onClick={(e) => handleBookClick(book.id)}
+                    >
                     <div className="book-title-container">
                       <h3 className="book-title">{book.title}</h3>
                       <span
