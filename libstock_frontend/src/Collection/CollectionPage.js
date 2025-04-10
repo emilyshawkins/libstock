@@ -221,7 +221,7 @@ const CollectionPage = () => {
 
         {selectedCollection && (
           <div className="selected-collection-info">
-            <h4>Selected Collection: {collections.find(c => c.id === selectedCollection)?.name}</h4>
+            <h4>Editing Collection: {collections.find(c => c.id === selectedCollection)?.name}</h4>
           </div>
         )}
 

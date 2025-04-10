@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { renderCheckoutButton } from "../UserHomePage/UserHomePage";
+import { loadStripe } from "@stripe/stripe-js";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import axios from "axios";
-import { loadStripe } from "@stripe/stripe-js";
 import "./UserBookDetails.css";
-import { renderCheckoutButton } from "../UserHomePage/UserHomePage";
+
 
 const stripePromise = loadStripe(
   "pk_test_51RBkqmHFDEq2iN7KZotziYZW8TZLyT586iWVyQFwfvNOpAssg7mSOHNUzWbB9Ndsu5Wu6ep2o8HLrE3HdQun2eoT00KmSUzpPl"
 );
 
 // Handle checkout process
-export const handlePayment = async (book, bookQuantities) => {
+export const handlePayment = async (book) => {
   try {
     const quantity = 1;
     const createPaymentRequest = {
@@ -55,6 +56,8 @@ const BookDetails = () => {
   const [genres, setGenres] = useState("Unknown Genre");
   const [favoriteBooks, setFavoriteBooks] = useState(new Set());
   const [wishlist, setWishlist] = useState(new Set());
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState({ reviewerName: "", rating: 5, comment: "" });
   const [userCheckouts, setUserCheckouts] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -63,7 +66,6 @@ const BookDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userId = localStorage.getItem("userId") || "";
-
   const queryParams = new URLSearchParams(location.search);
   const bookId = queryParams.get("id");
 
@@ -84,6 +86,10 @@ const BookDetails = () => {
           ),
           axios.get(
             `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${bookId}`
+          ),
+          axios.get(
+            `http://localhost:8080/bookreview/get_review_by_book?bookId=${bookId}`
+
           ),
         ]);
 
@@ -268,6 +274,17 @@ const BookDetails = () => {
     }
   };
 
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:8080/review/add", { bookId, ...newReview });
+      setReviews(prev => [...prev, res.data]);
+      setNewReview({ reviewerName: "", rating: 5, comment: "" });
+    } catch (err) {
+      console.error("Review submit error:", err);
+    }
+  };
+
   if (loading) return <p>Loading book details...</p>;
   if (error) return <p className="error">{error}</p>;
 
@@ -355,6 +372,26 @@ const BookDetails = () => {
         <button className="payment-btn" onClick={() => handlePayment(book)}>
           Buy This Book
         </button>
+
+        <div className="review-section">
+        <h3>Reviews</h3>
+        {reviews.length === 0 ? <p>No reviews yet.</p> : reviews.map((r, i) => (
+          <div key={i} className="review-card">
+            <p><strong>{r.reviewerName}</strong> rated {r.rating}/5</p>
+            <p>{r.comment}</p>
+          </div>
+        ))}
+
+        <form onSubmit={handleReviewSubmit} className="review-form">
+          <input type="text" placeholder="Your name" value={newReview.reviewerName} onChange={e => setNewReview({ ...newReview, reviewerName: e.target.value })} required />
+          <select value={newReview.rating} onChange={e => setNewReview({ ...newReview, rating: parseInt(e.target.value) })}>
+            {[1, 2, 3, 4, 5].map(r => <option key={r} value={r}>{r}</option>)}
+          </select>
+          <textarea placeholder="Your review" value={newReview.comment} onChange={e => setNewReview({ ...newReview, comment: e.target.value })} required />
+          <button type="submit">Submit Review</button>
+        </form>
+        
+      </div>
       </div>
     </div>
   );
