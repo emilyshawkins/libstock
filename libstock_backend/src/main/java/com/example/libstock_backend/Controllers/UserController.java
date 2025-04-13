@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.libstock_backend.DTOs.LoginDTO;
 import com.example.libstock_backend.DTOs.ProfileDTO;
 import com.example.libstock_backend.DTOs.UserDTO;
+import com.example.libstock_backend.Models.Queue;
 import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Repositories.CheckoutRepository;
 import com.example.libstock_backend.Repositories.FavoriteRepository;
@@ -191,9 +192,15 @@ public class UserController {
         checkoutRepository.deleteAllByUserId(id);
         favoriteRepository.deleteAllByUserId(id);
         notificationRepository.deleteAllByUserId(id);
-        queueRepository.deleteAllByUserId(id);
         ratingRepository.deleteAllByUserId(id);
         wishlistItemRepository.deleteAllByUserId(id);
+
+        for (Queue queue : queueRepository.findAll()) {
+            if (queue.getQueueList().contains(id)) {
+                queue.getQueueList().remove(id); // Remove the user from the queue
+                queueRepository.save(queue); // Save the updated queue
+            }
+        }
 
         userRepository.delete(existingUser);
         return ResponseEntity.ok().body("User deleted");

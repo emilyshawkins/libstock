@@ -168,7 +168,7 @@ public class BookController {
         BookGenreRepository.deleteAllByBookId(id);
         CheckoutRepository.deleteAllByBookId(id);
         // FavoriteRepository.deleteAllByBookId(id);
-        QueueRepository.deleteAllByBookId(id);
+        QueueRepository.deleteByBookId(id);
         RatingRepository.deleteAllByBookId(id);
         // WishlistItemRepository.deleteAllByBookId(id);
         BookRepository.delete(existingBook);
