@@ -56,14 +56,12 @@ const BookDetails = () => {
   const [genres, setGenres] = useState("Unknown Genre");
   const [favoriteBooks, setFavoriteBooks] = useState(new Set());
   const [wishlist, setWishlist] = useState(new Set());
-  const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({ reviewerName: "", rating: 5, comment: "" });
+  const [ratings, setRatings] = useState([]);
+  const [newRating, setNewRating] = useState({ rating: 5, comment: "" });
   const [userCheckouts, setUserCheckouts] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showIframe, setShowIframe] = useState(false);
-
-  const navigate = useNavigate();
   const location = useLocation();
   const userId = localStorage.getItem("userId") || "";
   const queryParams = new URLSearchParams(location.search);
@@ -79,7 +77,7 @@ const BookDetails = () => {
         setLoading(true);
         setError("");
 
-        const [bookRes, authorRes, genreRes] = await Promise.all([
+        const [bookRes, authorRes, genreRes, ratingRes] = await Promise.all([
           axios.get(`http://localhost:8080/book/read?id=${bookId}`),
           axios.get(
             `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${bookId}`
@@ -88,12 +86,13 @@ const BookDetails = () => {
             `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${bookId}`
           ),
           axios.get(
-            `http://localhost:8080/bookreview/get_review_by_book?bookId=${bookId}`
+            `http://localhost:8080/rating/get_ratings_by_book?bookId=${bookId}`
 
           ),
         ]);
 
         setBook(bookRes.data);
+        setRatings(ratingRes.data || []);
         setAuthor(
           authorRes.data.length > 0
             ? authorRes.data
@@ -274,16 +273,22 @@ const BookDetails = () => {
     }
   };
 
-  const handleReviewSubmit = async (e) => {
+  const handleRatingSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/review/add", { bookId, ...newReview });
-      setReviews(prev => [...prev, res.data]);
-      setNewReview({ reviewerName: "", rating: 5, comment: "" });
+      const res = await axios.post("http://localhost:8080/rating/create", {
+        userId,
+        bookId,
+        stars: newRating.rating,
+        comment: newRating.comment,
+      });
+      setRatings((prev) => [...prev, res.data]);
+      setNewRating({ rating: 5, comment: "" }); 
     } catch (err) {
-      console.error("Review submit error:", err);
+      console.error("rating submit error:", err);
     }
   };
+  
 
   if (loading) return <p>Loading book details...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -373,22 +378,22 @@ const BookDetails = () => {
           Buy This Book
         </button>
 
-        <div className="review-section">
-        <h3>Reviews</h3>
-        {reviews.length === 0 ? <p>No reviews yet.</p> : reviews.map((r, i) => (
-          <div key={i} className="review-card">
-            <p><strong>{r.reviewerName}</strong> rated {r.rating}/5</p>
-            <p>{r.comment}</p>
+        <div className="rating-section">
+        <h3>Ratings</h3>
+        {ratings.length === 0 ? <p>No Ratings yet.</p> : ratings.map((r, i) => (
+          <div key={i} className="rating-card">
+           <p><strong>{r.userName}</strong> rated {r.stars}/5</p>
+           <p>{r.comment}</p>
           </div>
         ))}
 
-        <form onSubmit={handleReviewSubmit} className="review-form">
-          <input type="text" placeholder="Your name" value={newReview.reviewerName} onChange={e => setNewReview({ ...newReview, reviewerName: e.target.value })} required />
-          <select value={newReview.rating} onChange={e => setNewReview({ ...newReview, rating: parseInt(e.target.value) })}>
+        <form onSubmit={handleRatingSubmit} className="rating-form">
+          <input type="text" placeholder="Your name" value={newRating.RatingerName} onChange={e => setNewRating({ ...newRating, RatingerName: e.target.value })} required />
+          <select value={newRating.rating} onChange={e => setNewRating({ ...newRating, rating: parseInt(e.target.value) })}>
             {[1, 2, 3, 4, 5].map(r => <option key={r} value={r}>{r}</option>)}
           </select>
-          <textarea placeholder="Your review" value={newReview.comment} onChange={e => setNewReview({ ...newReview, comment: e.target.value })} required />
-          <button type="submit">Submit Review</button>
+          <textarea placeholder="Your rating" value={newRating.comment} onChange={e => setNewRating({ ...newRating, comment: e.target.value })} required />
+          <button type="submit">Submit Rating</button>
         </form>
         
       </div>

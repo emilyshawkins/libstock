@@ -530,13 +530,7 @@ const UserHomePage = () => {
                             : "Add to Wishlist"}
                         </button>
                         {renderCheckoutButton(book.id, userCheckouts, userQueue, handleReturn, handleRenew, handleCheckout, handleQueue,databaseBooks)}
-                        <button
-                          className="payment-btn"
-                          onClick={() => handlePayment(book)}
-                        >
-                          Buy This Book
-                        </button>
-                      </div>
+                         </div>
                     ))}
                   </div>
                 </div>
