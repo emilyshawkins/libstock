@@ -1,5 +1,8 @@
 package com.example.libstock_backend.Controllers;
 
+import java.time.Instant;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.libstock_backend.DTOs.RatingDTO;
 import com.example.libstock_backend.Models.Rating;
+import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.RatingRepository;
 import com.example.libstock_backend.Repositories.UserRepository;
@@ -32,7 +37,6 @@ public class RatingController {
     @PostMapping("/create")
     // Create a new rating
     public ResponseEntity<Object> create_rating(@RequestBody Rating rating) {
-        System.out.println("Creating rating");
         if (rating.getUserId() == null || rating.getBookId() == null) { // Check if required fields are present
             return ResponseEntity.badRequest().body("User ID and Book ID are required fields.");
         }
@@ -54,18 +58,46 @@ public class RatingController {
             return ResponseEntity.badRequest().body("Rating already exists.");
         }
 
+        rating.setDate(Instant.now()); // Set the date to now 
+
         ratingRepository.save(rating);
-        return ResponseEntity.ok(rating);
+
+        User user = userRepository.findById(rating.getUserId()).orElse(null);
+
+        RatingDTO ratingDTO = new RatingDTO(
+            rating.getId(),
+            rating.getUserId(),
+            rating.getBookId(),
+            user != null ? user.getFirstName() + " " + user.getLastName() : null,
+            rating.getStars(),
+            rating.getComment(),
+            rating.getDate().toString()
+        );
+
+        return ResponseEntity.ok(ratingDTO); // Return the created rating
     }
 
     @GetMapping("/read")
     // Read a rating by id
-    public ResponseEntity<Rating> read_rating(@RequestParam String id) {
+    public ResponseEntity<Object> read_rating(@RequestParam String id) {
         Rating rating = ratingRepository.findById(id).orElse(null);
         if (rating == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(rating);
+
+        User user = userRepository.findById(rating.getUserId()).orElse(null);
+
+        RatingDTO ratingDTO = new RatingDTO(
+            rating.getId(),
+            rating.getUserId(),
+            rating.getBookId(),
+            user != null ? user.getFirstName() + " " + user.getLastName() : null,
+            rating.getStars(),
+            rating.getComment(),
+            rating.getDate().toString()
+        );
+
+        return ResponseEntity.ok(ratingDTO); // Return the rating
     }
 
     @PatchMapping("/update")
@@ -86,8 +118,21 @@ public class RatingController {
             existingRating.setComment(rating.getComment());
         }
 
+        existingRating.setDate(Instant.now()); // Update the date to now
+
+        User user = userRepository.findById(existingRating.getUserId()).orElse(null);
+        RatingDTO ratingDTO = new RatingDTO(
+            existingRating.getId(),
+            existingRating.getUserId(),
+            existingRating.getBookId(),
+            user != null ? user.getFirstName() + " " + user.getLastName() : null,
+            existingRating.getStars(),
+            existingRating.getComment(),
+            existingRating.getDate().toString()
+        );
+
         ratingRepository.save(existingRating);
-        return ResponseEntity.ok(existingRating);
+        return ResponseEntity.ok(ratingDTO); // Return the updated rating
     }
 
     @DeleteMapping("/delete")
@@ -103,16 +148,48 @@ public class RatingController {
 
     @GetMapping("/get_ratings_by_user")
     // Get all ratings for a user
-    public ResponseEntity<Iterable<Rating>> get_ratings_by_user(@RequestParam String userId) {
+    public ResponseEntity<Iterable<RatingDTO>> get_ratings_by_user(@RequestParam String userId) {
         Iterable<Rating> ratings = ratingRepository.findByUserId(userId);
-        return ResponseEntity.ok(ratings);
+        
+        ArrayList<RatingDTO> ratingDTOs = new ArrayList<>();
+        for (Rating rating : ratings) {
+            User user = userRepository.findById(rating.getUserId()).orElse(null);
+            RatingDTO ratingDTO = new RatingDTO(
+                rating.getId(),
+                rating.getUserId(),
+                rating.getBookId(),
+                user != null ? user.getFirstName() + " " + user.getLastName() : null,
+                rating.getStars(),
+                rating.getComment(),
+                rating.getDate().toString()
+            );
+            ratingDTOs.add(ratingDTO);
+        }
+
+        return ResponseEntity.ok(ratingDTOs); // Return the ratings
     }
 
     @GetMapping("/get_ratings_by_book")
     // Get all ratings for a book
-    public ResponseEntity<Iterable<Rating>> get_ratings_by_book(@RequestParam String bookId) {
+    public ResponseEntity<Iterable<RatingDTO>> get_ratings_by_book(@RequestParam String bookId) {
         Iterable<Rating> ratings = ratingRepository.findByBookId(bookId);
-        return ResponseEntity.ok(ratings);
+        
+        ArrayList<RatingDTO> ratingDTOs = new ArrayList<>();
+
+        for (Rating rating : ratings) {
+            User user = userRepository.findById(rating.getUserId()).orElse(null);
+            RatingDTO ratingDTO = new RatingDTO(
+                rating.getId(),
+                rating.getUserId(),
+                rating.getBookId(),
+                user != null ? user.getFirstName() + " " + user.getLastName() : null,
+                rating.getStars(),
+                rating.getComment(),
+                rating.getDate().toString()
+            );
+            ratingDTOs.add(ratingDTO);
+        }
+        return ResponseEntity.ok(ratingDTOs); // Return the ratings
     }
 
 }
