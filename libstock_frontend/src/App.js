@@ -28,6 +28,7 @@ import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
 import AdminAccountSettings from "./AccountSetting/AdminAccountSettings"; // Import User AccountSettings
+import ChatBot from "./ChatBot/ChatBot"; // Import ChatBot
 
 function App() {
   return (
@@ -41,7 +42,9 @@ function MainContent() {
   const location = useLocation(); // Get the current route path
 
   // Show Navbar on all pages EXCEPT "/user/*" and "/admin/*" routes
-  const isNavbarVisible = !location.pathname.startsWith("/user") && !location.pathname.startsWith("/admin");
+  const isNavbarVisible =
+    !location.pathname.startsWith("/user") &&
+    !location.pathname.startsWith("/admin");
 
   // Show AdminSidebar ONLY on "/admin/*" routes
   const isAdminSidebarVisible = location.pathname.startsWith("/admin");
@@ -50,7 +53,9 @@ function MainContent() {
   const isSidebarVisible = location.pathname.startsWith("/user");
 
   // Show Topbar ONLY on "/user/*" and "/admin/*" routes
-  const isTopbarVisible = location.pathname.startsWith("/user") || location.pathname.startsWith("/admin");
+  const isTopbarVisible =
+    location.pathname.startsWith("/user") ||
+    location.pathname.startsWith("/admin");
 
   return (
     <>
@@ -102,6 +107,7 @@ function MainContent() {
         {/* Admin Add Book Manually */}
         <Route path="/admin/settings" element={<AdminAccountSettings />} />{" "}
         {/* Account Settings */}
+        <Route ChatBot path="/chatbot" element={<ChatBot />} /> {/* ChatBot */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>
