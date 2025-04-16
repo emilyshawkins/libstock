@@ -1,5 +1,7 @@
 package com.example.libstock_backend.Models;
 
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,14 +16,16 @@ public class Rating {
 
     private Integer stars;
     private String comment;
+    private Instant date;
 
     public Rating() {}
 
-    public Rating(String userId, String bookId, Integer stars, String comment) {
+    public Rating(String userId, String bookId, Integer stars, String comment, Instant date) {
         this.userId = userId;
         this.userId = bookId;
         this.stars = stars;
         this.comment = comment;
+        this.date = date;
     }
 
     public String getId() {
@@ -44,6 +48,10 @@ public class Rating {
         return comment;
     }
 
+    public Instant getDate() {
+        return date;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -62,5 +70,9 @@ public class Rating {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
     }
 }
