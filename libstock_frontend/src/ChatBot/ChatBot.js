@@ -1,141 +1,147 @@
-import React, { useState } from "react";
-import { GoogleGenAI } from "@google/genai";
+import React, { useState, useEffect, useRef } from "react";
+import "./ChatBot.css";
 
-// Directly call the Gemini API (development only)
-const ai = new GoogleGenAI({
-  apiKey: "AIzaSyDb8MhCkCyiTbVOnWKMlwUmOLwAMFafMuI",
-});
-
-const ChatBox = () => {
-  const [messages, setMessages] = useState([]);
+const ChatBot = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content: "Hi there! How can I help you today?",
+    },
+  ]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  // Function to send a message and get a response from Gemini
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-
-    // Add user message to the conversation
-    const userMessage = { sender: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setLoading(true);
-
-    try {
-      // Call Gemini API directly using generateContent
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: userMessage.text,
-      });
-
-      const botMessage = { sender: "bot", text: response.text };
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
-      // Handle errors from the Gemini call
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "Error retrieving response: " + error.message },
-      ]);
-    } finally {
-      setLoading(false);
-    }
+  // Function to toggle chat window
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
   };
 
-  // Send message on Enter key press
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      sendMessage();
+  // Scroll to bottom of messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Handle user input
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  // Send message to Gemini API
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    // Add user message to chat
+    const userMessage = { role: "user", content: input };
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      // Call the backend API
+      const response = await fetch("http://localhost:8080/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Add assistant message
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { role: "assistant", content: data.message },
+        ]);
+      } else {
+        // Handle error
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            role: "assistant",
+            content:
+              "Sorry, I couldn't process your request. Please try again.",
+          },
+        ]);
+        console.error("Error from API:", data.error);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          role: "assistant",
+          content:
+            "Sorry, there was an error connecting to the service. Please try again later.",
+        },
+      ]);
     }
+
+    setIsLoading(false);
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "20px",
-        right: "20px",
-        width: "300px",
-        background: "#fff",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-        zIndex: "1000",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          background: "#007bff",
-          color: "#fff",
-          padding: "10px",
-          borderTopLeftRadius: "5px",
-          borderTopRightRadius: "5px",
-        }}
-      >
-        Chat with AI
+    <div className="chatbot-container">
+      {/* Chat Bubble */}
+      <div className="chat-bubble" onClick={toggleChat}>
+        {!isOpen && <span>Need to Chat?</span>}
+        {isOpen && <span>×</span>}
       </div>
 
-      {/* Message Area */}
-      <div
-        style={{
-          padding: "10px",
-          height: "300px",
-          overflowY: "auto",
-          background: "#f9f9f9",
-        }}
-      >
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={{
-              marginBottom: "10px",
-              textAlign: msg.sender === "bot" ? "left" : "right",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-block",
-                padding: "8px",
-                borderRadius: "5px",
-                background: msg.sender === "bot" ? "#e1e1e1" : "#007bff",
-                color: msg.sender === "bot" ? "#000" : "#fff",
-              }}
-            >
-              {msg.text}
-            </div>
+      {/* Chat Window */}
+      {isOpen && (
+        <div className="chat-window">
+          <div className="chat-header">
+            <h3>LibStock Assistant</h3>
           </div>
-        ))}
-        {loading && <div>Loading...</div>}
-      </div>
 
-      {/* Input Area */}
-      <div
-        style={{
-          display: "flex",
-          padding: "10px",
-          borderTop: "1px solid #ccc",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Type your message..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
-          style={{
-            flex: 1,
-            marginRight: "10px",
-            padding: "8px",
-            border: "1px solid #ccc",
-            borderRadius: "3px",
-          }}
-        />
-        <button onClick={sendMessage} style={{ padding: "8px 12px" }}>
-          Send
-        </button>
-      </div>
+          <div className="chat-messages">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`message ${
+                  message.role === "user" ? "user-message" : "assistant-message"
+                }`}
+              >
+                {message.content}
+              </div>
+            ))}
+            {isLoading && (
+              <div className="message assistant-message">
+                <div className="typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <form className="chat-input-form" onSubmit={handleSendMessage}>
+            <input
+              type="text"
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Type your message..."
+              disabled={isLoading}
+            />
+            <button type="submit" disabled={isLoading || !input.trim()}>
+              Send
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ChatBox;
+export default ChatBot;
