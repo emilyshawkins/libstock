@@ -1,16 +1,16 @@
 package com.example.libstock_backend.Models;
 
-import java.math.BigDecimal;
+import java.time.Instant;
 
 public class PurchaseHistory {
 
-    private String purchaseDate;
+    private Instant purchaseDate;
     private String userId;
     private String bookId;
-    private Integer quantity;
-    private BigDecimal cost;
+    private Long quantity;
+    private Long cost;
     
-    public PurchaseHistory(String purchaseDate, String userId, String bookId, Integer quantity, BigDecimal cost) {
+    public PurchaseHistory(Instant purchaseDate, String userId, String bookId, Long quantity, Long cost) {
         this.purchaseDate = purchaseDate;
         this.userId = userId;
         this.bookId = bookId;
@@ -18,11 +18,11 @@ public class PurchaseHistory {
         this.cost = cost;
     }
 
-    public String getPurchaseDate() {
+    public Instant getPurchaseDate() {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(String purchaseDate) {
+    public void setPurchaseDate(Instant purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
@@ -42,19 +42,19 @@ public class PurchaseHistory {
         this.bookId = bookId;
     }
 
-    public Integer getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
-    public BigDecimal getCost() {
+    public Long getCost() {
         return cost;
     }
 
-    public void setCost(BigDecimal cost) {
+    public void setCost(Long cost) {
         this.cost = cost;
     }
 }
