@@ -115,7 +115,20 @@ const fetchGenresForBooks = async (books) => {
   };
 
   const handleBookClick = (bookId) => {
-    navigate(`/user/home/book?id=${bookId}`); // Navigate to book details page
+    const book = favoriteBooks.find(book => book.id === bookId);
+    const author = bookAuthors[bookId] ? bookAuthors[bookId].join(", ") : "Unknown Author";
+    const genre = bookGenres[bookId] ? bookGenres[bookId].join(", ") : "Unknown Genre";
+    const isFavorite = true; // Since this is from favorites page
+    const isInWishlist = false; // We don't know this from favorites page
+    navigate(`/user/home/book?id=${bookId}`, { 
+      state: { 
+        book,
+        author,
+        genre,
+        isFavorite,
+        isInWishlist
+      } 
+    });
   }
 
   // Generate shareable link

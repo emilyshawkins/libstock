@@ -185,3 +185,132 @@ strong {
   border-radius: 4px;
   background-color: white;
 }
+
+.star-rating-input {
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.star-rating-input span {
+  transition: transform 0.2s;
+}
+
+.star-rating-input span:hover {
+  transform: scale(1.2);
+}
+
+.star-rating-display {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 5px;
+}
+
+.rating-card {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rating-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.rating-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.delete-rating-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: auto;
+}
+
+.delete-rating-btn:hover {
+  background-color: #c82333;
+}
+
+.rating-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.rating-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 0;
+  resize: vertical;
+}
+
+.rating-form button[type="submit"] {
+  background-color: #476778;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.rating-form button[type="submit"]:hover {
+  background-color: #35505d;
+}
+
+.book-rating-summary {
+  display: flex;
+  justify-content: right;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.average-rating {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.rating-details {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.rating-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #476778;
+}
+
+.rating-count {
+  font-size: 0.9rem;
+  color: #666;
+  margin-left: 5px;
+}
+
+.star-rating-display {
+  display: flex;
+  gap: 2px;
+}
+
+.star-rating-display span {
+  display: flex;
+  align-items: center;
+}

@@ -112,7 +112,20 @@ const UserHomePage = () => {
   const [wishlist, setWishlist] = useState(new Set());
   const navigate = useNavigate(); // Initialize navigate function
   const handleBookClick = (bookId) => {
-    navigate(`/user/home/book?id=${bookId}`); // Navigate to book details page
+    const book = databaseBooks.find(book => book.id === bookId);
+    const author = bookAuthors[bookId] ? bookAuthors[bookId].join(", ") : "Unknown Author";
+    const genre = bookGenres[bookId] ? bookGenres[bookId].join(", ") : "Unknown Genre";
+    const isFavorite = favoriteBooks.has(bookId);
+    const isInWishlist = wishlist.has(bookId);
+    navigate(`/user/home/book?id=${bookId}`, { 
+      state: { 
+        book,
+        author,
+        genre,
+        isFavorite,
+        isInWishlist
+      } 
+    });
   };
 
   // Fetch books and authors when the component mounts

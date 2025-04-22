@@ -129,7 +129,20 @@ const WishListPage = () => {
   };
 
   const handleBookClick = (bookId) => {
-    navigate(`/user/home/book?id=${bookId}`); // Navigate to book details page
+    const book = wishlist.find(book => book.id === bookId);
+    const author = bookAuthors[bookId] ? bookAuthors[bookId].join(", ") : "Unknown Author";
+    const genre = bookGenres[bookId] ? bookGenres[bookId].join(", ") : "Unknown Genre";
+    const isFavorite = false; // We don't know this from wishlist page
+    const isInWishlist = true; // Since this is from wishlist page
+    navigate(`/user/home/book?id=${bookId}`, { 
+      state: { 
+        book,
+        author,
+        genre,
+        isFavorite,
+        isInWishlist
+      } 
+    });
   }
 
   // Generate shareable link

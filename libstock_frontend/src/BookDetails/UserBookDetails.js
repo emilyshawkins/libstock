@@ -4,6 +4,8 @@ import { renderCheckoutButton } from "../UserHomePage/UserHomePage";
 import { loadStripe } from "@stripe/stripe-js";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import StarIcon from "@mui/icons-material/Star";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import axios from "axios";
 import "./UserBookDetails.css";
 
@@ -71,6 +73,7 @@ const BookDetails = () => {
   const [wishlist, setWishlist] = useState(new Set());
   const [ratings, setRatings] = useState([]);
   const [newRating, setNewRating] = useState({ rating: 5, comment: "" });
+  const [userRating, setUserRating] = useState(null);
   const [userCheckouts, setUserCheckouts] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -79,50 +82,93 @@ const BookDetails = () => {
   const userId = localStorage.getItem("userId") || "";
   const queryParams = new URLSearchParams(location.search);
   const bookId = queryParams.get("id");
-
-  // Load Stripe instance
+  const [userQueue, setUserQueue] = useState([]);
+  const [userInfo, setUserInfo] = useState({ firstName: "", lastName: ""});
+  const [hoverRating, setHoverRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     if (!bookId) return;
+    
+    // Get book data from navigation state if available
+    const bookFromState = location.state?.book;
+    const authorFromState = location.state?.author;
+    const genreFromState = location.state?.genre;
+    const isFavoriteFromState = location.state?.isFavorite;
+    const isInWishlistFromState = location.state?.isInWishlist;
+    
+    if (bookFromState) {
+      setBook(bookFromState);
+    }
+    if (authorFromState) {
+      setAuthor(authorFromState);
+    }
+    if (genreFromState) {
+      setGenres(genreFromState);
+    }
+    if (isFavoriteFromState !== undefined) {
+      setFavoriteBooks(prev => {
+        const newFavorites = new Set(prev);
+        if (isFavoriteFromState) {
+          newFavorites.add(bookId);
+        } else {
+          newFavorites.delete(bookId);
+        }
+        return newFavorites;
+      });
+    }
+    if (isInWishlistFromState !== undefined) {
+      setWishlist(prev => {
+        const newWishlist = new Set(prev);
+        if (isInWishlistFromState) {
+          newWishlist.add(bookId);
+        } else {
+          newWishlist.delete(bookId);
+        }
+        return newWishlist;
+      });
+    }
+    
+    async function fetchUserData() {
+      try {
+          const userId = localStorage.getItem("userId");
+          if (!userId) return;
 
-    const fetchBookDetails = async () => {
+          const response = await axios.get(`http://localhost:8080/user/get?id=${userId}`);
+          if (response.data) {
+              setUserInfo({
+                  firstName: response.data.firstName || "Unknown",
+                  lastName: response.data.lastName || "",
+              });
+          }
+      } catch (error) {
+          console.error("Error fetching user data:", error);
+      }
+    }
+
+    const fetchAdditionalDetails = async () => {
       try {
         setLoading(true);
         setError("");
-
-        const [bookRes, authorRes, genreRes, ratingRes] = await Promise.all([
-          axios.get(`http://localhost:8080/book/read?id=${bookId}`),
-          axios.get(
-            `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${bookId}`
-          ),
-          axios.get(
-            `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${bookId}`
-          ),
-          axios.get(
-            `http://localhost:8080/rating/get_ratings_by_book?bookId=${bookId}`
-
-          ),
+        const [ratingRes, userRatingRes] = await Promise.all([
+          axios.get(`http://localhost:8080/rating/get_ratings_by_book?bookId=${bookId}`),
+          axios.get(`http://localhost:8080/rating/get_ratings_by_user?userId=${userId}`)
         ]);
 
-        setBook(bookRes.data);
         setRatings(ratingRes.data || []);
-        setAuthor(
-          authorRes.data.length > 0
-            ? authorRes.data
-                .map((a) => `${a.firstName} ${a.lastName}`)
-                .join(", ")
-            : "Unknown Author"
-        );
-        setGenres(
-          genreRes.data.length > 0
-            ? genreRes.data.map((g) => g.name).join(", ")
-            : "Unknown Genre"
-        );
+        // Calculate average rating
+        if (ratingRes.data && ratingRes.data.length > 0) {
+          const total = ratingRes.data.reduce((sum, rating) => sum + rating.stars, 0);
+          setAverageRating(total / ratingRes.data.length);
+        }
+        // Find if user has already rated this book
+        const existingRating = userRatingRes.data.find(rating => rating.bookId === bookId);
+        setUserRating(existingRating || null);
 
         await Promise.all([
-          fetchUserFavorites(),
-          fetchUserWishlist(),
+          fetchUserData(),
           fetchUserCheckouts(),
+          fetchUserQueue(),
         ]);
       } catch (error) {
         console.error("Error fetching book details:", error);
@@ -131,22 +177,43 @@ const BookDetails = () => {
         setLoading(false);
       }
     };
-    fetchUserCheckouts();
-    fetchBookDetails();
-  }, [bookId]);
 
-  const fetchUserFavorites = async () => {
-    if (!userId) return;
-
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/favorite/get_favorites_by_user?userId=${userId}`
-      );
-      setFavoriteBooks(new Set(response.data.map((book) => book.id)));
-    } catch (error) {
-      console.error("Error fetching favorite books:", error);
+    // Fetch Book, if we don't have book data from state
+    if (!bookFromState) {
+      axios.get(`http://localhost:8080/book/read?id=${bookId}`)
+        .then(response => {
+          setBook(response.data);
+          // Fetch If we don't have author/genre from state
+          if (!authorFromState || !genreFromState) {
+            Promise.all([
+              axios.get(`http://localhost:8080/bookauthor/get_authors_by_book?bookId=${bookId}`),
+              axios.get(`http://localhost:8080/bookgenre/get_genres_by_book?bookId=${bookId}`)
+            ]).then(([authorRes, genreRes]) => {
+              setAuthor(
+                authorRes.data.length > 0
+                  ? authorRes.data.map(a => `${a.firstName} ${a.lastName}`).join(", ")
+                  : "Unknown Author"
+              );
+              setGenres(
+                genreRes.data.length > 0
+                  ? genreRes.data.map(g => g.name).join(", ")
+                  : "Unknown Genre"
+              );
+              fetchAdditionalDetails();
+            });
+          } else {
+            fetchAdditionalDetails();
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching book:", error);
+          setError("Failed to load book. Please try again.");
+          setLoading(false);
+        });
+    } else {
+      fetchAdditionalDetails();
     }
-  };
+  }, [bookId, location.state]);
 
   // Fetch user checkouts
   const fetchUserCheckouts = async () => {
@@ -161,6 +228,17 @@ const BookDetails = () => {
       setUserCheckouts(userCheckouts);
     } catch (error) {
       console.error("Error fetching Wishlist:", error);
+    }
+  };
+
+  // Fetch user queue
+  const fetchUserQueue = async () => {
+    if (!userId) return;
+    try {
+      const response = await axios.get(`http://localhost:8080/queue/get_waiting?userId=${userId}`);
+      setUserQueue(response.data);
+    } catch (error) {
+      console.error("Error fetching user queue:", error);
     }
   };
 
@@ -286,22 +364,82 @@ const BookDetails = () => {
     }
   };
 
+  const handleStarClick = (rating) => {
+    setNewRating({ ...newRating, rating });
+  };
+
+  const handleStarHover = (rating) => {
+    setHoverRating(rating);
+  };
+
+  const handleStarLeave = () => {
+    setHoverRating(0);
+  };
+
   const handleRatingSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/rating/create", {
-        userId,
-        bookId,
-        stars: newRating.rating,
-        comment: newRating.comment,
-      });
-      setRatings((prev) => [...prev, res.data]);
-      setNewRating({ rating: 5, comment: "" }); 
+      if (userRating) {
+        // Update existing rating
+        const response = await axios.patch("http://localhost:8080/rating/update", {
+          id: userRating.id,
+          stars: newRating.rating,
+          comment: newRating.comment
+        });
+        setRatings(prev => prev.map(r => r.id === userRating.id ? response.data : r));
+      } else {
+        // Create new rating
+        const response = await axios.post("http://localhost:8080/rating/create", {
+          userId,
+          bookId,
+          stars: newRating.rating,
+          comment: newRating.comment
+        });
+        setRatings(prev => [...prev, response.data]);
+        setUserRating(response.data);
+      }
+      setNewRating({ rating: 5, comment: "" });
     } catch (err) {
-      console.error("rating submit error:", err);
+      console.error("Error submitting rating:", err);
+      alert("Failed to submit rating. Please try again.");
     }
   };
-  
+
+  const handleRatingDelete = async (ratingId) => {
+    try {
+      await axios.delete(`http://localhost:8080/rating/delete?id=${ratingId}`);
+      setRatings(prev => prev.filter(r => r.id !== ratingId));
+      if (userRating && userRating.id === ratingId) {
+        setUserRating(null);
+      }
+    } catch (err) {
+      console.error("Error deleting rating:", err);
+      alert("Failed to delete rating. Please try again.");
+    }
+  };
+
+  // Handle queue
+  const handleQueue = async (bookId) => {
+    try {
+      if (userQueue.find((queue) => queue.bookId === bookId)) {
+        await axios.delete(`http://localhost:8080/queue/delete`, {
+          params: { userId, bookId },
+        });
+        setUserQueue((prev) => prev.filter((queue) => queue.bookId !== bookId));
+        alert("Left queue successfully!");
+      } else {
+        const response = await axios.post(`http://localhost:8080/queue/create`, {
+          userId,
+          bookId,
+        });
+        setUserQueue((prev) => [...prev, response.data]);
+        alert("Joined queue successfully!");
+      }
+    } catch (error) {
+      console.error("Error updating queue status:", error);
+      alert("Error updating queue status. Please try again.");
+    }
+  };
 
   if (loading) return <p>Loading book details...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -330,6 +468,25 @@ const BookDetails = () => {
         </span>
       </div>
       <h1>{book.title}</h1>
+      <div className="book-rating-summary">
+        <div className="average-rating">
+          <div className="star-rating-display">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span key={star}>
+                {star <= Math.round(averageRating) ? (
+                  <StarIcon style={{ color: "#FFD700" }} />
+                ) : (
+                  <StarBorderIcon style={{ color: "#FFD700" }} />
+                )}
+              </span>
+            ))}
+          </div>
+          <div className="rating-details">
+            <span className="rating-value">{averageRating.toFixed(1)}</span>
+            <span className="rating-count">({ratings.length} {ratings.length === 1 ? 'rating' : 'ratings'})</span>
+          </div>
+        </div>
+      </div>
       <p>
         <strong>ISBN:</strong> {book.isbn}
       </p>
@@ -383,33 +540,81 @@ const BookDetails = () => {
         {renderCheckoutButton(
           book.id,
           userCheckouts,
+          userQueue,
           handleReturn,
           handleRenew,
-          handleCheckout
+          handleCheckout,
+          handleQueue,
+          [book]
         )}
         <button className="payment-btn" onClick={() => handlePayment(book)}>
           Buy This Book
         </button>
-
-        <div className="rating-section">
-        <h3>Ratings</h3>
-        {ratings.length === 0 ? <p>No Ratings yet.</p> : ratings.map((r, i) => (
-          <div key={i} className="rating-card">
-           <p><strong>{r.userName}</strong> rated {r.stars}/5</p>
-           <p>{r.comment}</p>
-          </div>
-        ))}
+      </div>
+      <div className="rating-section">
+        <h3>Reviews</h3>
+        {ratings.length === 0 ? (
+          <p>No reviews yet.</p>
+        ) : (
+          ratings.map((r) => (
+            <div key={r.id} className="rating-card">
+              <div className="rating-header">
+                <div className="star-rating-display">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span key={star}>
+                      {star <= r.stars ? (
+                        <StarIcon style={{ color: "#FFD700" }} />
+                      ) : (
+                        <StarBorderIcon style={{ color: "#FFD700" }} />
+                      )}
+                    </span>
+                  ))}
+                </div>
+                <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
+                <p className="rating-date">{new Date(r.date).toLocaleDateString()}</p>
+                {r.userId === userId && (
+                  <button 
+                    className="delete-rating-btn"
+                    onClick={() => handleRatingDelete(r.id)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+              <p>{r.comment}</p>
+            </div>
+          ))
+        )}
 
         <form onSubmit={handleRatingSubmit} className="rating-form">
-          <input type="text" placeholder="Your name" value={newRating.RatingerName} onChange={e => setNewRating({ ...newRating, RatingerName: e.target.value })} required />
-          <select value={newRating.rating} onChange={e => setNewRating({ ...newRating, rating: parseInt(e.target.value) })}>
-            {[1, 2, 3, 4, 5].map(r => <option key={r} value={r}>{r}</option>)}
-          </select>
-          <textarea placeholder="Your rating" value={newRating.comment} onChange={e => setNewRating({ ...newRating, comment: e.target.value })} required />
-          <button type="submit">Submit Rating</button>
+        <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
+          <div className="star-rating-input">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                onClick={() => handleStarClick(star)}
+                onMouseEnter={() => handleStarHover(star)}
+                onMouseLeave={handleStarLeave}
+                style={{ cursor: "pointer" }}
+              >
+                {star <= (hoverRating || newRating.rating) ? (
+                  <StarIcon style={{ color: "#FFD700", fontSize: "2rem" }} />
+                ) : (
+                  <StarBorderIcon style={{ color: "#FFD700", fontSize: "2rem" }} />
+                )}
+              </span>
+            ))}
+          </div>
+          <textarea 
+            placeholder="Your review" 
+            value={newRating.comment} 
+            onChange={e => setNewRating({ ...newRating, comment: e.target.value })} 
+            required 
+          />
+          <button type="submit">
+            {userRating ? "Update Review" : "Submit Review"}
+          </button>
         </form>
-        
-      </div>
       </div>
     </div>
   );
