@@ -1,5 +1,7 @@
 package com.example.libstock_backend.DTOs;
 
+import java.time.Instant;
+
 public class RatingDTO {
 
     private String id;
@@ -10,12 +12,12 @@ public class RatingDTO {
     private String bookId;
     private Integer stars;
     private String comment;
-    private String dateCreated;
+    private Instant dateCreated;
 
     public RatingDTO() {
     }
 
-    public RatingDTO(String id, String userId, String userName, String bookId, Integer stars, String comment, String dateCreated) {
+    public RatingDTO(String id, String userId, String userName, String bookId, Integer stars, String comment, Instant dateCreated) {
         this.id = id;
         this.userId = userId;
         this.userName = userName;
@@ -73,11 +75,11 @@ public class RatingDTO {
         this.comment = comment;
     }
 
-    public String getDateCreated() {
+    public Instant getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(Instant dateCreated) {
         this.dateCreated = dateCreated;
     }
 }

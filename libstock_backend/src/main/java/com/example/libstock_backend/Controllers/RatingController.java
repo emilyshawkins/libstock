@@ -71,7 +71,7 @@ public class RatingController {
             user != null ? user.getFirstName() + " " + user.getLastName() : null,
             rating.getStars(),
             rating.getComment(),
-            rating.getDate().toString()
+            rating.getDate()
         );
 
         return ResponseEntity.ok(ratingDTO); // Return the created rating
@@ -94,7 +94,7 @@ public class RatingController {
             user != null ? user.getFirstName() + " " + user.getLastName() : null,
             rating.getStars(),
             rating.getComment(),
-            rating.getDate().toString()
+            rating.getDate()
         );
 
         return ResponseEntity.ok(ratingDTO); // Return the rating
@@ -128,7 +128,7 @@ public class RatingController {
             user != null ? user.getFirstName() + " " + user.getLastName() : null,
             existingRating.getStars(),
             existingRating.getComment(),
-            existingRating.getDate().toString()
+            existingRating.getDate()
         );
 
         ratingRepository.save(existingRating);
@@ -161,7 +161,7 @@ public class RatingController {
                 user != null ? user.getFirstName() + " " + user.getLastName() : null,
                 rating.getStars(),
                 rating.getComment(),
-                rating.getDate().toString()
+                rating.getDate()
             );
             ratingDTOs.add(ratingDTO);
         }
@@ -185,7 +185,7 @@ public class RatingController {
                 user != null ? user.getFirstName() + " " + user.getLastName() : null,
                 rating.getStars(),
                 rating.getComment(),
-                rating.getDate().toString()
+                rating.getDate()
             );
             ratingDTOs.add(ratingDTO);
         }
