@@ -121,4 +121,8 @@ public class Book {
         this.cover = cover;
     }
 
+    public void setAddedData(String addedData) {
+        this.addedData = addedData;
+    }
+
 }
