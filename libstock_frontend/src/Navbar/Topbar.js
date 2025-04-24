@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Topbar.css"; 
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { IconButton } from '@mui/material';
 
 function Topbar() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -84,12 +86,25 @@ function Topbar() {
     return (
         <div className="top-bar">
             <div className="notification-icon" >
-                <img
-                    src="/notification-icon.png" 
-                    alt="Notifications" 
-                    style={{ cursor: "pointer" }} 
+                <IconButton 
                     onClick={toggleNotiDropdown}
-                />
+                    sx={{
+                        color: '#314f5f',
+                        '&:hover': {
+                            backgroundColor: 'rgba(49, 79, 95, 0.04)',
+                        },
+                        '& .MuiSvgIcon-root': {
+                            fontSize: '35px'
+                        }
+                    }}
+                >
+                    <NotificationsIcon />
+                </IconButton>
+                {notifications.length > 0 && (
+                    <div className="notification-badge">
+                        {notifications.length}
+                    </div>
+                )}
                 {isNotiDropdownOpen && (
                     <div className="dropdown-menu notifications">
                         <h4>Notifications</h4>

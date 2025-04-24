@@ -157,11 +157,11 @@ function UserSettings() {
                         src={previewImage} 
                         alt="Profile" 
                         className="profile-preview" 
-                        onClick={() => setIsImageOpen(true)} // Click to open full-screen
+                        onClick={() => setIsImageOpen(true)}
                         style={{ cursor: "pointer" }} 
                     />
                     <label htmlFor="file-upload" className="edit-avatar">
-                        <img src="/pencil.png" alt="edit" className="edit" />
+                        <span role="img" aria-label="edit">✏️</span>
                     </label>
                     <input id="file-upload" type="file" accept="image/*" onChange={handleProfilePictureChange} hidden />
                 </div>
