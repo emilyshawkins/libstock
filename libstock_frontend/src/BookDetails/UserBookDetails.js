@@ -596,6 +596,16 @@ const BookDetails = () => {
         <strong>Checked Out:</strong> {book.numCheckedOut}
       </p>
 
+      {book.addedData && Object.entries(book.addedData).length > 0 ? (
+        Object.entries(book.addedData).map(([key, value]) => (
+          <p key={key}>
+            <strong>{key}:</strong> {value}
+          </p>
+        ))
+      ) : (
+        <p>No additional data available.</p>
+      )}
+
       {/* BooksPrice.com iframe */}
       <div className="books-price-iframe-container">
         <h3>Compare Prices on BooksPrice.com</h3>

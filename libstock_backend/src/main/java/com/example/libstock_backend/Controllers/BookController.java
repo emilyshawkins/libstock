@@ -95,6 +95,11 @@ public class BookController {
                 book.setCover(null);
             }
 
+            if(book.getAddedData() != null) {
+                book.setAddedData(book.getAddedData());
+                System.out.println("Added data: " + book.getAddedData());
+            }
+
             BookRepository.save(book);
             return ResponseEntity.ok(book);
         }
@@ -224,6 +229,18 @@ public class BookController {
         }
         String cover_img = Base64.getEncoder().encodeToString(existingBook.getCover());
         return ResponseEntity.ok(cover_img);
+    }
+
+    @PostMapping("/add_data")
+    // Add additional data to a book
+    public ResponseEntity<Object> add_data(@RequestParam String id, @RequestParam String data) {
+        Book existingBook = BookRepository.findById(id).orElse(null);
+        if (existingBook == null) {
+            return ResponseEntity.notFound().build();
+        }
+        existingBook.setAddedData(data);
+        BookRepository.save(existingBook);
+        return ResponseEntity.ok(existingBook);
     }
 
 }
