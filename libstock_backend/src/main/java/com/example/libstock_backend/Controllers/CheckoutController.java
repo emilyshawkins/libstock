@@ -1,7 +1,9 @@
 package com.example.libstock_backend.Controllers;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.libstock_backend.DTOs.OverdueDTO;
 import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.Checkout;
 import com.example.libstock_backend.Models.Notification;
@@ -138,6 +141,26 @@ public class CheckoutController {
     public ResponseEntity<Iterable<Checkout>> get_all_checked_out(@RequestParam String userId) {
         Iterable<Checkout> checkouts = checkoutRepository.findByUserIdAndStatus(userId, "Checked Out");
         return ResponseEntity.ok(checkouts);
+    }
+
+    @GetMapping("/get_all_overdue")
+    // Get all overdue books
+    public ResponseEntity<Object> get_all_overdue(@RequestParam String userId) {
+        Iterable<Checkout> checkouts = checkoutRepository.findByUserIdAndStatus(userId, "Overdue");
+
+        ArrayList<OverdueDTO> overdueList = new ArrayList<>(); // Create list of overdue books
+
+        for (Checkout checkout : checkouts) {
+            Duration duration = Duration.between(checkout.getDueDate(), Instant.now()); // Get duration between due date and current date
+            long days = duration.toDays(); // Get number of days overdue
+            Double fee = days * 0.5; // Calculate fee
+
+            OverdueDTO overdue = new OverdueDTO(checkout.getId(), checkout.getUserId(), checkout.getBookId(), checkout.getCheckoutDate(), checkout.getDueDate(), fee); // Create overdue object
+
+            overdueList.add(overdue); // Add to list
+        }
+
+        return ResponseEntity.ok(overdueList); // Return list
     }
 
     @GetMapping("/return")
