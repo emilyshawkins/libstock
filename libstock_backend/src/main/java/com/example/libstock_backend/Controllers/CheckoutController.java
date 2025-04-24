@@ -153,7 +153,7 @@ public class CheckoutController {
         for (Checkout checkout : checkouts) {
             Duration duration = Duration.between(checkout.getDueDate(), Instant.now()); // Get duration between due date and current date
             long days = duration.toDays(); // Get number of days overdue
-            Double fee = days * 0.5; // Calculate fee
+            Double fee = days * 0.25; // Calculate fee
 
             OverdueDTO overdue = new OverdueDTO(checkout.getId(), checkout.getUserId(), checkout.getBookId(), checkout.getCheckoutDate(), checkout.getDueDate(), fee); // Create overdue object
 
