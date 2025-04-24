@@ -29,6 +29,7 @@ import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
 import AdminAccountSettings from "./AccountSetting/AdminAccountSettings"; // Import User AccountSettings
+import UserRentingBook from "./UserRentingBook/UserRentingBook"; // Import UserRentingBook
 
 function App() {
   return (
@@ -89,10 +90,10 @@ function MainContent() {
         {/* User Inventory */}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
-        <Route path="/user/settings" element={<AccountSettings />} />{" "}
-        {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
+        <Route path="/user/renting" element={<UserRentingBook />} />{" "}
+        {/* User Renting Books */}
         <Route path="/admin/collection" element={<CollectionPage />} />{" "}
         {/* User Collection */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
