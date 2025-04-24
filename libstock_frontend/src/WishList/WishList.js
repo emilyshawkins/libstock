@@ -206,7 +206,10 @@ const WishListPage = () => {
                     </p>
                     <button
                       className="wishlist-button"
-                      onClick={() => handleWishlistToggle(book.id)}
+                      onClick={(e) => {
+                        handleWishlistToggle(book.id);
+                        e.stopPropagation();
+                      }}
                     >
                       {wishlist.some((b) => b.id === book.id)
                         ? "Remove from Wishlist"
