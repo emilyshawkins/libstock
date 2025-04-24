@@ -95,6 +95,11 @@ public class BookController {
                 book.setCover(null);
             }
 
+            if(book.getAddedData() != null) {
+                book.setAddedData(book.getAddedData());
+                System.out.println("Added data: " + book.getAddedData());
+            }
+
             BookRepository.save(book);
             return ResponseEntity.ok(book);
         }

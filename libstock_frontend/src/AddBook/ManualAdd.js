@@ -47,6 +47,15 @@ function AddBook() {
     }
 
     try {
+
+      // Prepare book data for submission
+      const customFieldsData = customFields.reduce((acc, field) => {
+        if (field.key && field.value) {
+          acc[field.key] = field.value;
+        }
+        return acc;
+      }, {});
+
       // Send request to create a new book in the database
       const response = await axios.post(
         "http://localhost:8080/book/create",
@@ -59,6 +68,7 @@ function AddBook() {
           purchasable,
           count,
           numCheckedOut,
+          addedData: customFieldsData,
         },
         { headers: { "Content-Type": "application/json" } }
       );
