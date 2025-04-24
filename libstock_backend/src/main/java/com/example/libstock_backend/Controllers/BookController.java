@@ -125,12 +125,16 @@ public class BookController {
         if (existingBook == null) { // Check if the book exists
             return ResponseEntity.notFound().build();
         }
-        if (BookRepository.findByISBN(book.getISBN()) != null) { // Check if the ISBN already exists
-            return ResponseEntity.badRequest().body("ISBN already exists");
+        if (book.getISBN() != null) { // Check if the ISBN is provided
+            if (existingBook.getISBN().equals(book.getISBN())) { // If the ISBN is the same, do nothing
+            }
+            else if (BookRepository.findByISBN(book.getISBN()) != null) { // Check if the ISBN already exists
+                return ResponseEntity.badRequest().body("ISBN already exists");
+            } else {
+                existingBook.setISBN(book.getISBN());
+            }
         }
-        else if (book.getISBN() != null) { // Check if the ISBN is empty
-            existingBook.setISBN(book.getISBN());
-        }
+
         if (book.getTitle() != null) {
             existingBook.setTitle(book.getTitle());
         }
