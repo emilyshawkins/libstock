@@ -17,8 +17,10 @@
   
   .left-bar-button {
     width: 90%;
-    margin: 10px 0;
-    padding: 20px 50px;
+    display: flex ; 
+    justify-content: center;
+    margin: 25px 0;
+    padding: 20px 80px;
     font-size: 18px;
     color: white;
     background-color: #35505d;
@@ -27,6 +29,8 @@
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
   }
   
   .left-bar-button:hover {
@@ -48,6 +52,11 @@
 .left-bar-button.active {
     background-color: #2b404a;
     font-weight: bold;
+}
+
+/* Specific styling for Add a Book button */
+.left-bar-button:nth-child(3) {
+  padding: 20px 10px;
 }
 
 .home-container {

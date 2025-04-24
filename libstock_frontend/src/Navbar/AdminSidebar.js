@@ -32,12 +32,6 @@ function Sidebar() {
         >
           Add a Book
         </button>
-        <button
-          onClick={() => navigate("/admin/inventory")}
-          className="left-bar-button"
-        >
-          Inventory Setting
-        </button>
       </div>
     </div>
   );
