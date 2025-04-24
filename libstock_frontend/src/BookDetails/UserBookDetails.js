@@ -761,7 +761,7 @@ const BookDetails = () => {
                           onClick={() => handleDeleteReview(r.id)}
                           title="Delete your review"
                         >
-                          ×
+                          <span role="img" aria-label="delete">🗑️</span>
                         </button>
                       </div>
                     )}
