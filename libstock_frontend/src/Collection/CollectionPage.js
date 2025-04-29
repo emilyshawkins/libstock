@@ -153,7 +153,7 @@ const CollectionPage = () => {
 
   // Function to handle book click and navigate to details
   const handleBookClick = (bookId) => {
-    navigate(`/user/home/book?id=${bookId}`);
+    navigate(`/admin/home/book?id=${bookId}`); // Navigate to book details page
   };
 
   return (

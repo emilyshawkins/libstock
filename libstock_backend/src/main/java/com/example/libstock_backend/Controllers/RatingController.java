@@ -67,8 +67,8 @@ public class RatingController {
         RatingDTO ratingDTO = new RatingDTO(
             rating.getId(),
             rating.getUserId(),
-            rating.getBookId(),
             user != null ? user.getFirstName() + " " + user.getLastName() : null,
+            rating.getBookId(),
             rating.getStars(),
             rating.getComment(),
             rating.getDate().toString()
@@ -90,8 +90,8 @@ public class RatingController {
         RatingDTO ratingDTO = new RatingDTO(
             rating.getId(),
             rating.getUserId(),
-            rating.getBookId(),
             user != null ? user.getFirstName() + " " + user.getLastName() : null,
+            rating.getBookId(),
             rating.getStars(),
             rating.getComment(),
             rating.getDate().toString()
@@ -124,8 +124,8 @@ public class RatingController {
         RatingDTO ratingDTO = new RatingDTO(
             existingRating.getId(),
             existingRating.getUserId(),
-            existingRating.getBookId(),
             user != null ? user.getFirstName() + " " + user.getLastName() : null,
+            existingRating.getBookId(),
             existingRating.getStars(),
             existingRating.getComment(),
             existingRating.getDate().toString()
@@ -157,8 +157,8 @@ public class RatingController {
             RatingDTO ratingDTO = new RatingDTO(
                 rating.getId(),
                 rating.getUserId(),
-                rating.getBookId(),
                 user != null ? user.getFirstName() + " " + user.getLastName() : null,
+                rating.getBookId(),
                 rating.getStars(),
                 rating.getComment(),
                 rating.getDate().toString()
@@ -181,8 +181,8 @@ public class RatingController {
             RatingDTO ratingDTO = new RatingDTO(
                 rating.getId(),
                 rating.getUserId(),
-                rating.getBookId(),
                 user != null ? user.getFirstName() + " " + user.getLastName() : null,
+                rating.getBookId(),
                 rating.getStars(),
                 rating.getComment(),
                 rating.getDate().toString()

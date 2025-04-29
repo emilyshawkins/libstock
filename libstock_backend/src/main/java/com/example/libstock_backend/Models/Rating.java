@@ -22,7 +22,7 @@ public class Rating {
 
     public Rating(String userId, String bookId, Integer stars, String comment, Instant date) {
         this.userId = userId;
-        this.userId = bookId;
+        this.bookId = bookId;
         this.stars = stars;
         this.comment = comment;
         this.date = date;
