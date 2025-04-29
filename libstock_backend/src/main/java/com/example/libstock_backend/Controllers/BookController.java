@@ -95,6 +95,11 @@ public class BookController {
                 book.setCover(null);
             }
 
+            if(book.getAddedData() != null) {
+                book.setAddedData(book.getAddedData());
+                System.out.println("Added data: " + book.getAddedData());
+            }
+
             BookRepository.save(book);
             return ResponseEntity.ok(book);
         }
@@ -120,12 +125,16 @@ public class BookController {
         if (existingBook == null) { // Check if the book exists
             return ResponseEntity.notFound().build();
         }
-        if (BookRepository.findByISBN(book.getISBN()) != null) { // Check if the ISBN already exists
-            return ResponseEntity.badRequest().body("ISBN already exists");
+        if (book.getISBN() != null) { // Check if the ISBN is provided
+            if (existingBook.getISBN().equals(book.getISBN())) { // If the ISBN is the same, do nothing
+            }
+            else if (BookRepository.findByISBN(book.getISBN()) != null) { // Check if the ISBN already exists
+                return ResponseEntity.badRequest().body("ISBN already exists");
+            } else {
+                existingBook.setISBN(book.getISBN());
+            }
         }
-        else if (book.getISBN() != null) { // Check if the ISBN is empty
-            existingBook.setISBN(book.getISBN());
-        }
+
         if (book.getTitle() != null) {
             existingBook.setTitle(book.getTitle());
         }
@@ -224,6 +233,18 @@ public class BookController {
         }
         String cover_img = Base64.getEncoder().encodeToString(existingBook.getCover());
         return ResponseEntity.ok(cover_img);
+    }
+
+    @PostMapping("/add_data")
+    // Add additional data to a book
+    public ResponseEntity<Object> add_data(@RequestParam String id, @RequestParam String data) {
+        Book existingBook = BookRepository.findById(id).orElse(null);
+        if (existingBook == null) {
+            return ResponseEntity.notFound().build();
+        }
+        existingBook.setAddedData(data);
+        BookRepository.save(existingBook);
+        return ResponseEntity.ok(existingBook);
     }
 
 }

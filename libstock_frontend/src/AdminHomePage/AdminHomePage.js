@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminHomePage.css";
+import defaultBookCover from "../Image/book.png"; // Import default book cover
 
 const AdminHomePage = () => {
   // State for storing books from the database
@@ -11,6 +12,8 @@ const AdminHomePage = () => {
   // State for storing authors linked to books
   const [bookAuthors, setBookAuthors] = useState({});
   const [bookGenres, setBookGenres] = useState({});
+  // State for storing book covers
+  const [bookCovers, setBookCovers] = useState({});
 
   // State for filtered books (for search functionality)
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -30,6 +33,7 @@ const AdminHomePage = () => {
       const books = await fetchBooks(); // Wait for books to load
       fetchBookAuthors(books); // Fetch authors only after books are available
       fetchBookGenres(books);
+      fetchBookCovers(books); // Fetch book covers
     };
 
     fetchData();
@@ -41,12 +45,10 @@ const AdminHomePage = () => {
       const response = await axios.get("http://localhost:8080/book/get_all");
       setDatabaseBooks(response.data);
       setFilteredBooks(response.data);
-
-      // Call fetchBookAuthors after books are loaded
-      fetchBookAuthors(response.data);
-      fetchBookGenres(response.data);
+      return response.data;
     } catch (error) {
       console.error("Error fetching books", error);
+      return [];
     }
   };
 
@@ -111,6 +113,40 @@ const AdminHomePage = () => {
       setBookGenres(bookGenresMap);
     } catch (error) {
       console.error("Error fetching book genres:", error);
+    }
+  };
+
+  // Fetch book covers for all books
+  const fetchBookCovers = async (books) => {
+    if (!books || books.length === 0) return;
+
+    try {
+      const bookCoversMap = {};
+
+      for (const book of books) {
+        try {
+          const coverResponse = await axios.get(
+            `http://localhost:8080/book/get_cover?id=${book.id}`,
+            { responseType: "text" } // Get as text since it's base64
+          );
+
+          if (coverResponse.data && coverResponse.data.length > 0) {
+            // Create data URL from base64 string
+            bookCoversMap[
+              book.id
+            ] = `data:image/jpeg;base64,${coverResponse.data}`;
+          } else {
+            bookCoversMap[book.id] = defaultBookCover;
+          }
+        } catch (error) {
+          console.error(`Error fetching cover for book ${book.id}:`, error);
+          bookCoversMap[book.id] = defaultBookCover;
+        }
+      }
+
+      setBookCovers(bookCoversMap);
+    } catch (error) {
+      console.error("Error fetching book covers:", error);
     }
   };
 
@@ -246,35 +282,46 @@ const AdminHomePage = () => {
                         onClick={() => handleBookClick(book.id)} // Add click event
                         style={{ cursor: "pointer" }}
                       >
-                        <h3>{book.title}</h3>
-                        <p>
-                          <strong>ISBN:</strong> {book.isbn}
-                        </p>
-                        <p>
-                          <strong>Author:</strong>{" "}
-                          {bookAuthors[book.id]
-                            ? bookAuthors[book.id].join(", ")
-                            : "Unknown Author"}
-                        </p>
-                        <p>
-                          <strong>Genre:</strong>{" "}
-                          {bookGenres[book.id]
-                            ? bookGenres[book.id].join(", ")
-                            : "Unknown Genre"}
-                        </p>
-
-                        <p>
-                          <strong>Publication Date:</strong>{" "}
-                          {book.publicationDate}
-                        </p>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent click from triggering book navigation
-                            removeBook(book.id);
-                          }}
-                        >
-                          Remove
-                        </button>
+                        <div className="book-cover">
+                          <img
+                            src={bookCovers[book.id] || defaultBookCover}
+                            alt={`Cover for ${book.title}`}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = defaultBookCover;
+                            }}
+                          />
+                        </div>
+                        <div className="book-info">
+                          <h3>{book.title}</h3>
+                          <p>
+                            <strong>ISBN:</strong> {book.isbn}
+                          </p>
+                          <p>
+                            <strong>Author:</strong>{" "}
+                            {bookAuthors[book.id]
+                              ? bookAuthors[book.id].join(", ")
+                              : "Unknown Author"}
+                          </p>
+                          <p>
+                            <strong>Genre:</strong>{" "}
+                            {bookGenres[book.id]
+                              ? bookGenres[book.id].join(", ")
+                              : "Unknown Genre"}
+                          </p>
+                          <p>
+                            <strong>Publication Date:</strong>{" "}
+                            {book.publicationDate}
+                          </p>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent click from triggering book navigation
+                              removeBook(book.id);
+                            }}
+                          >
+                            Remove
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>

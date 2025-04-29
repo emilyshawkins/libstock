@@ -1,6 +1,8 @@
-/* src/AccountSettings/AdminAccountSettings.js */
+/* src/AccountSetting/AdminAccountSettings.js */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import "./AccountSettings.css";
 
 function AdminSettings() {
@@ -15,10 +17,9 @@ function AdminSettings() {
 
     // Profile Picture State
     const [profilePicture, setProfilePicture] = useState(null);
-    const [previewImage, setPreviewImage] = useState("/user-icon.png"); // Default profile image
-    const [isImageOpen, setIsImageOpen] = useState(false); // State to track full-screen view
-    const [showUpdateButton, setShowUpdateButton] = useState(false); // New state for button visibility
-
+    const [previewImage, setPreviewImage] = useState("/user-icon.png");
+    const [isImageOpen, setIsImageOpen] = useState(false);
+    const [showUpdateButton, setShowUpdateButton] = useState(false);
 
     useEffect(() => {
         async function fetchUserData() {
@@ -48,13 +49,12 @@ function AdminSettings() {
         fetchUserData();
     }, []);
 
-    // Handle Profile Picture Change
     const handleProfilePictureChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             setProfilePicture(file);
             setPreviewImage(URL.createObjectURL(file));
-            setShowUpdateButton(true); // Show update button after selecting an image
+            setShowUpdateButton(true);
         }
     };
 
@@ -75,8 +75,8 @@ function AdminSettings() {
 
             if (response.status == 200) {
                 alert("Profile picture updated successfully!");
-                setShowUpdateButton(false); // Hide the button after successful upload
-                window.location.reload(); // Auto-reload page after update
+                setShowUpdateButton(false);
+                window.location.reload();
             } else {
                 alert("Failed to update profile picture.");
             }
@@ -86,12 +86,10 @@ function AdminSettings() {
         }
     };
 
-    // Handle Input Changes
     const handleInputChange = (event) => {
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 
-    // Handle User Data Update
     const handleUpdate = async (field) => {
         const userId = localStorage.getItem("userId");
         if (!userId) {
@@ -116,13 +114,12 @@ function AdminSettings() {
             });
 
             alert(response.data.message || "Update successful!");
-            window.location.reload(); // Auto-reload page after update
+            window.location.reload();
         } catch (error) {
             alert(error.response?.data?.message || "An error occurred. Please try again.");
         }
     };
 
-    // Delete Account
     const handleDeleteAccount = async () => {
         const userId = localStorage.getItem("userId");
         if (!userId) {
@@ -134,9 +131,7 @@ function AdminSettings() {
         if (!confirmDelete) return;
 
         try {
-            await axios.delete(`http://localhost:8080/user/delete?id=${userId}`
-            );
-
+            await axios.delete(`http://localhost:8080/user/delete?id=${userId}`);
             alert("Your account has been successfully deleted.");
             localStorage.clear();
             window.location.href = "/signin"; 
@@ -155,11 +150,20 @@ function AdminSettings() {
                         src={previewImage} 
                         alt="Profile" 
                         className="profile-preview" 
-                        onClick={() => setIsImageOpen(true)} // Click to open full-screen
+                        onClick={() => setIsImageOpen(true)}
                         style={{ cursor: "pointer" }} 
                     />
                     <label htmlFor="file-upload" className="edit-avatar">
-                        <img src="/pencil.png" alt="edit" className="edit" />
+                        <IconButton 
+                            component="span"
+                            style={{
+                                cursor: "pointer",
+                                color: "#476778",
+                                padding: "2px"
+                            }}
+                        >
+                            <EditIcon />
+                        </IconButton>
                     </label>
                     <input id="file-upload" type="file" accept="image/*" onChange={handleProfilePictureChange} hidden />
                 </div>

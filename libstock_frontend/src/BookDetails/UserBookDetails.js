@@ -86,6 +86,9 @@ const BookDetails = () => {
   const [userInfo, setUserInfo] = useState({ firstName: "", lastName: ""});
   const [hoverRating, setHoverRating] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
+  const [starFilter, setStarFilter] = useState('all'); // 'all' or 1-5
+  const [isUserRated, setIsUserRated] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (!bookId) return;
@@ -155,15 +158,45 @@ const BookDetails = () => {
           axios.get(`http://localhost:8080/rating/get_ratings_by_user?userId=${userId}`)
         ]);
 
-        setRatings(ratingRes.data || []);
+        // Fetch user details for each rating
+        const ratingsWithUserDetails = await Promise.all(
+          ratingRes.data.map(async (rating) => {
+            try {
+              const userResponse = await axios.get(`http://localhost:8080/user/get?id=${rating.userId}`);
+              return {
+                ...rating,
+                firstName: userResponse.data.firstName || 'Unknown',
+                lastName: userResponse.data.lastName || ''
+              };
+            } catch (error) {
+              console.error(`Error fetching user details for rating ${rating.id}:`, error);
+              return {
+                ...rating,
+                firstName: 'Unknown',
+                lastName: ''
+              };
+            }
+          })
+        );
+
+        setRatings(ratingsWithUserDetails || []);
         // Calculate average rating
-        if (ratingRes.data && ratingRes.data.length > 0) {
-          const total = ratingRes.data.reduce((sum, rating) => sum + rating.stars, 0);
-          setAverageRating(total / ratingRes.data.length);
+        if (ratingsWithUserDetails && ratingsWithUserDetails.length > 0) {
+          const total = ratingsWithUserDetails.reduce((sum, rating) => sum + rating.stars, 0);
+          setAverageRating(total / ratingsWithUserDetails.length);
         }
         // Find if user has already rated this book
         const existingRating = userRatingRes.data.find(rating => rating.bookId === bookId);
         setUserRating(existingRating || null);
+        setIsUserRated(!!existingRating);
+
+        // If user has an existing rating, load it into the form
+        if (existingRating) {
+          setNewRating({
+            rating: existingRating.stars,
+            comment: existingRating.comment
+          });
+        }
 
         await Promise.all([
           fetchUserData(),
@@ -257,7 +290,7 @@ const BookDetails = () => {
         { userId, bookId }
       );
 
-      const readable = new Date(response.data.dueDate).toLocaleString();
+      const readable = new Date(response.data.dueDate * 1000).toLocaleString();
       setUserCheckouts((prev) => new Set(prev).add(bookId));
       alert(
         "Checkout success! You have until " + readable + " to return the book."
@@ -292,26 +325,13 @@ const BookDetails = () => {
       const response = await axios.get("http://localhost:8080/checkout/renew", {
         params: { userId, bookId },
       });
-      const readable = new Date(response.data.dueDate).toLocaleString();
+      const readable = new Date(response.data.dueDate * 1000).toLocaleString();
       alert(
         "Renew success! You have until " + readable + " to return the book."
       );
     } catch (error) {
       console.error("Error renewing book:", error);
       alert("Error renewing book. Please try again.");
-    }
-  };
-
-  const fetchUserWishlist = async () => {
-    if (!userId) return;
-
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/wishlist/get_wishlist_by_user?userId=${userId}`
-      );
-      setWishlist(new Set(response.data.map((book) => book.id)));
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
     }
   };
 
@@ -379,42 +399,52 @@ const BookDetails = () => {
   const handleRatingSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (userRating) {
+      const currentDate = new Date().toISOString();
+
+      if (isUserRated) {
         // Update existing rating
         const response = await axios.patch("http://localhost:8080/rating/update", {
           id: userRating.id,
           stars: newRating.rating,
-          comment: newRating.comment
+          comment: newRating.comment,
+          date: currentDate
         });
-        setRatings(prev => prev.map(r => r.id === userRating.id ? response.data : r));
+        
+        setRatings(prev => prev.map(r => r.id === userRating.id ? {
+          ...response.data,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          dateCreated: currentDate
+        } : r));
+        
+        setUserRating(response.data);
+        alert("Your review has been updated!");
       } else {
         // Create new rating
         const response = await axios.post("http://localhost:8080/rating/create", {
           userId,
           bookId,
           stars: newRating.rating,
-          comment: newRating.comment
+          comment: newRating.comment,
+          date: currentDate
         });
-        setRatings(prev => [...prev, response.data]);
+        
+        const ratingWithUserInfo = {
+          ...response.data,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          dateCreated: currentDate
+        };
+        
+        setRatings(prev => [...prev, ratingWithUserInfo]);
         setUserRating(response.data);
+        setIsUserRated(true);
+        alert("Your review has been submitted!");
       }
       setNewRating({ rating: 5, comment: "" });
     } catch (err) {
       console.error("Error submitting rating:", err);
       alert("Failed to submit rating. Please try again.");
-    }
-  };
-
-  const handleRatingDelete = async (ratingId) => {
-    try {
-      await axios.delete(`http://localhost:8080/rating/delete?id=${ratingId}`);
-      setRatings(prev => prev.filter(r => r.id !== ratingId));
-      if (userRating && userRating.id === ratingId) {
-        setUserRating(null);
-      }
-    } catch (err) {
-      console.error("Error deleting rating:", err);
-      alert("Failed to delete rating. Please try again.");
     }
   };
 
@@ -439,6 +469,57 @@ const BookDetails = () => {
       console.error("Error updating queue status:", error);
       alert("Error updating queue status. Please try again.");
     }
+  };
+
+  // Modify the getFilteredRatings function to prioritize user's review
+  const getFilteredRatings = () => {
+    // First filter by stars
+    const filtered = starFilter === 'all' 
+      ? ratings 
+      : ratings.filter(r => r.stars === parseInt(starFilter));
+      
+    // Sort reviews: user's review first, then by date
+    return filtered.sort((a, b) => {
+      // If one is user's review, it goes first
+      if (a.userId === userId && b.userId !== userId) return -1;
+      if (a.userId !== userId && b.userId === userId) return 1;
+      
+      // Otherwise sort by date
+      const dateA = new Date(a.dateCreated);
+      const dateB = new Date(b.dateCreated);
+      return dateB - dateA;
+    });
+  };
+
+  // Add handleDeleteReview function
+  const handleDeleteReview = async (ratingId) => {
+    if (window.confirm('Are you sure you want to delete your review?')) {
+      try {
+        await axios.delete(`http://localhost:8080/rating/delete?id=${ratingId}`);
+        setRatings(prev => prev.filter(r => r.id !== ratingId));
+        setUserRating(null);
+        setIsUserRated(false);
+        setNewRating({ rating: 5, comment: "" });
+        alert("Your review has been deleted successfully!");
+      } catch (err) {
+        console.error("Error deleting rating:", err);
+        alert("Failed to delete review. Please try again.");
+      }
+    }
+  };
+
+  // Add function to handle edit mode
+  const handleEditClick = (review) => {
+    setIsEditing(true);
+    setNewRating({
+      rating: review.stars,
+      comment: review.comment
+    });
+    // Scroll to the edit form
+    window.scrollTo({
+      top: document.querySelector('.rating-form').offsetTop - 100,
+      behavior: 'smooth'
+    });
   };
 
   if (loading) return <p>Loading book details...</p>;
@@ -515,6 +596,16 @@ const BookDetails = () => {
         <strong>Checked Out:</strong> {book.numCheckedOut}
       </p>
 
+      {book.addedData && Object.entries(book.addedData).length > 0 ? (
+        Object.entries(book.addedData).map(([key, value]) => (
+          <p key={key}>
+            <strong>{key}:</strong> {value}
+          </p>
+        ))
+      ) : (
+        <p>No additional data available.</p>
+      )}
+
       {/* BooksPrice.com iframe */}
       <div className="books-price-iframe-container">
         <h3>Compare Prices on BooksPrice.com</h3>
@@ -552,69 +643,135 @@ const BookDetails = () => {
         </button>
       </div>
       <div className="rating-section">
-        <h3>Reviews</h3>
-        {ratings.length === 0 ? (
-          <p>No reviews yet.</p>
-        ) : (
-          ratings.map((r) => (
-            <div key={r.id} className="rating-card">
-              <div className="rating-header">
-                <div className="star-rating-display">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span key={star}>
-                      {star <= r.stars ? (
-                        <StarIcon style={{ color: "#FFD700" }} />
-                      ) : (
-                        <StarBorderIcon style={{ color: "#FFD700" }} />
-                      )}
-                    </span>
-                  ))}
-                </div>
-                <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
-                <p className="rating-date">{new Date(r.date).toLocaleDateString()}</p>
-                {r.userId === userId && (
-                  <button 
-                    className="delete-rating-btn"
-                    onClick={() => handleRatingDelete(r.id)}
-                  >
-                    Delete
-                  </button>
-                )}
-              </div>
-              <p>{r.comment}</p>
+        <h3>Book Reviews</h3>
+        
+        {/* Add/Edit Review Form First */}
+        <div className="rating-form-container">
+          <h4>{isEditing ? 'Edit Your Review' : 'Add a Review'}</h4>
+          <form onSubmit={handleRatingSubmit} className="rating-form">
+            <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
+            <div className="star-rating-input">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => handleStarClick(star)}
+                  onMouseEnter={() => handleStarHover(star)}
+                  onMouseLeave={handleStarLeave}
+                  style={{ cursor: "pointer" }}
+                >
+                  {star <= (hoverRating || newRating.rating) ? (
+                    <StarIcon style={{ color: "#FFD700", fontSize: "2rem" }} />
+                  ) : (
+                    <StarBorderIcon style={{ color: "#FFD700", fontSize: "2rem" }} />
+                  )}
+                </span>
+              ))}
             </div>
-          ))
-        )}
+            <textarea 
+              placeholder="Your review" 
+              value={newRating.comment} 
+              onChange={e => setNewRating({ ...newRating, comment: e.target.value })} 
+              required 
+            />
+            <div className="form-buttons">
+              <button type="submit" className="submit-review-btn">
+                {isEditing ? 'Update Review' : 'Submit Review'}
+              </button>
+              {isEditing && (
+                <button 
+                  type="button" 
+                  className="cancel-edit-btn"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setNewRating({ rating: 5, comment: "" });
+                  }}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
 
-        <form onSubmit={handleRatingSubmit} className="rating-form">
-        <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
-          <div className="star-rating-input">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span
-                key={star}
-                onClick={() => handleStarClick(star)}
-                onMouseEnter={() => handleStarHover(star)}
-                onMouseLeave={handleStarLeave}
-                style={{ cursor: "pointer" }}
-              >
-                {star <= (hoverRating || newRating.rating) ? (
-                  <StarIcon style={{ color: "#FFD700", fontSize: "2rem" }} />
-                ) : (
-                  <StarBorderIcon style={{ color: "#FFD700", fontSize: "2rem" }} />
-                )}
-              </span>
-            ))}
+        {/* Review List Section */}
+        <div className="reviews-list">
+          <h4>Recent Reviews</h4>
+          <div className="rating-filter">
+            <select 
+              value={starFilter} 
+              onChange={(e) => setStarFilter(e.target.value)}
+              className="star-filter"
+            >
+              <option value="all">All Ratings</option>
+              <option value="5">5 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="2">2 Stars</option>
+              <option value="1">1 Star</option>
+            </select>
           </div>
-          <textarea 
-            placeholder="Your review" 
-            value={newRating.comment} 
-            onChange={e => setNewRating({ ...newRating, comment: e.target.value })} 
-            required 
-          />
-          <button type="submit">
-            {userRating ? "Update Review" : "Submit Review"}
-          </button>
-        </form>
+
+          {getFilteredRatings().length === 0 ? (
+            <p>{starFilter === 'all' ? "No reviews yet." : `No ${starFilter}-star reviews yet.`}</p>
+          ) : (
+            <>
+              {getFilteredRatings().map((r) => (
+                <div 
+                  key={r.id} 
+                  className={`rating-card ${r.userId === userId ? 'user-rating-card' : ''}`}
+                >
+                  <div className="rating-header">
+                    <div className="star-rating-display">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span key={star}>
+                          {star <= r.stars ? (
+                            <StarIcon style={{ color: "#FFD700" }} />
+                          ) : (
+                            <StarBorderIcon style={{ color: "#FFD700" }} />
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="reviewer-info">
+                      <p>
+                        <strong>{`${r.firstName} ${r.lastName}`}</strong>
+                        {r.userId === userId && <span className="your-review-badge">Your Review</span>}
+                      </p>
+                      <p className="rating-date">
+                        {r.dateCreated ? new Date(r.dateCreated * 1000).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        }) : 'No date'}
+                      </p>
+                    </div>
+                    {r.userId === userId && (
+                      <div className="review-actions-small">
+                        <button 
+                          className="edit-review-btn-small"
+                          onClick={() => handleEditClick(r)}
+                          title="Edit your review"
+                        >
+                          <span role="img" aria-label="edit">✏️</span>
+                        </button>
+                        <button 
+                          className="delete-review-btn-small"
+                          onClick={() => handleDeleteReview(r.id)}
+                          title="Delete your review"
+                        >
+                          <span role="img" aria-label="delete">🗑️</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <p className="review-comment">{r.comment}</p>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

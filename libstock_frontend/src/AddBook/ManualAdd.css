@@ -57,3 +57,11 @@ textarea {
   resize: vertical;
   height: 80px;
 }
+
+/* Style for custom fields to appear side by side */
+.custom-field-group{
+  display: flex;
+  gap: 10px; /* Adds space between the fields */
+  width: 95%;
+  margin-bottom: 15px;
+}

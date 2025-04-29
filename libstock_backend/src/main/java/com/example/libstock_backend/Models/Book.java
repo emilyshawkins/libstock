@@ -20,10 +20,11 @@ public class Book {
     private Integer count; // Number of copies of the book
     private Integer numCheckedOut; // Number of copies of the book that are checked out
     private byte[] cover; // Cover image of the book
+    private Object addedData; // Additional data related to the book
 
     public Book() {}
 
-    public Book(String ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchasable, Integer count, Integer numCheckedOut, byte[] cover) {
+    public Book(String ISBN, String title, String summary, String publicationDate, BigDecimal price, Boolean purchasable, Integer count, Integer numCheckedOut, byte[] cover, Object addedData) {
         this.ISBN = ISBN;
         this.title = title;
         this.summary = summary;
@@ -33,6 +34,7 @@ public class Book {
         this.count = count;
         this.numCheckedOut = numCheckedOut;
         this.cover = cover;
+        this.addedData = addedData;
     }
 
     public String getId() {
@@ -75,6 +77,10 @@ public class Book {
         return cover;
     }
 
+    public Object getAddedData() {
+        return addedData;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -113,6 +119,10 @@ public class Book {
 
     public void setCover(byte[] cover) {
         this.cover = cover;
+    }
+
+    public void setAddedData(Object addedData) {
+        this.addedData = addedData;
     }
 
 }

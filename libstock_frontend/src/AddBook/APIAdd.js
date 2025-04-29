@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./APIAdd.css";
+import defaultBookCover from "../Image/book.png"; // Import default book cover
 
 const API_KEY = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
 
@@ -18,6 +19,9 @@ const AdminInventory = () => {
     purchaseable: false,
     numCheckedOut: "",
   });
+  const [coverImage, setCoverImage] = useState(null);
+  const [useDefaultCover, setUseDefaultCover] = useState(true);
+  const [previewImageUrl, setPreviewImageUrl] = useState(defaultBookCover);
 
   const navigate = useNavigate();
 
@@ -39,6 +43,9 @@ const AdminInventory = () => {
   const handleAddBookClick = (book) => {
     setSelectedBook(book);
     setSelectedGenres([]); // Reset selected genres when a new book is chosen
+    setCoverImage(null); // Reset cover image
+    setUseDefaultCover(true); // Use default cover by default
+    setPreviewImageUrl(defaultBookCover); // Reset preview image
     setBookDetails({
       price: "",
       count: "",
@@ -55,6 +62,23 @@ const AdminInventory = () => {
       ...prevDetails,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  // Handle cover image upload
+  const handleCoverImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCoverImage(file);
+      setUseDefaultCover(false);
+      setPreviewImageUrl(URL.createObjectURL(file));
+    }
+  };
+
+  // Toggle between default and custom cover
+  const handleUseDefaultCover = () => {
+    setUseDefaultCover(true);
+    setCoverImage(null);
+    setPreviewImageUrl(defaultBookCover);
   };
 
   // Searches books from Google Books API
@@ -106,6 +130,45 @@ const AdminInventory = () => {
     }
   };
 
+  // Upload cover image for a book
+  const uploadCoverImage = async (bookId) => {
+    try {
+      // If using default cover, fetch the default image and convert to File
+      if (useDefaultCover) {
+        const response = await fetch(defaultBookCover);
+        const blob = await response.blob();
+        const defaultImageFile = new File([blob], "default-cover.png", {
+          type: "image/png",
+        });
+
+        const formData = new FormData();
+        formData.append("cover", defaultImageFile);
+
+        await axios.post(
+          `http://localhost:8080/book/set_cover?id=${bookId}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+      }
+      // Otherwise use the selected image file
+      else if (coverImage) {
+        const formData = new FormData();
+        formData.append("cover", coverImage);
+
+        await axios.post(
+          `http://localhost:8080/book/set_cover?id=${bookId}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Error uploading cover image:", error);
+    }
+  };
   // **Add book to database and associate it with the author**
   const confirmAddBook = async () => {
     if (!selectedBook?.volumeInfo) return;
@@ -162,6 +225,8 @@ const AdminInventory = () => {
 
       if (bookResponse.status === 200) {
         const bookId = bookResponse.data.id;
+        // Upload cover image
+        await uploadCoverImage(bookId);
 
         // Link book to author
         for (const authorId of authorIds) {
@@ -317,6 +382,45 @@ const AdminInventory = () => {
                 <li key={genre.id}>{genre.name}</li>
               ))}
             </ul>
+            {/* Book Cover Image Selection */}
+            <div className="book-cover-section">
+              <h3>Book Cover</h3>
+              <div className="cover-preview">
+                <img
+                  src={previewImageUrl}
+                  alt="Book Cover Preview"
+                  style={{ width: "150px", height: "auto", margin: "10px 0" }}
+                />
+              </div>
+              <div className="cover-options">
+                <label>
+                  <input
+                    type="radio"
+                    name="coverOption"
+                    checked={useDefaultCover}
+                    onChange={handleUseDefaultCover}
+                  />
+                  Use Default Cover
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="coverOption"
+                    checked={!useDefaultCover}
+                    onChange={() => setUseDefaultCover(false)}
+                  />
+                  Upload Custom Cover
+                </label>
+                {!useDefaultCover && (
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCoverImageChange}
+                    className="file-input"
+                  />
+                )}
+              </div>
+            </div>
             <button onClick={confirmAddBook}>Confirm Add</button>
             <button onClick={() => setSelectedBook(null)}>Cancel</button>
           </div>

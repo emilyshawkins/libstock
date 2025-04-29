@@ -16,6 +16,8 @@ function AddBook() {
   const [count, setCount] = useState("");
   const [numCheckedOut, setNumCheckedOut] = useState("");
 
+  const [customFields, setCustomFields] = useState([]); // State for custom fields
+
   // State for UI feedback
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -45,6 +47,15 @@ function AddBook() {
     }
 
     try {
+
+      // Prepare book data for submission
+      const customFieldsData = customFields.reduce((acc, field) => {
+        if (field.key && field.value) {
+          acc[field.key] = field.value;
+        }
+        return acc;
+      }, {});
+
       // Send request to create a new book in the database
       const response = await axios.post(
         "http://localhost:8080/book/create",
@@ -57,6 +68,7 @@ function AddBook() {
           purchasable,
           count,
           numCheckedOut,
+          addedData: customFieldsData,
         },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -72,6 +84,17 @@ function AddBook() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Additional custom fields can be added here
+  const handleAddCustomField = () => {
+    setCustomFields([...customFields, { key: "", value: "" }]);
+  };
+
+  const handleCustomFieldChange = (index, field, value) => {
+    const updatedFields = [...customFields];
+    updatedFields[index][field] = value;
+    setCustomFields(updatedFields);
   };
 
   return (
@@ -181,6 +204,44 @@ function AddBook() {
             placeholder="Enter number of checked-out books"
             required
           />
+        </div>
+
+        {/* Additional Custom fields can be added here */}
+        <div className="input-group">
+          <label htmlFor="customField">Custom Fields</label>
+          {customFields.map((field, index) => (
+            <div key={index} className="custom-field-group">
+              <input
+                type="text"
+                placeholder="Enter custom field key"
+                value={field.key}
+                onChange={(e) =>
+                  handleCustomFieldChange(index, "key", e.target.value)
+                }
+              />
+              <input
+                type="text"
+                placeholder="Enter custom field value"
+                value={field.value}
+                onChange={(e) =>
+                  handleCustomFieldChange(index, "value", e.target.value)
+                }
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const updatedFields = customFields.filter(
+                    (_, i) => i !== index
+                  );
+                  setCustomFields(updatedFields);
+                }}
+              >-</button>
+
+            </div>
+          ))}
+          <button type="button" onClick={handleAddCustomField}>
+            +
+          </button>
         </div>
 
         {/* Submit Button */}

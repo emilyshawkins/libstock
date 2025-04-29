@@ -276,9 +276,6 @@ strong {
 .book-rating-summary {
   display: flex;
   justify-content: right;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .average-rating {
@@ -313,4 +310,278 @@ strong {
 .star-rating-display span {
   display: flex;
   align-items: center;
+}
+
+.rating-filter {
+  margin: 20px 0;
+}
+
+.star-filter {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.star-filter:hover {
+  border-color: #888;
+}
+
+.review-count {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.rating-section {
+  margin-top: 30px;
+}
+
+.review-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.update-review-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-edit-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-review-btn:hover {
+  background-color: #45a049;
+}
+
+.cancel-edit-btn:hover {
+  background-color: #da190b;
+}
+
+.delete-review-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-review-btn:hover {
+  background-color: #c82333;
+}
+
+.delete-review-btn-small {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 50%;
+  line-height: 1;
+  margin-left: auto;
+  transition: background-color 0.2s;
+}
+
+.delete-review-btn-small:hover {
+  background-color: #ffebee;
+}
+
+.rating-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.rating-card {
+  position: relative;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.rating-card:hover {
+  background-color: #f8f9fa;
+}
+
+.update-review-btn,
+.cancel-edit-btn,
+.delete-review-btn {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}
+
+/* Add confirmation dialog styling */
+.confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.user-rating-card {
+  background-color: #f8f9fa;
+  border-left: 4px solid #35505d;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.user-rating-card .rating-header {
+  padding-top: 5px;
+}
+
+.your-review-badge {
+  background-color: #35505d;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+  font-weight: normal;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reviewer-info p {
+  margin: 0;
+}
+
+.rating-date {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.review-comment {
+  margin-top: 10px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.rating-card {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.rating-card:not(.user-rating-card):hover {
+  background-color: #f8f9fa;
+}
+
+.rating-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  position: relative;
+}
+
+.star-rating-display {
+  display: flex;
+  align-items: center;
+}
+
+/* Update the filter section styling */
+.rating-filter {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star-filter {
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.review-count {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* Add animation for the user's review */
+.user-rating-card {
+  animation: highlightReview 0.3s ease-out;
+}
+
+@keyframes highlightReview {
+  from {
+    transform: translateY(-5px);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.review-actions-small {
+  display: flex;
+  gap: 5px;
+  margin-left: auto;
+}
+
+.edit-review-btn-small,
+.delete-review-btn-small {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.edit-review-btn-small {
+  font-size: 16px;
+}
+
+.edit-review-btn-small:hover {
+  opacity: 0.7;
+  background: none;  /* Remove hover background */
+}
+
+.delete-review-btn-small {
+  color: #dc3545;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.delete-review-btn-small:hover {
+  opacity: 0.7;
+  background: none;  /* Remove hover background */
 }

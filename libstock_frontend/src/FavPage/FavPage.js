@@ -176,7 +176,10 @@ const fetchGenresForBooks = async (books) => {
                       <h3 className="book-title">{book.title}</h3>
                       <span
                         className="favorite-icon"
-                        onClick={() => handleFavoriteToggle(book.id)}
+                        onClick={(e) => {
+                          handleFavoriteToggle(book.id);
+                          e.stopPropagation();
+                        }}
                       >
                         <FavoriteIcon
                           style={{

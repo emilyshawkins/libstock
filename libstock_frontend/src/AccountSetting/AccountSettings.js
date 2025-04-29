@@ -1,6 +1,8 @@
 /* src/AccountSetting/AccountSettings.js */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import "./AccountSettings.css";
 
 function UserSettings() {
@@ -157,11 +159,20 @@ function UserSettings() {
                         src={previewImage} 
                         alt="Profile" 
                         className="profile-preview" 
-                        onClick={() => setIsImageOpen(true)} // Click to open full-screen
+                        onClick={() => setIsImageOpen(true)}
                         style={{ cursor: "pointer" }} 
                     />
                     <label htmlFor="file-upload" className="edit-avatar">
-                        <img src="/pencil.png" alt="edit" className="edit" />
+                        <IconButton 
+                            component="span"
+                            style={{
+                                cursor: "pointer",
+                                color: "#476778",
+                                padding: "2px"
+                            }}
+                        >
+                            <EditIcon />
+                        </IconButton>
                     </label>
                     <input id="file-upload" type="file" accept="image/*" onChange={handleProfilePictureChange} hidden />
                 </div>

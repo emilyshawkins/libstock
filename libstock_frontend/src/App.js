@@ -8,6 +8,7 @@ import {
 import Navbar from "./Navbar/Navbar"; // Import Navbar
 import Sidebar from "./Navbar/Sidebar"; // Import Sidebar
 import Topbar from "./Navbar/Topbar"; // Import Topbar
+import ChatBot from "./ChatBot/ChatBot"; // Import ChatBot
 import AdminSidebar from "./Navbar/AdminSidebar"; // Import AdminSidebar
 import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import ForgotPass from "./SignInPage/ForgotPass"; //Import ForgotPass
@@ -28,7 +29,7 @@ import APIAdd from "./AddBook/APIAdd"; // Import AddBook
 import ManualAdd from "./AddBook/ManualAdd"; // Import AddBook
 import BookDetails from "./BookDetails/BookDetails"; // Import BookDetails
 import AdminAccountSettings from "./AccountSetting/AdminAccountSettings"; // Import User AccountSettings
-import ChatBot from "./ChatBot/ChatBot"; // Import ChatBot
+import UserRentingBook from "./UserRentingBook/UserRentingBook"; // Import UserRentingBook
 
 function App() {
   return (
@@ -61,16 +62,14 @@ function MainContent() {
     <>
       {/* Display Navbar on all pages except user and admin pages */}
       {isNavbarVisible && <Navbar />}
-
       {/* Display Sidebar only on user pages */}
       {isSidebarVisible && <Sidebar />}
-
       {/* Display Topbar only on user and admin pages */}
       {isTopbarVisible && <Topbar />}
-
       {/* Display Admin Sidebar for admin related pages */}
       {isAdminSidebarVisible && <AdminSidebar />}
-
+      {/* ChatBot component for all pages */}
+      {<ChatBot />} {/* ChatBot */}
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home page */}
         <Route path="/signin" element={<SignInPage />} /> {/* Sign In page */}
@@ -91,10 +90,10 @@ function MainContent() {
         {/* User Inventory */}
         <Route path="/user/settings" element={<AccountSettings />} />{" "}
         {/* Account Settings */}
-        <Route path="/user/settings" element={<AccountSettings />} />{" "}
-        {/* Account Settings */}
         <Route path="/user/home" element={<UserHomePage />} />{" "}
         {/* User Home page */}
+        <Route path="/user/renting" element={<UserRentingBook />} />{" "}
+        {/* User Renting Books */}
         <Route path="/admin/collection" element={<CollectionPage />} />{" "}
         {/* User Collection */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}
@@ -107,7 +106,6 @@ function MainContent() {
         {/* Admin Add Book Manually */}
         <Route path="/admin/settings" element={<AdminAccountSettings />} />{" "}
         {/* Account Settings */}
-        <Route ChatBot path="/chatbot" element={<ChatBot />} /> {/* ChatBot */}
         <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
       </Routes>
     </>
