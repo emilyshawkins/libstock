@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import CheckedOutBooks from "./CheckedOutBooks";
+import PurchasedBooks from "./PurchasedBooks";
 import "./UserRentingBook.css";
 
 const UserRentingBook = () => {
   const [checkedOutBooks, setCheckedOutBooks] = useState([]);
   const [purchasedBooks, setPurchasedBooks] = useState([]);
+  const [overdueBooks, setOverdueBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [bookAuthors, setBookAuthors] = useState({});
@@ -19,11 +22,23 @@ const UserRentingBook = () => {
         setLoading(true);
         setError("");
 
-        // Fetch checked out books
+        // Fetch all checkouts for the user
+        const allCheckoutsResponse = await axios.get(
+          `http://localhost:8080/checkout/get_all_by_user?userId=${userId}`
+        );
+        const allCheckoutBookIds = allCheckoutsResponse.data.map(checkout => checkout.bookId);
+
+        // Fetch currently checked out books
         const checkoutResponse = await axios.get(
           `http://localhost:8080/checkout/get_all_checked_out?userId=${userId}`
         );
         const checkedOutBookIds = checkoutResponse.data.map(checkout => checkout.bookId);
+
+        // Fetch overdue books with fee calculations
+        const overdueResponse = await axios.get(
+          `http://localhost:8080/checkout/get_all_overdue?userId=${userId}`
+        );
+        const overdueBookIds = overdueResponse.data.map(checkout => checkout.bookId);
         
         // Fetch purchased books
         const purchaseResponse = await axios.get(
@@ -39,6 +54,19 @@ const UserRentingBook = () => {
           })
         );
 
+        // Fetch book details for overdue books
+        const overdueBooksData = await Promise.all(
+          overdueBookIds.map(async (bookId) => {
+            const bookResponse = await axios.get(`http://localhost:8080/book/read?id=${bookId}`);
+            const overdueInfo = overdueResponse.data.find(checkout => checkout.bookId === bookId);
+            return {
+              ...bookResponse.data,
+              overdueFee: overdueInfo.overdueFee,
+              daysOverdue: overdueInfo.daysOverdue
+            };
+          })
+        );
+
         // Fetch book details for purchased books
         const purchasedBooksData = await Promise.all(
           purchasedBookIds.map(async (bookId) => {
@@ -48,10 +76,11 @@ const UserRentingBook = () => {
         );
 
         setCheckedOutBooks(checkedOutBooksData);
+        setOverdueBooks(overdueBooksData);
         setPurchasedBooks(purchasedBooksData);
 
         // Fetch authors and genres for all books
-        const allBookIds = [...checkedOutBookIds, ...purchasedBookIds];
+        const allBookIds = [...allCheckoutBookIds, ...purchasedBookIds];
         await Promise.all([
           fetchBookAuthors(allBookIds),
           fetchBookGenres(allBookIds)
@@ -131,13 +160,13 @@ const UserRentingBook = () => {
     <div className="user-renting-container">
       <h1>My Books</h1>
       
-      {/* Checked Out Books Section */}
+      {/* Overdue Books Section */}
       <div className="books-section">
-        <h2>Currently Checked Out</h2>
-        {checkedOutBooks.length > 0 ? (
+        <h2>Overdue Books</h2>
+        {overdueBooks.length > 0 ? (
           <div className="book-grid">
-            {checkedOutBooks.map((book) => (
-              <div key={book.id} className="book-card" onClick={() => handleBookClick(book.id)}>
+            {overdueBooks.map((book) => (
+              <div key={book.id} className="book-card overdue" onClick={() => handleBookClick(book.id)}>
                 <h3>{book.title}</h3>
                 <p>
                   <strong>ISBN:</strong> {book.isbn}
@@ -151,47 +180,34 @@ const UserRentingBook = () => {
                   {bookGenres[book.id] ? bookGenres[book.id].join(", ") : "Unknown Genre"}
                 </p>
                 <p>
-                  <strong>Due Date:</strong>{" "}
-                  {new Date(book.dueDate * 1000).toLocaleDateString()}
+                  <strong>Days Overdue:</strong> {book.daysOverdue}
+                </p>
+                <p>
+                  <strong>Overdue Fee:</strong> ${book.overdueFee.toFixed(2)}
                 </p>
               </div>
             ))}
           </div>
         ) : (
-          <p>No books currently checked out.</p>
+          <p>No overdue books.</p>
         )}
       </div>
 
+      {/* Checked Out Books Section */}
+      <CheckedOutBooks 
+        books={checkedOutBooks}
+        bookAuthors={bookAuthors}
+        bookGenres={bookGenres}
+        onBookClick={handleBookClick}
+      />
+
       {/* Purchased Books Section */}
-      <div className="books-section">
-        <h2>Purchased Books</h2>
-        {purchasedBooks.length > 0 ? (
-          <div className="book-grid">
-            {purchasedBooks.map((book) => (
-              <div key={book.id} className="book-card" onClick={() => handleBookClick(book.id)}>
-                <h3>{book.title}</h3>
-                <p>
-                  <strong>ISBN:</strong> {book.isbn}
-                </p>
-                <p>
-                  <strong>Author:</strong>{" "}
-                  {bookAuthors[book.id] ? bookAuthors[book.id].join(", ") : "Unknown Author"}
-                </p>
-                <p>
-                  <strong>Genre:</strong>{" "}
-                  {bookGenres[book.id] ? bookGenres[book.id].join(", ") : "Unknown Genre"}
-                </p>
-                <p>
-                  <strong>Purchase Date:</strong>{" "}
-                  {new Date(book.purchaseDate * 1000).toLocaleDateString()}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No purchased books yet.</p>
-        )}
-      </div>
+      <PurchasedBooks 
+        books={purchasedBooks}
+        bookAuthors={bookAuthors}
+        bookGenres={bookGenres}
+        onBookClick={handleBookClick}
+      />
     </div>
   );
 };
