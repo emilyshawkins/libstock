@@ -25,7 +25,9 @@ export const handlePayment = async (book) => {
       quantity: quantity,
     };
 
-    const response = await fetch("http://localhost:8080/product/v1/checkout", {
+    const userId = localStorage.getItem("userId") || "";
+
+    const response = await fetch(`http://localhost:8080/product/v1/checkout?userId=${userId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,19 +45,6 @@ export const handlePayment = async (book) => {
     const result = await stripe.redirectToCheckout({
       sessionId: stripeResponse.sessionId,
     });
-
-    try {
-      const userId = localStorage.getItem("userId") || "";
-      await fetch(`http://localhost:8080/history/create${userId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(createPaymentRequest),
-      });
-    } catch (error) {
-      console.error("Error creating history record:", error);
-    }
 
     if (result.error) {
       console.error("Stripe Checkout Error:", result.error.message);
