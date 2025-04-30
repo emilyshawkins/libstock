@@ -408,6 +408,7 @@ const BookDetails = () => {
         
         setUserRating(response.data);
         alert("Your review has been updated!");
+        window.location.reload(); // Reload page after update
       } else {
         // Create new rating
         const response = await axios.post("http://localhost:8080/rating/create", {
@@ -429,6 +430,7 @@ const BookDetails = () => {
         setUserRating(response.data);
         setIsUserRated(true);
         alert("Your review has been submitted!");
+        window.location.reload(); // Reload page after submission
       }
       setNewRating({ rating: 5, comment: "" });
     } catch (err) {
