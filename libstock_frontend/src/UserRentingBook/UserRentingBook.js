@@ -10,6 +10,7 @@ const UserRentingBook = () => {
   const [error, setError] = useState("");
   const [bookAuthors, setBookAuthors] = useState({});
   const [bookGenres, setBookGenres] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
   const userId = localStorage.getItem("userId") || "";
   const navigate = useNavigate();
 
@@ -88,23 +89,39 @@ const UserRentingBook = () => {
               return null;
             }
           })
-        ).then(books => books.filter(book => book !== null));
+        ).then(books => books.filter(book => book !== null))
+          .then(books => books.sort((a, b) => a.title.localeCompare(b.title)));
 
         console.log("Processed checked out books:", checkedOutBooksData);
 
         // Fetch book details for purchased books
         const purchasedBooksData = await Promise.all(
           purchasedBookIds.map(async (bookId) => {
-            const bookResponse = await axios.get(`http://localhost:8080/book/read?id=${bookId}`);
-            const purchaseInfo = purchaseResponse.data.find(purchase => purchase.bookId === bookId);
-            return {
-              ...bookResponse.data,
-              purchaseDate: purchaseInfo.purchaseDate,
-              quantity: purchaseInfo.quantity,
-              cost: purchaseInfo.cost
-            };
+            try {
+              console.log(`Fetching details for book ID: ${bookId}`);
+              const bookResponse = await axios.get(`http://localhost:8080/book/read?id=${bookId}`);
+              const purchaseInfo = purchaseResponse.data.find(purchase => purchase.bookId === bookId);
+              
+              if (!bookResponse.data || !purchaseInfo) {
+                console.error(`Missing data for book ID ${bookId}:`, { bookResponse, purchaseInfo });
+                return null;
+              }
+
+              return {
+                ...bookResponse.data,
+                purchaseDate: purchaseInfo.purchaseDate,
+                quantity: purchaseInfo.quantity,
+                cost: purchaseInfo.cost
+              };
+            } catch (error) {
+              console.error(`Error fetching book details for book ID ${bookId}:`, error.response?.data || error.message);
+              return null;
+            }
           })
-        );
+        ).then(books => books.filter(book => book !== null))
+          .then(books => books.sort((a, b) => a.title.localeCompare(b.title)));
+
+        console.log("Processed purchased books:", purchasedBooksData);
 
         setCheckedOutBooks(checkedOutBooksData);
         setPurchasedBooks(purchasedBooksData);
@@ -191,6 +208,21 @@ const UserRentingBook = () => {
     });
   };
 
+  const filterBooks = (books) => {
+    if (!searchQuery) return books;
+    
+    const query = searchQuery.toLowerCase();
+    return books.filter(book => {
+      const title = book.title?.toLowerCase() || '';
+      const isbn = book.isbn?.toLowerCase() || '';
+      const authors = bookAuthors[book.id]?.join(' ').toLowerCase() || '';
+      
+      return title.includes(query) || 
+             isbn.includes(query) || 
+             authors.includes(query);
+    });
+  };
+
   if (loading) {
     return <div className="loading">Loading your books...</div>;
   }
@@ -199,16 +231,29 @@ const UserRentingBook = () => {
     return <div className="error">{error}</div>;
   }
 
+  const filteredCheckedOutBooks = filterBooks(checkedOutBooks);
+  const filteredPurchasedBooks = filterBooks(purchasedBooks);
+
   return (
     <div className="user-renting-container">
       <h1>My Books</h1>
       
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by title, author, or ISBN..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
+      
       {/* Checked Out Books Section */}
       <div className="books-section">
         <h2>Currently Checked Out</h2>
-        {checkedOutBooks.length > 0 ? (
+        {filteredCheckedOutBooks.length > 0 ? (
           <div className="book-grid">
-            {checkedOutBooks.map((book) => (
+            {filteredCheckedOutBooks.map((book) => (
               <div key={book.id} className="book-card" onClick={() => handleBookClick(book.id)}>
                 <h3>{book.title}</h3>
                 <p>
@@ -242,9 +287,9 @@ const UserRentingBook = () => {
       {/* Purchased Books Section */}
       <div className="books-section">
         <h2>Purchased Books</h2>
-        {purchasedBooks.length > 0 ? (
+        {filteredPurchasedBooks.length > 0 ? (
           <div className="book-grid">
-            {purchasedBooks.map((book) => (
+            {filteredPurchasedBooks.map((book) => (
               <div key={book.id} className="book-card" onClick={() => handleBookClick(book.id)}>
                 <h3>{book.title}</h3>
                 <p>

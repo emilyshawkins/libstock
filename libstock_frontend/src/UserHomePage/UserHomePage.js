@@ -444,16 +444,14 @@ const UserHomePage = () => {
       <h1>Welcome to Your Dashboard</h1>
       <div className="main-content">
         {/* Search bar for filtering books */}
-        <div className="search-bar">
+        <div className="search-container">
           <input
             type="text"
-            placeholder="Search books..."
+            placeholder="Search books by title, author, or genre..."
             value={searchQuery}
             onChange={handleSearchChange}
+            className="search-input"
           />
-        </div>
-        <div className="user-home-container">
-          {/* ...existing content... */}
         </div>
         {/* Display books in the database */}
         <div className="book-list">
