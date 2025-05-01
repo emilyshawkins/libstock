@@ -13,16 +13,11 @@
 
 .books-section h2 {
   color: #333;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 2px solid #476778;
-}
-
-.book-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
 }
 
 .book-card {
