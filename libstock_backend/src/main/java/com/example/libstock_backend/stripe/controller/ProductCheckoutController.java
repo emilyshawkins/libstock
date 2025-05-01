@@ -41,7 +41,10 @@ public class ProductCheckoutController {
 
         Instant now = Instant.now();
 
-        Book book = bookRepository.findByISBN(productRequest.getName());
+        Book book = bookRepository.findById(productRequest.getBookId()).orElse(null);
+        if (book == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
 
         PurchaseHistory item = new PurchaseHistory(
             now,
