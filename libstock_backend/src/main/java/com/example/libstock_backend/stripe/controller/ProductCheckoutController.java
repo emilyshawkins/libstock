@@ -1,6 +1,5 @@
 package com.example.libstock_backend.stripe.controller;
 
-import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.PurchaseHistory;
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.PurchaseHistoryRepository;
@@ -36,17 +35,15 @@ public class ProductCheckoutController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<StripeResponse> checkoutProducts(@RequestParam String userId, @RequestBody ProductRequest productRequest) {
+    public ResponseEntity<StripeResponse> checkoutProducts(@RequestParam String userId, @RequestParam String bookId, @RequestBody ProductRequest productRequest) {
         StripeResponse stripeResponse = stripeService.checkoutProducts(productRequest);
 
         Instant now = Instant.now();
 
-        Book book = bookRepository.findByISBN(productRequest.getName());
-
         PurchaseHistory item = new PurchaseHistory(
             now,
             userId,
-            book.getId(),
+            bookId,
             productRequest.getQuantity(),
             productRequest.getAmount()
         );

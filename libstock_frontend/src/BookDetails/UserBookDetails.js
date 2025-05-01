@@ -27,7 +27,7 @@ export const handlePayment = async (book) => {
 
     const userId = localStorage.getItem("userId") || "";
 
-    const response = await fetch(`http://localhost:8080/product/v1/checkout?userId=${userId}`, {
+    const response = await fetch(`http://localhost:8080/product/v1/checkout?userId=${userId}&bookId=${book.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
