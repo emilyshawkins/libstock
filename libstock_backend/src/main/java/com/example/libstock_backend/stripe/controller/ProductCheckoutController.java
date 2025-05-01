@@ -1,6 +1,8 @@
 package com.example.libstock_backend.stripe.controller;
 
+import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.PurchaseHistory;
+import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.PurchaseHistoryRepository;
 import com.example.libstock_backend.stripe.dto.ProductRequest;
 import com.example.libstock_backend.stripe.dto.StripeResponse;
@@ -24,7 +26,10 @@ public class ProductCheckoutController {
     private StripeService stripeService;
 
     @Autowired
-    PurchaseHistoryRepository purchaseHistoryRepository;    
+    PurchaseHistoryRepository purchaseHistoryRepository; 
+    
+    @Autowired
+    BookRepository bookRepository;
 
     public ProductCheckoutController(StripeService stripeService) {
         this.stripeService = stripeService;
@@ -36,10 +41,12 @@ public class ProductCheckoutController {
 
         Instant now = Instant.now();
 
+        Book book = bookRepository.findByISBN(productRequest.getName());
+
         PurchaseHistory item = new PurchaseHistory(
             now,
             userId,
-            productRequest.getName(),
+            book.getId(),
             productRequest.getQuantity(),
             productRequest.getAmount()
         );
