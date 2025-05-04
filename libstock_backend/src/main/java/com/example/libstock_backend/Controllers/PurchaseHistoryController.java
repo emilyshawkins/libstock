@@ -23,5 +23,17 @@ public class PurchaseHistoryController {
     public ResponseEntity<Object> get_purchase_history(@RequestParam String userId) {
         return ResponseEntity.ok(purchaseHistoryRepository.findByUserId(userId));
     }
+
+    // Get all receipts
+    @GetMapping("/get_receipts")
+    public ResponseEntity<Object> get_all_receipts(@RequestParam String userId) {
+        return ResponseEntity.ok(purchaseHistoryRepository.findByUserId(userId));
+    }
+
+    // Get individual receipt by id
+    @GetMapping("/get_receipt")
+    public ResponseEntity<Object> get_receipt_by_id(@RequestParam String id) {
+        return ResponseEntity.ok(purchaseHistoryRepository.findById(id));
+    }
     
 }

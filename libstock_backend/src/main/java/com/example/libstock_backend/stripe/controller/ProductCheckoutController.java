@@ -1,8 +1,11 @@
 package com.example.libstock_backend.stripe.controller;
 
+import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.PurchaseHistory;
+import com.example.libstock_backend.Models.User;
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.PurchaseHistoryRepository;
+import com.example.libstock_backend.Repositories.UserRepository;
 import com.example.libstock_backend.stripe.dto.ProductRequest;
 import com.example.libstock_backend.stripe.dto.StripeResponse;
 import com.example.libstock_backend.stripe.service.StripeService;
@@ -30,6 +33,9 @@ public class ProductCheckoutController {
     @Autowired
     BookRepository bookRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     public ProductCheckoutController(StripeService stripeService) {
         this.stripeService = stripeService;
     }
@@ -40,15 +46,31 @@ public class ProductCheckoutController {
 
         Instant now = Instant.now();
 
+        Book book = bookRepository.findById(bookId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (book == null || user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
         PurchaseHistory item = new PurchaseHistory(
-            now,
-            userId,
-            bookId,
-            productRequest.getQuantity(),
-            productRequest.getAmount()
+            now, // purchase date
+            productRequest.getQuantity(), // quantity of books purchased
+            productRequest.getAmount(), // total cost of the purchase
+            userId, // user ID of the purchaser
+            user.getFirstName(), // name of the purchaser
+            user.getLastName(), // name of the purchaser
+            user.getEmail(), // email of the purchaser
+            bookId, // book ID of the purchased book
+            book.getISBN(), // ISBN of the purchased book
+            book.getTitle(), // title of the purchased book
+            book.getPrice(), // unit price of the purchased book
+            book.getCover() != null ? book.getCover() : null // cover image of the purchased book
         );
 
         purchaseHistoryRepository.save(item);
+
+        // TODO: Email + notification to user
 
         return ResponseEntity.status(HttpStatus.OK).body(stripeResponse);
     }
