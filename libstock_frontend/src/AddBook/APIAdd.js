@@ -17,7 +17,6 @@ const AdminInventory = () => {
     price: "",
     count: "",
     purchaseable: false,
-    numCheckedOut: "",
   });
   const [coverImage, setCoverImage] = useState(null);
   const [useDefaultCover, setUseDefaultCover] = useState(true);
@@ -51,7 +50,6 @@ const AdminInventory = () => {
       count: "",
       purchaseable: false,
       genre: "",
-      numCheckedOut: "",
     });
   };
 
@@ -175,7 +173,6 @@ const AdminInventory = () => {
     if (
       bookDetails.price === "" ||
       bookDetails.count === "" ||
-      bookDetails.numCheckedOut === "" ||
       selectedGenres.length === 0 // Genre is required
     ) {
       alert("Please fill in all fields before adding the book.");
@@ -213,7 +210,6 @@ const AdminInventory = () => {
         price: bookDetails.price,
         purchaseable: bookDetails.purchaseable,
         count: bookDetails.count,
-        numCheckedOut: bookDetails.numCheckedOut,
       };
 
       // Add book to database
@@ -343,16 +339,6 @@ const AdminInventory = () => {
                 type="number"
                 name="count"
                 value={bookDetails.count}
-                onChange={handleBookDetailChange}
-                required
-              />
-            </label>
-            <label>
-              Number Checked Out:{" "}
-              <input
-                type="number"
-                name="numCheckedOut"
-                value={bookDetails.numCheckedOut}
                 onChange={handleBookDetailChange}
                 required
               />

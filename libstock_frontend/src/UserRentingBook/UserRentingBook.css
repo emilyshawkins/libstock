@@ -13,45 +13,11 @@
 
 .books-section h2 {
   color: #333;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 2px solid #476778;
-}
-
-.book-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
-}
-
-.book-card {
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-}
-
-.book-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.book-card h3 {
-  color: #222;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.book-card p {
-  margin: 8px 0;
-  color: #555;
-}
-
-.book-card strong {
-  color: #333;
 }
 
 .loading {
@@ -66,6 +32,29 @@
   padding: 40px;
   color: #dc3545;
   font-size: 1.2em;
+}
+
+.search-container {
+  margin: 20px 0;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
 }
 
 @media (max-width: 768px) {
