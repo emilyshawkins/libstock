@@ -1,9 +1,15 @@
 /*src/AddBook/ManualAdd.css*/
 
 .add-book-container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1600px;
+  margin-top: 50px;
+  margin-left: 260px;
   padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  align-items: right;
+  justify-content: flex-start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
