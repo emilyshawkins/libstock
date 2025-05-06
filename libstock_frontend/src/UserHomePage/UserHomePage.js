@@ -6,6 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { loadStripe } from "@stripe/stripe-js";
 import "./UserHomePage.css";
+import defaultBookCover from "../Image/book.png";
 
 // Load Stripe instance
 const stripePromise = loadStripe(
@@ -13,7 +14,16 @@ const stripePromise = loadStripe(
 );
 
 // Function to render checkout buttons
-export const renderCheckoutButton = (bookId, userCheckouts, userQueue, handleReturn, handleRenew, handleCheckout, handleQueue, databaseBooks) => {
+export const renderCheckoutButton = (
+  bookId,
+  userCheckouts,
+  userQueue,
+  handleReturn,
+  handleRenew,
+  handleCheckout,
+  handleQueue,
+  databaseBooks
+) => {
   const book = databaseBooks.find((book) => book.id === bookId);
   if (userCheckouts.has(bookId)) {
     return (
@@ -42,7 +52,10 @@ export const renderCheckoutButton = (bookId, userCheckouts, userQueue, handleRet
     return (
       <>
         <br></br>
-        <p>Position in Queue: {userQueue.find((queue) => queue.bookId === bookId).position}</p>
+        <p>
+          Position in Queue:{" "}
+          {userQueue.find((queue) => queue.bookId === bookId).position}
+        </p>
         <button
           onClick={(e) => {
             handleQueue(bookId);
@@ -90,6 +103,7 @@ export const renderCheckoutButton = (bookId, userCheckouts, userQueue, handleRet
 const UserHomePage = () => {
   // State for storing books from the database
   const [databaseBooks, setDatabaseBooks] = useState([]);
+  const [bookCovers, setBookCovers] = useState({});
 
   // State for storing authors linked to books
   const [bookAuthors, setBookAuthors] = useState({});
@@ -112,19 +126,23 @@ const UserHomePage = () => {
   const [wishlist, setWishlist] = useState(new Set());
   const navigate = useNavigate(); // Initialize navigate function
   const handleBookClick = (bookId) => {
-    const book = databaseBooks.find(book => book.id === bookId);
-    const author = bookAuthors[bookId] ? bookAuthors[bookId].join(", ") : "Unknown Author";
-    const genre = bookGenres[bookId] ? bookGenres[bookId].join(", ") : "Unknown Genre";
+    const book = databaseBooks.find((book) => book.id === bookId);
+    const author = bookAuthors[bookId]
+      ? bookAuthors[bookId].join(", ")
+      : "Unknown Author";
+    const genre = bookGenres[bookId]
+      ? bookGenres[bookId].join(", ")
+      : "Unknown Genre";
     const isFavorite = favoriteBooks.has(bookId);
     const isInWishlist = wishlist.has(bookId);
-    navigate(`/user/home/book?id=${bookId}`, { 
-      state: { 
+    navigate(`/user/home/book?id=${bookId}`, {
+      state: {
         book,
         author,
         genre,
         isFavorite,
-        isInWishlist
-      } 
+        isInWishlist,
+      },
     });
   };
 
@@ -138,9 +156,43 @@ const UserHomePage = () => {
       fetchUserWishlist();
       fetchUserCheckouts();
       fetchUserQueue();
+      fetchBookCovers(books);
     };
     fetchData();
   }, []);
+
+  const fetchBookCovers = async (books) => {
+    if (!books || books.length === 0) return;
+
+    try {
+      const bookCoversMap = {};
+
+      for (const book of books) {
+        try {
+          const coverResponse = await axios.get(
+            `http://localhost:8080/book/get_cover?id=${book.id}`,
+            { responseType: "text" } // Get as text since it's base64
+          );
+
+          if (coverResponse.data && coverResponse.data.length > 0) {
+            // Create data URL from base64 string
+            bookCoversMap[
+              book.id
+            ] = `data:image/jpeg;base64,${coverResponse.data}`;
+          } else {
+            bookCoversMap[book.id] = defaultBookCover;
+          }
+        } catch (error) {
+          console.error(`Error fetching cover for book ${book.id}:`, error);
+          bookCoversMap[book.id] = defaultBookCover;
+        }
+      }
+
+      setBookCovers(bookCoversMap);
+    } catch (error) {
+      console.error("Error fetching book covers:", error);
+    }
+  };
 
   // Fetch all books from the database
   const fetchBooks = async () => {
@@ -324,7 +376,9 @@ const UserHomePage = () => {
   const fetchUserQueue = async () => {
     if (!userId) return;
     try {
-      const response = await axios.get(`http://localhost:8080/queue/get_waiting?userId=${userId}`);
+      const response = await axios.get(
+        `http://localhost:8080/queue/get_waiting?userId=${userId}`
+      );
       setUserQueue(response.data);
     } catch (error) {
       console.error("Error fetching user queue:", error);
@@ -390,18 +444,20 @@ const UserHomePage = () => {
 
   // Handle queuing
   const handleQueue = async (bookId) => {
-    
     try {
       if (userQueue.find((queue) => queue.bookId === bookId)) {
-        await axios.delete(`http://localhost:8080/queue/delete?userId=${userId}&bookId=${bookId}`);
+        await axios.delete(
+          `http://localhost:8080/queue/delete?userId=${userId}&bookId=${bookId}`
+        );
         setUserQueue((prev) => {
           const updatedQueue = prev.filter((queue) => queue.bookId !== bookId);
           return updatedQueue;
         });
         alert("You have been removed from the queue for this book.");
-      }
-      else {
-        const response = await axios.post(`http://localhost:8080/queue/create?userId=${userId}&bookId=${bookId}`);
+      } else {
+        const response = await axios.post(
+          `http://localhost:8080/queue/create?userId=${userId}&bookId=${bookId}`
+        );
         setUserQueue((prev) => {
           const updatedQueue = [...prev, response.data];
           return updatedQueue;
@@ -507,6 +563,16 @@ const UserHomePage = () => {
                             )}
                           </span>
                         </div>
+                        <div className="book-cover">
+                          <img
+                            src={bookCovers[book.id] || defaultBookCover}
+                            alt={`Cover for ${book.title}`}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = defaultBookCover;
+                            }}
+                          />
+                        </div>
                         <p>
                           <strong>ISBN:</strong> {book.isbn}
                         </p>
@@ -540,8 +606,17 @@ const UserHomePage = () => {
                             ? "Remove from Wishlist"
                             : "Add to Wishlist"}
                         </button>
-                        {renderCheckoutButton(book.id, userCheckouts, userQueue, handleReturn, handleRenew, handleCheckout, handleQueue,databaseBooks)}
-                         </div>
+                        {renderCheckoutButton(
+                          book.id,
+                          userCheckouts,
+                          userQueue,
+                          handleReturn,
+                          handleRenew,
+                          handleCheckout,
+                          handleQueue,
+                          databaseBooks
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
