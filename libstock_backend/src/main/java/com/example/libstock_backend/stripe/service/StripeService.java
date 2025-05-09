@@ -49,6 +49,9 @@ public class StripeService {
                                 .setMode(SessionCreateParams.Mode.PAYMENT)
                                 .setSuccessUrl("http://localhost:3000/user/home")
                                 .setCancelUrl("http://localhost:3000/user/home")
+                                .putMetadata("userId", productRequest.getUserId())
+                                .putMetadata("bookId", productRequest.getBookId())
+                                .putMetadata("quantity", String.valueOf(productRequest.getQuantity()))
                                 .addLineItem(lineItem)
                                 .build();
 

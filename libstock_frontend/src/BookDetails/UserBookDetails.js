@@ -20,14 +20,13 @@ export const handlePayment = async (book) => {
     const quantity = 1;
     const createPaymentRequest = {
       bookId: book.id,
+      userId: localStorage.getItem("userId"),
       name: book.title,
       amount: book.price * 100, // Convert to dollars
       quantity: quantity,
     };
 
-    const userId = localStorage.getItem("userId") || "";
-
-    const response = await fetch(`http://localhost:8080/product/v1/checkout?userId=${userId}&bookId=${book.id}`, {
+    const response = await fetch(`http://localhost:8080/product/v1/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

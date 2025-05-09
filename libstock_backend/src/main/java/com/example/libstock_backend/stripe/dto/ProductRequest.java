@@ -13,4 +13,5 @@ public class ProductRequest {
     private String name;
     private String currency;
     private String bookId;
+    private String userId;
 }
