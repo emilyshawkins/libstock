@@ -21,6 +21,8 @@ const AdminInventory = () => {
   const [coverImage, setCoverImage] = useState(null);
   const [useDefaultCover, setUseDefaultCover] = useState(true);
   const [previewImageUrl, setPreviewImageUrl] = useState(defaultBookCover);
+  const [customFields, setCustomFields] = useState([]);
+  
 
   const navigate = useNavigate();
 
@@ -77,6 +79,15 @@ const AdminInventory = () => {
     setUseDefaultCover(true);
     setCoverImage(null);
     setPreviewImageUrl(defaultBookCover);
+  };
+
+  // handle custom field addition
+  const handleCustomFieldChange = (index, field, value) => {
+    setCustomFields((prev) =>
+      prev.map((fieldData, i) =>
+        i === index ? { ...fieldData, [field]: value } : fieldData
+      )
+    );
   };
 
   // Searches books from Google Books API
@@ -210,6 +221,10 @@ const AdminInventory = () => {
         price: bookDetails.price,
         purchaseable: bookDetails.purchaseable,
         count: bookDetails.count,
+        addedData: customFields.reduce((acc, field) => {
+          if (field.key && field.value) acc[field.key] = field.value;
+          return acc;
+        }, {}),
       };
 
       // Add book to database
@@ -407,6 +422,47 @@ const AdminInventory = () => {
                 )}
               </div>
             </div>
+            {/* Custom Fields Section */}
+            <div className="custom-fields-section">
+              <h3>Custom Fields</h3>
+              {customFields.map((field, index) => (
+                <div key={index} className="custom-field-group">
+                  <input
+                    type="text"
+                    placeholder="Key"
+                    value={field.key}
+                    onChange={(e) =>
+                      handleCustomFieldChange(index, "key", e.target.value)
+                    }
+                  />
+                  <input
+                    type="text"
+                    placeholder="Value"
+                    value={field.value}
+                    onChange={(e) =>
+                      handleCustomFieldChange(index, "value", e.target.value)
+                    }
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCustomFields((prev) => prev.filter((_, i) => i !== index))
+                    }
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() =>
+                  setCustomFields((prev) => [...prev, { key: "", value: "" }])
+                }
+              >
+                Add Custom Field
+              </button>
+            </div>
+
             <button onClick={confirmAddBook}>Confirm Add</button>
             <button onClick={() => setSelectedBook(null)}>Cancel</button>
           </div>

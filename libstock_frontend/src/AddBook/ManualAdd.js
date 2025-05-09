@@ -175,7 +175,7 @@ function AddBook() {
 
       const bookData = {
         ...formData,
-        customFieldsData: customFields.reduce((acc, field) => {
+        addedData: customFields.reduce((acc, field) => {
           if (field.key && field.value) acc[field.key] = field.value;
           return acc;
         }, {}),
