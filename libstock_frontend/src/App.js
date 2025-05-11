@@ -14,6 +14,7 @@ import SignInPage from "./SignInPage/SignInPage"; // Import SignInPage
 import ForgotPass from "./SignInPage/ForgotPass"; //Import ForgotPass
 import ResetPass from "./SignInPage/ResetPass"; //Import ResetPass
 import SignUpPage from "./SignUpPage/SignUpPage"; // Import SignUpPage
+import Receipt from "./Receipt/Receipt"; // Import Receipt
 
 import UserHomePage from "./UserHomePage/UserHomePage"; // Import UserHomePage
 import AccountSettings from "./AccountSetting/AccountSettings"; // Import User AccountSettings
@@ -94,6 +95,9 @@ function MainContent() {
         {/* User Home page */}
         <Route path="/user/renting" element={<UserRentingBook />} />{" "}
         {/* User Renting Books */}
+        <Route path="/receipt" element={<Receipt />} /> {/* Receipt History */}
+        <Route path="/receipt/:id" element={<Receipt />} />{" "}
+        {/* Individual Receipt */}
         <Route path="/admin/collection" element={<CollectionPage />} />{" "}
         {/* User Collection */}
         <Route path="/admin/home" element={<AdminHomePage />} />{" "}

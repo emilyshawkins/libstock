@@ -24,7 +24,6 @@ const Receipt = () => {
   const [receipt, setReceipt] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [bookDetails, setBookDetails] = useState({});
 
   useEffect(() => {
     const fetchReceipt = async () => {
@@ -33,35 +32,14 @@ const Receipt = () => {
         const userId = localStorage.getItem("userId");
         if (id) {
           // Fetch individual receipt
-          const response = await axios.get(
-            `http://localhost:8080/history/get_receipt?id=${id}`
-          );
+          const response = await axios.get(`/history/get_receipt?id=${id}`);
           setReceipt(response.data);
         } else {
           // Fetch all receipts for user
           const response = await axios.get(
-            `http://localhost:8080/history/get?userId=${userId}`
+            `/history/get_receipts?userId=${userId}`
           );
           setReceipt(response.data);
-
-          // Fetch book details for each purchase
-          const bookDetailsMap = {};
-          await Promise.all(
-            response.data.map(async (purchase) => {
-              try {
-                const bookResponse = await axios.get(
-                  `http://localhost:8080/book/read?id=${purchase.bookId}`
-                );
-                bookDetailsMap[purchase.bookId] = bookResponse.data;
-              } catch (error) {
-                console.error(
-                  `Error fetching book details for book ID ${purchase.bookId}:`,
-                  error
-                );
-              }
-            })
-          );
-          setBookDetails(bookDetailsMap);
         }
       } catch (err) {
         setError("Failed to fetch receipt data");
@@ -76,18 +54,6 @@ const Receipt = () => {
 
   const handlePrint = () => {
     window.print();
-  };
-
-  const formatDate = (timestamp) => {
-    if (!timestamp) return "N/A";
-    const date = new Date(timestamp * 1000);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
   };
 
   if (loading) {
@@ -143,38 +109,35 @@ const Receipt = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Purchase Date</TableCell>
+                <TableCell>Order ID</TableCell>
+                <TableCell>Date</TableCell>
                 <TableCell>Book Title</TableCell>
-                <TableCell>ISBN</TableCell>
                 <TableCell>Quantity</TableCell>
-                <TableCell>Total Cost</TableCell>
+                <TableCell>Total Amount</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {receipt.map((purchase) => {
-                const book = bookDetails[purchase.bookId] || {};
-                return (
-                  <TableRow key={`${purchase.bookId}-${purchase.purchaseDate}`}>
-                    <TableCell>{formatDate(purchase.purchaseDate)}</TableCell>
-                    <TableCell>{book.title || "Loading..."}</TableCell>
-                    <TableCell>{book.isbn || "Loading..."}</TableCell>
-                    <TableCell>{purchase.quantity}</TableCell>
-                    <TableCell>${(purchase.cost / 100).toFixed(2)}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() =>
-                          navigate(`/user/home/book?id=${purchase.bookId}`)
-                        }
-                      >
-                        View Book
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {receipt.map((order) => (
+                <TableRow key={order.id}>
+                  <TableCell>{order.id}</TableCell>
+                  <TableCell>
+                    {new Date(order.purchaseDate).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{order.title}</TableCell>
+                  <TableCell>{order.quantity}</TableCell>
+                  <TableCell>${order.amount.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => navigate(`/receipt/${order.id}`)}
+                    >
+                      View Receipt
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -192,26 +155,30 @@ const Receipt = () => {
           </Typography>
           <Typography variant="subtitle1">Order ID: {receipt.id}</Typography>
           <Typography variant="subtitle2">
-            Date: {formatDate(receipt.purchaseDate)}
+            Date: {new Date(receipt.purchaseDate).toLocaleString()}
           </Typography>
+        </Box>
+
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Customer Information
+          </Typography>
+          <Typography>
+            Name: {receipt.firstName} {receipt.lastName}
+          </Typography>
+          <Typography>Email: {receipt.email}</Typography>
         </Box>
 
         <Box sx={{ mb: 4 }}>
           <Typography variant="h6" gutterBottom>
             Purchase Details
           </Typography>
-          <Typography>
-            Book Title: {bookDetails[receipt.bookId]?.title || "Loading..."}
-          </Typography>
-          <Typography>
-            ISBN: {bookDetails[receipt.bookId]?.isbn || "Loading..."}
-          </Typography>
+          <Typography>Book Title: {receipt.title}</Typography>
+          <Typography>ISBN: {receipt.isbn}</Typography>
           <Typography>Quantity: {receipt.quantity}</Typography>
-          <Typography>
-            Unit Price: ${(receipt.cost / receipt.quantity / 100).toFixed(2)}
-          </Typography>
+          <Typography>Unit Price: ${receipt.price.toFixed(2)}</Typography>
           <Typography variant="h6" sx={{ mt: 2 }}>
-            Total Amount: ${(receipt.cost / 100).toFixed(2)}
+            Total Amount: ${receipt.amount.toFixed(2)}
           </Typography>
         </Box>
 
