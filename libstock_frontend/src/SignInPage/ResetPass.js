@@ -35,7 +35,7 @@ function ResetPass() {
         }
 
         try {
-            const response = await axios.patch("http://localhost:8080/user/change_password", { 
+            const response = await axios.patch("http://localhost:8080/user/reset_password", { 
                 id: userId, 
                 newPassword 
             });
