@@ -1,0 +1,174 @@
+/*src/AddBook/ManualAdd.css*/
+
+.add-book-container {
+  max-width: 1600px;
+  margin-top: 50px;
+  margin-left: 260px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  align-items: right;
+  justify-content: flex-start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.error-message {
+  color: #ff4444;
+  padding: 10px;
+  background-color: #ffebee;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.success-message {
+  color: #4caf50;
+  padding: 10px;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.add-book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 50%;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: bold;
+  color: #333;
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"],
+.input-group input[type="date"],
+.input-group textarea,
+.input-group select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.input-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.author-input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.author-input-group input {
+  flex: 1;
+}
+
+.author-input-group button {
+  padding: 6px 12px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.author-input-group button:hover {
+  background-color: #cc0000;
+}
+
+.selected-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.genre-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.genre-tag button {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+}
+
+.genre-tag button:hover {
+  color: #333;
+}
+
+.custom-field-group {
+  display: flex;
+  align-items: center;
+}
+
+.custom-field-group input {
+  flex: 1;
+  height: 10px;
+  margin: 5px;
+}
+
+.custom-field-group button {
+  padding: 6px 12px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.custom-field-group button:hover {
+  background-color: #cc0000;
+}
+
+.preview-image {
+  max-width: 200px;
+  max-height: 300px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.submit-button {
+  padding: 12px 24px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

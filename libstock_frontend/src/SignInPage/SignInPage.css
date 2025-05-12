@@ -26,12 +26,13 @@ h2 {
 
 .input-group label {
     font-size: 18px;
-    color: #333;
+    color: #476778;
 }
 
 .input-group input {
+    width: 92%;
     padding: 10px;
-    font-size: 18px;
+    font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
@@ -40,6 +41,7 @@ h2 {
     position: relative;
     display: flex;
     align-items: center;
+    padding: 5px;
 }
 
 .password-container input {
@@ -58,13 +60,27 @@ h2 {
     color: #476778;
 }
 
-.remember-me {
+.remember-me-container {
     display: flex;
-    align-items: left;
-    gap: 10px;
+    align-items: center;
+    font-size: 15px;
+    color: #476778;
 }
 
-.signin-button {
+.remember-me-container label {
+    display: flex;
+    font-size: 15px;
+    color: #476778;
+}
+
+.remember-me-container input {
+    height: 16px;
+    width: auto;
+    margin-right: 10px;
+    color: #476778;
+}
+
+.submit-button {
     background-color: #476778;
     color: white;
     padding: 10px;
@@ -74,12 +90,28 @@ h2 {
     cursor: pointer;
 }
 
-.signin-button:hover {
+.submit-button:hover {
     background-color: #35505d;
 }
-.signin-button:disabled {
+.submit-button:disabled {
     background-color: #999;
     cursor: not-allowed;
+}
+
+.forgot-password span {
+    font-size: 16px;
+    color: #476778;
+}
+
+.forgot-password a {
+    color: #476778;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.forgot-password a:hover {
+    color: #35505d;
 }
 
 .signup-link span {
@@ -97,6 +129,8 @@ h2 {
 .signup-link a:hover {
     color: #35505d;
 }
+
+
 
 @media screen and (max-width: 768px) {
     .signin-container {

@@ -8,20 +8,22 @@ public class User {
     @Id
     private String id;
 
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private boolean isAdmin;
+    private String email; // Email of the user
+    private String firstName; // First name of the user
+    private String lastName; // Last name of the user
+    private String password; // Password of the user
+    private boolean isAdmin; // Whether the user is an admin
+    private byte[] image; // Profile image of the user
 
     public User() {}
 
-    public User(String email, String firstName, String lastName, String password, boolean isAdmin) {
+    public User(String email, String firstName, String lastName, String password, boolean isAdmin, byte[] image) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.isAdmin = isAdmin;
+        this.image = image;
     }
 
     public String getId() {
@@ -48,6 +50,10 @@ public class User {
         return isAdmin;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -70,5 +76,9 @@ public class User {
 
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

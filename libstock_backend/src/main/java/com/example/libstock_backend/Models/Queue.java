@@ -1,50 +1,47 @@
 package com.example.libstock_backend.Models;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+//Queue if book is not available
 @Document(collection = "queues")
 public class Queue {
     @Id
     private String id;
 
-    private String userEmail;
-    private int ISBN;
-    private int position;
+    private String bookId; // Book ID
+    private ArrayList<String> queueList; // List of users in the queue
 
     public Queue() {}
 
-    public Queue(String userEmail, int ISBN, int position) {
-        this.userEmail = userEmail;
-        this.ISBN = ISBN;
-        this.position = position;
+    public Queue(String bookId, ArrayList<String> queueList) {
+        this.bookId = bookId;
+        this.queueList = queueList;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getISBN() {
-        return ISBN;
+    public String getBookId() {
+        return bookId;
     }
 
-    public int getPosition() {
-        return position;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public ArrayList<String> getQueueList() {
+        return queueList;
     }
 
-    public void setISBN(int ISBN) {
-        this.ISBN = ISBN;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
+    public void setQueueList(ArrayList<String> queueList) {
+        this.queueList = queueList;
     }
 }

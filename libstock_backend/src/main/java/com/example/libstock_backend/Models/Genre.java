@@ -8,7 +8,7 @@ public class Genre {
     @Id
     private String id;
 
-    private String name;
+    private String name; // Name of the genre
 
     public Genre() {}
 

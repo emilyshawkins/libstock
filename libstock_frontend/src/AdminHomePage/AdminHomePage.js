@@ -1,132 +1,339 @@
-// src/AdminHomePage.js
+/* src/AdminHomePage/AdminHomePage.js */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./AdminHomePage.css";
+import defaultBookCover from "../Image/book.png"; // Import default book cover
 
-function HomePage() {
+const AdminHomePage = () => {
+  // State for storing books from the database
+  const [databaseBooks, setDatabaseBooks] = useState([]);
+
+  // State for storing authors linked to books
+  const [bookAuthors, setBookAuthors] = useState({});
+  const [bookGenres, setBookGenres] = useState({});
+  // State for storing book covers
+  const [bookCovers, setBookCovers] = useState({});
+
+  // State for filtered books (for search functionality)
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
+  // State for search input
   const [searchQuery, setSearchQuery] = useState("");
-  const [borrowedItems, setBorrowedItems] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Fetch borrowed items from the server when the component mounts
+  const navigate = useNavigate(); // Initialize navigate function
+
+  const handleBookClick = (bookId) => {
+    navigate(`/admin/home/book?id=${bookId}`); // Navigate to book details page
+  };
+
+  // Fetch books and authors when the component mounts
   useEffect(() => {
-    async function fetchBorrowedItems() {
-      try {
-        const response = await axios.get("http://localhost:3000/admin/home");
-        setBorrowedItems(response.data);
-        setFilteredItems(response.data);
-      } catch (error) {
-        console.error("Error fetching borrowed items:", error);
-      }
-    }
-    fetchBorrowedItems();
+    const fetchData = async () => {
+      const books = await fetchBooks(); // Wait for books to load
+      fetchBookAuthors(books); // Fetch authors only after books are available
+      fetchBookGenres(books);
+      fetchBookCovers(books); // Fetch book covers
+    };
+
+    fetchData();
   }, []);
 
-  // Handle search input change
+  // Fetch all books from the database
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/book/get_all");
+      setDatabaseBooks(response.data);
+      setFilteredBooks(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching books", error);
+      return [];
+    }
+  };
+
+  // Fetch all book-author relationships and resolve author names
+  const fetchBookAuthors = async (books) => {
+    if (!books || books.length === 0) return; // Prevent API call if no books exist
+
+    try {
+      const bookAuthorsMap = {}; // Store authors for each book
+
+      for (const book of books) {
+        try {
+          // Fetch authors for the given book ID
+          const authorResponse = await axios.get(
+            `http://localhost:8080/bookauthor/get_authors_by_book?bookId=${book.id}`
+          );
+
+          if (authorResponse.data.length > 0) {
+            const authorNames = authorResponse.data.map(
+              (author) => `${author.firstName} ${author.lastName}`
+            );
+            bookAuthorsMap[book.id] = authorNames;
+          } else {
+            bookAuthorsMap[book.id] = ["Unknown Author"];
+          }
+        } catch (error) {
+          console.error(`Error fetching authors for book ${book.id}:`, error);
+          bookAuthorsMap[book.id] = ["Unknown Author"];
+        }
+      }
+
+      setBookAuthors(bookAuthorsMap); // Update state with book-author mapping
+    } catch (error) {
+      console.error("Error fetching book authors:", error);
+    }
+  };
+
+  const fetchBookGenres = async (books) => {
+    if (!books || books.length === 0) return;
+
+    try {
+      const bookGenresMap = {};
+
+      for (const book of books) {
+        try {
+          const genreResponse = await axios.get(
+            `http://localhost:8080/bookgenre/get_genres_by_book?bookId=${book.id}`
+          );
+
+          if (genreResponse.data.length > 0) {
+            const genreNames = genreResponse.data.map((genre) => genre.name);
+            bookGenresMap[book.id] = genreNames;
+          } else {
+            bookGenresMap[book.id] = ["Unknown Genre"];
+          }
+        } catch (error) {
+          console.error(`Error fetching genres for book ${book.id}:`, error);
+          bookGenresMap[book.id] = ["Unknown Genre"];
+        }
+      }
+
+      setBookGenres(bookGenresMap);
+    } catch (error) {
+      console.error("Error fetching book genres:", error);
+    }
+  };
+
+  // Fetch book covers for all books
+  const fetchBookCovers = async (books) => {
+    if (!books || books.length === 0) return;
+
+    try {
+      const bookCoversMap = {};
+
+      for (const book of books) {
+        try {
+          const coverResponse = await axios.get(
+            `http://localhost:8080/book/get_cover?id=${book.id}`,
+            { responseType: "text" } // Get as text since it's base64
+          );
+
+          if (coverResponse.data && coverResponse.data.length > 0) {
+            // Create data URL from base64 string
+            bookCoversMap[
+              book.id
+            ] = `data:image/jpeg;base64,${coverResponse.data}`;
+          } else {
+            bookCoversMap[book.id] = defaultBookCover;
+          }
+        } catch (error) {
+          console.error(`Error fetching cover for book ${book.id}:`, error);
+          bookCoversMap[book.id] = defaultBookCover;
+        }
+      }
+
+      setBookCovers(bookCoversMap);
+    } catch (error) {
+      console.error("Error fetching book covers:", error);
+    }
+  };
+
+  // Remove a book from the database
+  const removeBook = async (bookId) => {
+    try {
+      console.log(`Fetching book-author relationships for book ID: ${bookId}`);
+
+      // 1️⃣ Fetch all book-author relationships for the book
+      const bookAuthorResponse = await axios.get(
+        `http://localhost:8080/bookauthor/get_ids?bookId=${bookId}`
+      );
+
+      console.log("Book-Author response:", bookAuthorResponse.data);
+
+      if (
+        Array.isArray(bookAuthorResponse.data) &&
+        bookAuthorResponse.data.length > 0
+      ) {
+        // Delete each book-author entry using bookauthorId
+        for (const entry of bookAuthorResponse.data) {
+          if (!entry.id) {
+            console.warn("Skipping delete: bookauthorId is undefined", entry);
+            continue;
+          }
+
+          console.log(`Deleting book_author entry ID: ${entry.id}`);
+          await axios.delete(
+            `http://localhost:8080/bookauthor/delete?id=${entry.id}`
+          );
+        }
+      }
+
+      console.log(`Fetching book-genre relationships for book ID: ${bookId}`);
+
+      // 2️⃣ Fetch all book-genre relationships for the book
+      const bookGenreResponse = await axios.get(
+        `http://localhost:8080/bookgenre/get_ids?bookId=${bookId}`
+      );
+
+      console.log("Book-Genre response:", bookGenreResponse.data);
+
+      if (
+        Array.isArray(bookGenreResponse.data) &&
+        bookGenreResponse.data.length > 0
+      ) {
+        // Delete each book-genre entry using bookgenreId
+        for (const entry of bookGenreResponse.data) {
+          if (!entry.id) {
+            console.warn("Skipping delete: bookgenreId is undefined", entry);
+            continue;
+          }
+
+          console.log(`Deleting book_genre entry ID: ${entry.id}`);
+          await axios.delete(
+            `http://localhost:8080/bookgenre/delete?id=${entry.id}`
+          );
+        }
+      }
+
+      // 3️⃣ Delete the book itself
+      console.log(`Deleting book ID: ${bookId}`);
+      await axios.delete(`http://localhost:8080/book/delete?id=${bookId}`);
+
+      // 4️⃣ Update UI after deletion
+      setDatabaseBooks((prevBooks) =>
+        prevBooks.filter((book) => book.id !== bookId)
+      );
+      setFilteredBooks((prevBooks) =>
+        prevBooks.filter((book) => book.id !== bookId)
+      );
+
+      alert("Book, authors, and genres removed successfully!");
+    } catch (error) {
+      console.error("Error deleting book, author, and genre links:", error);
+      alert("Failed to delete book.");
+    }
+  };
+
+  // Handle search input and filter books
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    const filtered = borrowedItems.filter((item) =>
-      item.name.toLowerCase().includes(query)
+
+    // Filter books that match the search query
+    const filtered = databaseBooks.filter((book) =>
+      book.title.toLowerCase().includes(query)
     );
-    setFilteredItems(filtered);
+    setFilteredBooks(filtered);
   };
 
-  // Handle item management (e.g., return/renew an item)
-  const handleManageItem = (itemId) => {
-    // Example: Send a request to the server to manage the item
-    console.log(`Managing item with ID: ${itemId}`);
-  };
-
-  // Handle dropdown toggle
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  // Handle logout
-  const handleLogout = () => {
-    console.log("Logging out...");
-    // Perform logout logic here
-  };
+  // Organize books alphabetically
+  const booksByLetter = filteredBooks.reduce((acc, book) => {
+    const firstLetter = book.title[0].toUpperCase();
+    if (!acc[firstLetter]) acc[firstLetter] = [];
+    acc[firstLetter].push(book);
+    return acc;
+  }, {});
 
   return (
-    <div className="home-container">
+    <div className="admin-home-container">
       <h1>Welcome to Your Dashboard</h1>
-      <div className="top-bar">
-        <div className="notification-icon">
-          <img src="/notification-icon.png" alt="Notifications" />
-        </div>
-        <div className="user-icon-container">
-          <img
-            src="/user-icon.png"
-            alt="User Account"
-            className="user-icon"
-            onClick={toggleDropdown}
-          />
-          {isDropdownOpen && (
-            <div className="dropdown-menu">
-              <h2>User Name </h2>
-              <p> Email@gmail.com </p>
-              <Link to="/account-settings" className="dropdown-item">
-                Account Settings
-              </Link>
-              <Link to="/signin" className="dropdown-item">
-                Log Out
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
+
       <div className="main-content">
-        <div className="left-bar">
-          <div className="logo-container">
-            {/* Wrap logo with Link for navigation */}
-            <Link to="/">
-              <img src="/logo.png" alt="Logo" className="logo" />
-            </Link>
-            <h1 className="site-title">LibStock</h1>
-          </div>
-          <button className="left-bar-button">Bestseller</button>
-          <button className="left-bar-button">Collection</button>
-          <button className="left-bar-button">Wishlist</button>
-          <button className="left-bar-button">Favorite</button>
-          <button className="left-bar-button">Inventory Setting</button>
-        </div>
+        {/* Search bar for filtering books */}
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search items..."
+            placeholder="Search books..."
             value={searchQuery}
             onChange={handleSearchChange}
           />
         </div>
-        <div className="content">
-          <p>Manage your borrowed items and account here.</p>
+
+        {/* Display books in the database */}
+        <div className="book-list">
+          <h2>Books in Database</h2>
+          <span className="book-count">
+            Total Books: {filteredBooks.length}
+          </span>
+
+          {filteredBooks.length > 0 ? (
+            Object.keys(booksByLetter)
+              .sort()
+              .map((letter) => (
+                <div key={letter} className="book-section">
+                  <h2 className="section-title">{letter}</h2>
+                  <div className="book-grid">
+                    {booksByLetter[letter].map((book) => (
+                      <div
+                        key={book.id}
+                        className="book-card"
+                        onClick={() => handleBookClick(book.id)} // Add click event
+                        style={{ cursor: "pointer" }}
+                      >
+                        <div className="book-cover">
+                          <img
+                            src={bookCovers[book.id] || defaultBookCover}
+                            alt={`Cover for ${book.title}`}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = defaultBookCover;
+                            }}
+                          />
+                        </div>
+                        <div className="book-info">
+                          <h3>{book.title}</h3>
+                          <p>
+                            <strong>ISBN:</strong> {book.isbn}
+                          </p>
+                          <p>
+                            <strong>Author:</strong>{" "}
+                            {bookAuthors[book.id]
+                              ? bookAuthors[book.id].join(", ")
+                              : "Unknown Author"}
+                          </p>
+                          <p>
+                            <strong>Genre:</strong>{" "}
+                            {bookGenres[book.id]
+                              ? bookGenres[book.id].join(", ")
+                              : "Unknown Genre"}
+                          </p>
+                          <p>
+                            <strong>Publication Date:</strong>{" "}
+                            {book.publicationDate}
+                          </p>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent click from triggering book navigation
+                              removeBook(book.id);
+                            }}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+          ) : (
+            <p>No books in the database.</p>
+          )}
         </div>
-      </div>
-      <div className="items-list">
-        {filteredItems.length > 0 ? (
-          filteredItems.map((item) => (
-            <div key={item.id} className="item-card">
-              <h3>{item.name}</h3>
-              <p>{item.description}</p>
-              <p>Due Date: {item.dueDate}</p>
-              <button
-                onClick={() => handleManageItem(item.id)}
-                className="manage-button"
-              >
-                Manage
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>No items found</p>
-        )}
       </div>
     </div>
   );
-}
+};
 
-export default HomePage;
+export default AdminHomePage;

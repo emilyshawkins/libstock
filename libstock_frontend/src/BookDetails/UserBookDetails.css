@@ -1,0 +1,587 @@
+/* src/BookDetails/UserBookDetails.css */
+
+.UserBook-details-container {
+  max-width: 1600px;
+  margin-top: 50px;
+  margin-left: 260px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+.favorite-icon-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.favorite-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+strong {
+  color: #222;
+}
+
+.book-details-container p:last-child {
+  margin-bottom: 0;
+}
+
+.bookdetail-button-container {
+
+  display: flex;
+  align-items: center;
+  margin: 0px 150px;
+}
+
+.bookdetail-button-container button {
+  padding: 8px 31px;
+  cursor: pointer;
+  background-color: #476778;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin: 20px 40.5px;
+}
+
+.button-container button:hover {
+  background-color: #35505d;
+}
+
+.payment-btn {
+  background-color: #476778;
+}
+
+.checkout-button {
+  background-color: #28a745;
+}
+
+.return-button {
+  background-color: #dc3545;
+}
+
+.renew-button {
+  background-color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .book-details-container {
+    max-width: 90%;
+  }
+}
+
+/* BookBargain Prices Section */
+.book-bargain-prices {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.book-bargain-prices h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.compare-prices-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 10px 0;
+  transition: background-color 0.3s;
+}
+
+.compare-prices-btn:hover {
+  background-color: #45a049;
+}
+
+.price-comparison {
+  margin-top: 15px;
+}
+
+.price-comparison h4 {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.price-comparison ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.price-comparison li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-comparison li:last-child {
+  border-bottom: none;
+}
+
+.buy-link {
+  background-color: #2196f3;
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  transition: background-color 0.3s;
+}
+
+.buy-link:hover {
+  background-color: #0b7dda;
+}
+
+
+.price-comparison-link {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.price-comparison-link:hover {
+  background-color: #45a049;
+  text-decoration: none;
+  color: white;
+}
+
+.books-price-iframe-container {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.books-price-iframe-container h3 {
+  color: #476778;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.price-comparison-iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.star-rating-input {
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.star-rating-input span {
+  transition: transform 0.2s;
+}
+
+.star-rating-input span:hover {
+  transform: scale(1.2);
+}
+
+.star-rating-display {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 5px;
+}
+
+.rating-card {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rating-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.rating-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.delete-rating-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: auto;
+}
+
+.delete-rating-btn:hover {
+  background-color: #c82333;
+}
+
+.rating-form {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.rating-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 0;
+  resize: vertical;
+}
+
+.rating-form button[type="submit"] {
+  background-color: #476778;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.rating-form button[type="submit"]:hover {
+  background-color: #35505d;
+}
+
+.book-rating-summary {
+  display: flex;
+  justify-content: right;
+}
+
+.average-rating {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.rating-details {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.rating-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #476778;
+}
+
+.rating-count {
+  font-size: 0.9rem;
+  color: #666;
+  margin-left: 5px;
+}
+
+.star-rating-display {
+  display: flex;
+  gap: 2px;
+}
+
+.star-rating-display span {
+  display: flex;
+  align-items: center;
+}
+
+.rating-filter {
+  margin: 20px 0;
+}
+
+.star-filter {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.star-filter:hover {
+  border-color: #888;
+}
+
+.review-count {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.rating-section {
+  margin-top: 30px;
+}
+
+.review-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.update-review-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-edit-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-review-btn:hover {
+  background-color: #45a049;
+}
+
+.cancel-edit-btn:hover {
+  background-color: #da190b;
+}
+
+.delete-review-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-review-btn:hover {
+  background-color: #c82333;
+}
+
+.delete-review-btn-small {
+  background-color: transparent;
+  color: #dc3545;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 50%;
+  line-height: 1;
+  margin-left: auto;
+  transition: background-color 0.2s;
+}
+
+.delete-review-btn-small:hover {
+  background-color: #ffebee;
+}
+
+.rating-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.rating-card {
+  position: relative;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.rating-card:hover {
+  background-color: #f8f9fa;
+}
+
+.update-review-btn,
+.cancel-edit-btn,
+.delete-review-btn {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+}
+
+/* Add confirmation dialog styling */
+.confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.user-rating-card {
+  background-color: #f8f9fa;
+  border-left: 4px solid #35505d;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.user-rating-card .rating-header {
+  padding-top: 5px;
+}
+
+.your-review-badge {
+  background-color: #35505d;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+  font-weight: normal;
+}
+
+.reviewer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reviewer-info p {
+  margin: 0;
+}
+
+.rating-date {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.review-comment {
+  margin-top: 10px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.rating-card {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.rating-card:not(.user-rating-card):hover {
+  background-color: #f8f9fa;
+}
+
+.rating-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  position: relative;
+}
+
+.star-rating-display {
+  display: flex;
+  align-items: center;
+}
+
+/* Update the filter section styling */
+.rating-filter {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star-filter {
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.review-count {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* Add animation for the user's review */
+.user-rating-card {
+  animation: highlightReview 0.3s ease-out;
+}
+
+@keyframes highlightReview {
+  from {
+    transform: translateY(-5px);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.review-actions-small {
+  display: flex;
+  gap: 5px;
+  margin-left: auto;
+}
+
+.edit-review-btn-small,
+.delete-review-btn-small {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.edit-review-btn-small {
+  font-size: 16px;
+}
+
+.edit-review-btn-small:hover {
+  opacity: 0.7;
+  background: none;  /* Remove hover background */
+}
+
+.delete-review-btn-small {
+  color: #dc3545;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.delete-review-btn-small:hover {
+  opacity: 0.7;
+  background: none;  /* Remove hover background */
+}

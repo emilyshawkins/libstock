@@ -1,14 +1,18 @@
-/* src/UserHomePage.css */
-.home-container {
-    max-width: 1200px;
-    margin: 50px auto;
+/* src/UserHomePage/UserHomePage.css */
+.user-home-container{
+    max-width: 1600px;
+    margin-top: 50px;
+    margin-left: 260px;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
 }
 
 h1 {
+    text-align: center;
+    color: #476778;
+    margin-bottom: 20px;
+}
+h2 {
     text-align: center;
     color: #476778;
     margin-bottom: 20px;
@@ -20,88 +24,34 @@ h1 {
     text-align: center;
 }
 
-
-/* User Icon */
-.user-icon-container {
-    position: relative;
-    display: inline-block;
-}
-
-.user-icon {
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-/* Dropdown Menu */
-.dropdown-menu {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    width: 200px;
-}
-
-.dropdown-user-info {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
-}
-
-.dropdown-user-info p {
-    margin: 5px 0;
-    font-size: 14px;
-}
-
-.dropdown-item {
-    padding: 10px 15px;
-    display: block;
-    color: #333;
-    background: none;
-    border: none;
+.search-container {
+    margin: 20px 0;
     width: 100%;
-    text-align: left;
-    font-size: 14px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-
-.dropdown-item:hover {
-    background-color: #476778;
-    color: white;
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    transition: all 0.3s ease;
 }
 
-.logout-button {
-    font-weight: normal;
+.search-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
 }
 
-/* Left Sidebar */
-.left-bar {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    background-color: whitesmoke;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    gap: 15px;
-}
-
-
-
-/* Search Bar */
 .search-bar {
     width: 100%;
     max-width: 500px;
     margin-bottom: 20px;
+    display: block;
 }
 
 .search-bar input {
@@ -122,6 +72,7 @@ h1 {
 
 /* Main Content */
 .main-content {
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center; /* Centers content horizontally */
@@ -154,32 +105,34 @@ h1 {
     color: #555;
 }
 
-/* Manage Button */
-.manage-button {
-    background-color: #476778;
-    color: white;
-    padding: 8px 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+.book-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.manage-button:hover {
-    background-color: #35505d;
+
+.book-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 60px;
+    width: 60%;
+    text-align: center;
 }
 
 @media screen and (max-width: 768px) {
     .home-container {
         margin: 20px;
         padding: 15px;
+        display: block;
     }
 
     .top-bar {
         flex-direction: row;
         justify-content: space-between;
         padding: 10px;
+        display: block;
     }
 
     .left-bar {

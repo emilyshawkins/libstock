@@ -1,0 +1,108 @@
+/* src/BookDetails/BookDetails.css */
+
+.book-details-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
+
+.edit-button,
+.delete-button,
+.save-button,
+.cancel-button {
+  color: #476778 !important;
+  transition: background-color 0.3s !important;
+}
+
+.edit-button:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.delete-button:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.save-button {
+  background-color: transparent !important;
+}
+
+.save-button:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.cancel-button {
+  background-color: transparent !important;
+}
+
+.cancel-button:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-form input[type="text"],
+.edit-form input[type="number"],
+.edit-form textarea {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.edit-form input[type="checkbox"] {
+  width: auto;
+  margin-left: 10px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.book-details-container h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.book-details-container p {
+  margin: 10px 0;
+  color: #555;
+}
+
+.book-details-container strong {
+  color: #333;
+  font-weight: bold;
+}
+
+.book-details-container p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .book-details-container {
+    max-width: 90%;
+  }
+}

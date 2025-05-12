@@ -1,12 +1,18 @@
+/* src/Navbar/Topbar.js */
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Topbar.css"; // Ensure correct styles
+import "./Topbar.css"; 
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { IconButton } from '@mui/material';
 
 function Topbar() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "" });
+    const [isNotiDropdownOpen, setIsNotiDropdownOpen] = useState(false);
+    const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "", admin: false });
+    const [notifications, setNotifications] = useState([]);
     const navigate = useNavigate();
+    const [previewImage, setPreviewImage] = useState("/user-icon.png");
 
     useEffect(() => {
         async function fetchUserData() {
@@ -19,36 +25,109 @@ function Topbar() {
                     setUserInfo({
                         firstName: response.data.firstName || "Unknown",
                         lastName: response.data.lastName || "",
-                        email: response.data.email || "No email available"
+                        email: response.data.email || "No email available",
+                        admin: response.data.admin || false,
                     });
+
+                    if (response.data.image) {
+                        setPreviewImage(`data:image/png;base64,${response.data.image}`);
+                    }
                 }
             } catch (error) {
-                console.error("Error fetching user info:", error);
+                console.error("Error fetching user data:", error);
+            }
+        }
+
+        async function fetchNotifications() {
+            try {
+                const userId = localStorage.getItem("userId");
+                if (!userId) return;
+
+                const response = await axios.get(`http://localhost:8080/notification/get_all?userId=${userId}`);
+                if (response.data) {
+                    setNotifications(response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
             }
         }
 
         fetchUserData();
+        fetchNotifications();
     }, []);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
+        setIsNotiDropdownOpen(false);
+    };
+
+    const toggleNotiDropdown = () => {
+        setIsNotiDropdownOpen(!isNotiDropdownOpen);
+        setIsDropdownOpen(false);
+    };
+
+    const closeDropdown = (callback) => {
+        setIsDropdownOpen(false);
+        setIsNotiDropdownOpen(false);
+        if (callback) callback();
+    };
+
+    const handleSettingsClick = () => {
+        closeDropdown(() => navigate(userInfo.admin ? "/admin/settings" : "/user/settings"));
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("userId");
-        navigate("/signin");
+        closeDropdown(() => {
+            window.localStorage.clear();
+            navigate("/signin");
+        });
     };
 
     return (
         <div className="top-bar">
-            <div className="notification-icon">
-                <img src="/notification-icon.png" alt="Notifications" />
+            <div className="notification-icon" >
+                <IconButton 
+                    onClick={toggleNotiDropdown}
+                    sx={{
+                        color: '#314f5f',
+                        '&:hover': {
+                            backgroundColor: 'rgba(49, 79, 95, 0.04)',
+                        },
+                        '& .MuiSvgIcon-root': {
+                            fontSize: '35px'
+                        }
+                    }}
+                >
+                    <NotificationsIcon />
+                </IconButton>
+                {notifications.length > 0 && (
+                    <div className="notification-badge">
+                        {notifications.length}
+                    </div>
+                )}
+                {isNotiDropdownOpen && (
+                    <div className="dropdown-menu notifications">
+                        <h4>Notifications</h4>
+                        {notifications.length > 0 ? (
+                            <ul>
+                                {notifications.map((noti, index) => (
+                                    <li key={index}>{noti.message}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className= "noti-content"> No new notifications </p>
+                        )}
+                    </div>
+                )}
             </div>
+
             <div className="user-icon-container">
                 <img
-                    src="/user-icon.png"
-                    alt="User Account"
+                    src={previewImage}
+                    alt="User Avatar"
                     className="user-icon"
+                    style={{ cursor: "pointer" }}
+                    onError={(e) => { e.target.src = "/user-icon.png"; }}
                     onClick={toggleDropdown}
                 />
                 {isDropdownOpen && (
@@ -57,10 +136,10 @@ function Topbar() {
                             <p><strong>{`${userInfo.firstName} ${userInfo.lastName}`}</strong></p>
                             <p>{userInfo.email || ""}</p>
                         </div>
-                        <Link to="/user/settings" className="dropdown-item">
+                        <button className="account-setting" onClick={handleSettingsClick}>
                             Account Settings
-                        </Link>
-                        <button className="dropdown-item logout-button" onClick={handleLogout}>
+                        </button>
+                        <button className="log-out" onClick={handleLogout}>
                             Log Out
                         </button>
                     </div>
