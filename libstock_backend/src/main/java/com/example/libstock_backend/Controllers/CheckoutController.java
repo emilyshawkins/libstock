@@ -1,34 +1,31 @@
 package com.example.libstock_backend.Controllers;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.libstock_backend.DTOs.OverdueDTO;
 import com.example.libstock_backend.Models.Book;
 import com.example.libstock_backend.Models.Checkout;
 import com.example.libstock_backend.Models.Notification;
-import com.example.libstock_backend.Models.Queue;
+import com.example.libstock_backend.Models.Queue; // used for mail services //
+import com.example.libstock_backend.Models.User; // used for mail services //
 import com.example.libstock_backend.Repositories.BookRepository;
 import com.example.libstock_backend.Repositories.CheckoutRepository;
 import com.example.libstock_backend.Repositories.NotificationRepository;
 import com.example.libstock_backend.Repositories.QueueRepository;
 import com.example.libstock_backend.Repositories.UserRepository;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/checkout")
 public class CheckoutController {
@@ -43,6 +40,9 @@ public class CheckoutController {
     QueueRepository queueRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private JavaMailSender mailSender; // mail sending function import //
+    
 
     @PostMapping("/create")
     // Create a new checkout
@@ -92,49 +92,49 @@ public class CheckoutController {
         return ResponseEntity.ok(checkout); 
     }
 
-    @GetMapping("/read")
-    // Read a checkout
-    public ResponseEntity<Checkout> read_checkout(@RequestParam String id) {
-        Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
-        if (existingCheckout == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(existingCheckout);
-    }
+    // @GetMapping("/read")
+    // // Read a checkout
+    // public ResponseEntity<Checkout> read_checkout(@RequestParam String id) {
+    //     Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
+    //     if (existingCheckout == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     return ResponseEntity.ok(existingCheckout);
+    // }
 
-    @PatchMapping("/update")
-    // Update a checkout
-    public ResponseEntity<Checkout> update_checkout(@RequestBody Checkout checkout) {
-        Checkout existingCheckout = checkoutRepository.findById(checkout.getId()).orElse(null);
-        if (existingCheckout == null) {
-            return ResponseEntity.notFound().build();
-        }
+    // @PatchMapping("/update")
+    // // Update a checkout
+    // public ResponseEntity<Checkout> update_checkout(@RequestBody Checkout checkout) {
+    //     Checkout existingCheckout = checkoutRepository.findById(checkout.getId()).orElse(null);
+    //     if (existingCheckout == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
 
-        existingCheckout.setBookId(checkout.getBookId());
-        existingCheckout.setUserId(checkout.getUserId());
+    //     existingCheckout.setBookId(checkout.getBookId());
+    //     existingCheckout.setUserId(checkout.getUserId());
 
-        checkoutRepository.save(existingCheckout);
-        return ResponseEntity.ok(existingCheckout);
+    //     checkoutRepository.save(existingCheckout);
+    //     return ResponseEntity.ok(existingCheckout);
 
-    }
+    // }
 
-    @DeleteMapping("/delete")
-    // Delete a checkout
-    public ResponseEntity<Checkout> delete_checkout(@RequestParam String id) {
-        Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
-        if (existingCheckout == null) {
-            return ResponseEntity.notFound().build();
-        }
-        checkoutRepository.delete(existingCheckout);
-        return ResponseEntity.ok(existingCheckout);
-    }
+    // @DeleteMapping("/delete")
+    // // Delete a checkout
+    // public ResponseEntity<Checkout> delete_checkout(@RequestParam String id) {
+    //     Checkout existingCheckout = checkoutRepository.findById(id).orElse(null);
+    //     if (existingCheckout == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     checkoutRepository.delete(existingCheckout);
+    //     return ResponseEntity.ok(existingCheckout);
+    // }
 
-    @GetMapping("/get_all_by_user")
-    // Get all checkouts by user + history
-    public ResponseEntity<Iterable<Checkout>> get_all_checkouts(@RequestParam String userId) {
-        Iterable<Checkout> checkouts = checkoutRepository.findByUserId(userId);
-        return ResponseEntity.ok(checkouts);
-    }
+    // @GetMapping("/get_all_by_user")
+    // // Get all checkouts by user + history
+    // public ResponseEntity<Iterable<Checkout>> get_all_checkouts(@RequestParam String userId) {
+    //     Iterable<Checkout> checkouts = checkoutRepository.findByUserId(userId);
+    //     return ResponseEntity.ok(checkouts);
+    // }
 
     @GetMapping("/get_all_checked_out")
     // Get all checked out books
@@ -143,25 +143,25 @@ public class CheckoutController {
         return ResponseEntity.ok(checkouts);
     }
 
-    @GetMapping("/get_all_overdue")
-    // Get all overdue books
-    public ResponseEntity<Object> get_all_overdue(@RequestParam String userId) {
-        Iterable<Checkout> checkouts = checkoutRepository.findByUserIdAndStatus(userId, "Overdue");
+    // @GetMapping("/get_all_overdue")
+    // // Get all overdue books
+    // public ResponseEntity<Object> get_all_overdue(@RequestParam String userId) {
+    //     Iterable<Checkout> checkouts = checkoutRepository.findByUserIdAndStatus(userId, "Overdue");
 
-        ArrayList<OverdueDTO> overdueList = new ArrayList<>(); // Create list of overdue books
+    //     ArrayList<OverdueDTO> overdueList = new ArrayList<>(); // Create list of overdue books
 
-        for (Checkout checkout : checkouts) {
-            Duration duration = Duration.between(checkout.getDueDate(), Instant.now()); // Get duration between due date and current date
-            long days = duration.toDays(); // Get number of days overdue
-            Double fee = days * 0.25; // Calculate fee
+    //     for (Checkout checkout : checkouts) {
+    //         Duration duration = Duration.between(checkout.getDueDate(), Instant.now()); // Get duration between due date and current date
+    //         long days = duration.toDays(); // Get number of days overdue
+    //         Double fee = days * 0.25; // Calculate fee
 
-            OverdueDTO overdue = new OverdueDTO(checkout.getId(), checkout.getUserId(), checkout.getBookId(), checkout.getCheckoutDate(), checkout.getDueDate(), fee); // Create overdue object
+    //         OverdueDTO overdue = new OverdueDTO(checkout.getId(), checkout.getUserId(), checkout.getBookId(), checkout.getCheckoutDate(), checkout.getDueDate(), fee); // Create overdue object
 
-            overdueList.add(overdue); // Add to list
-        }
+    //         overdueList.add(overdue); // Add to list
+    //     }
 
-        return ResponseEntity.ok(overdueList); // Return list
-    }
+    //     return ResponseEntity.ok(overdueList); // Return list
+    // }
 
     @GetMapping("/return")
     // Return a book
@@ -188,6 +188,16 @@ public class CheckoutController {
 
             //TODO: Send email to user in queue
             // Create notification for user in queue
+            Optional<User> userCheckOut = userRepository.findById(queueCheckout.getUserId());
+            if(userCheckOut.isPresent()) {
+                String userEmail = userCheckOut.get().getEmail();
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setTo(userEmail);
+                message.setSubject("LibStock: Your book is ready!");
+                message.setText("The book: " + book + " that you have request is ready to be picked up.");
+
+                mailSender.send(message);
+            }
         }
 
         return ResponseEntity.ok(existingCheckout);
@@ -229,6 +239,16 @@ public class CheckoutController {
                 notificationRepository.save(notification);
 
                 // TODO: Send email to user
+                Optional<User> userDueDate = userRepository.findById(checkout.getUserId());
+                if(userDueDate.isPresent()) {
+                    String userEmail = userDueDate.get().getEmail();
+                    SimpleMailMessage message = new SimpleMailMessage();
+                    message.setTo(userEmail);
+                    message.setSubject("LibStock: " + notification);
+                    message.setText("The book: " + book + " you have checked out is overdue! Please return it!");
+
+                    mailSender.send(message);
+                }
             }
             else if (currentDate.isAfter(checkout.getDueDate().minus(48, java.time.temporal.ChronoUnit.HOURS)) &&
                      currentDate.isBefore(checkout.getDueDate().minus(47, java.time.temporal.ChronoUnit.HOURS))) { // Check if book is due tomorrow
@@ -240,6 +260,16 @@ public class CheckoutController {
                 notificationRepository.save(notification);
 
                 // TODO: Send email to user
+                Optional<User> userCheckOut = userRepository.findById(checkout.getUserId());
+                if(userCheckOut.isPresent()) {
+                    String userEmail = userCheckOut.get().getEmail();
+                    SimpleMailMessage message = new SimpleMailMessage();
+                    message.setTo(userEmail);
+                    message.setSubject("LibStock Your book is about to be overdue!");
+                    message.setText("The book: " + book + " you have checked out is about to be overdue. Please return it as soon as possible as to not incur overdue fees.");
+
+                    mailSender.send(message);
+                }
             }
         }
     }

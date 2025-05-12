@@ -1,4 +1,8 @@
+// Brandon Gascon - modified //
+// added reset token handling for password reset //
 package com.example.libstock_backend.Models;
+
+import java.time.LocalDateTime; // used to keep track of token experation // 
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,16 +18,20 @@ public class User {
     private String password; // Password of the user
     private boolean isAdmin; // Whether the user is an admin
     private byte[] image; // Profile image of the user
+    private String resetToken; // Used to reset password
+    private LocalDateTime expiration; // Tracks resetToken expiration
 
     public User() {}
 
-    public User(String email, String firstName, String lastName, String password, boolean isAdmin, byte[] image) {
+    public User(String email, String firstName, String lastName, String password, boolean isAdmin, byte[] image, String resetToken, LocalDateTime expiration) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.isAdmin = isAdmin;
         this.image = image;
+        this.resetToken = resetToken;
+        this.expiration = expiration;
     }
 
     public String getId() {
@@ -54,6 +62,14 @@ public class User {
         return image;
     }
 
+    public String getResetToken() {
+        return resetToken;
+    }
+    
+    public LocalDateTime getExpiration() {
+        return expiration;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -80,5 +96,13 @@ public class User {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public void setExpiration(LocalDateTime expiration) {
+        this.expiration = expiration;
     }
 }

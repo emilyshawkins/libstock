@@ -1,5 +1,7 @@
 package com.example.libstock_backend.DTOs;
 
+import java.time.LocalDateTime; // used to keep track of token experation // 
+
 // Data Transfer Object for profile
 public class ProfileDTO {
 
@@ -10,10 +12,13 @@ public class ProfileDTO {
     private String firstName;
     private String lastName;
     private byte[] image;
+    private String resetToken; 
+    private LocalDateTime expiration; 
+
 
     public ProfileDTO() {}
 
-    public ProfileDTO(String id, String email, String currentPassword, String newPassword, String firstName, String lastName, byte[] image) {
+    public ProfileDTO(String id, String email, String currentPassword, String newPassword, String firstName, String lastName, byte[] image, String resetToken, LocalDateTime expiration) {
         this.id = id;
         this.email = email;
         this.currentPassword = currentPassword;
@@ -21,6 +26,8 @@ public class ProfileDTO {
         this.firstName = firstName;
         this.lastName = lastName;
         this.image = image;
+        this.resetToken = resetToken;
+        this.expiration = expiration;
     }
 
     public String getId() {
@@ -78,5 +85,20 @@ public class ProfileDTO {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public String getResetToken(String resetToken) {
+        return resetToken;
+    }
+
+    public void setResetToken(){
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getExpiration(LocalDateTime expiration) {
+        return expiration;
+    }
     
+    public void setExpiration() {
+        this.expiration = expiration;
+    }
 }
