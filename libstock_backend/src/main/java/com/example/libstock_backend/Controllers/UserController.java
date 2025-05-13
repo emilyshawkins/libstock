@@ -42,6 +42,7 @@ import com.example.libstock_backend.Repositories.QueueRepository;
 import com.example.libstock_backend.Repositories.RatingRepository;
 import com.example.libstock_backend.Repositories.UserRepository;
 import com.example.libstock_backend.Repositories.WishlistItemRepository;
+import com.example.libstock_backend.Config.NotificationConfig; // to send notifications to frontend //
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -70,7 +71,9 @@ public class UserController {
     private JavaMailSender mailSender; // mail sending function import //
     @Autowired
     private JwtConfig jwtConfig; // Jwt User Login generation // 
-
+    @Autowired
+    private NotificationConfig notificationConfig; // used to notification //
+    
     @PostMapping("/admin_signup")
     // Create a new admin
     public ResponseEntity<Object> create_admin(@RequestBody User user) {
@@ -96,6 +99,9 @@ public class UserController {
             user.setImage(null);
         }
         userRepository.save(user);
+        
+        notificationConfig.sendNotification(user.getId(), "Welcome " + user.getFirstName() + " to LibStrock!"); // semd login totification to frontend //
+
         return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null)); // 200 OK if account creation successful
     }
 
@@ -119,6 +125,9 @@ public class UserController {
             user.setImage(null);
         }
         userRepository.save(user);
+
+        notificationConfig.sendNotification(user.getId(), "Welcome " + user.getFirstName() + " to LibStrock!"); // semd login totification to frontend //
+
         return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null)); // 200 OK if account creation successful
     }
 

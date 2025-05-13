@@ -25,6 +25,7 @@ import com.example.libstock_backend.Repositories.CheckoutRepository;
 import com.example.libstock_backend.Repositories.NotificationRepository;
 import com.example.libstock_backend.Repositories.QueueRepository;
 import com.example.libstock_backend.Repositories.UserRepository;
+import com.example.libstock_backend.Config.NotificationConfig; // to send notifications to frontend //
 
 @RestController
 @RequestMapping("/checkout")
@@ -42,6 +43,8 @@ public class CheckoutController {
     UserRepository userRepository;
     @Autowired
     private JavaMailSender mailSender; // mail sending function import //
+    @Autowired
+    private NotificationConfig notificationConfig; // used to notification //
     
 
     @PostMapping("/create")
@@ -191,12 +194,14 @@ public class CheckoutController {
             Optional<User> userCheckOut = userRepository.findById(queueCheckout.getUserId());
             if(userCheckOut.isPresent()) {
                 String userEmail = userCheckOut.get().getEmail();
-                SimpleMailMessage message = new SimpleMailMessage();
-                message.setTo(userEmail);
-                message.setSubject("LibStock: Your book is ready!");
-                message.setText("The book: " + book + " that you have request is ready to be picked up.");
+                SimpleMailMessage mail = new SimpleMailMessage();
+                mail.setTo(userEmail);
+                mail.setSubject("LibStock: Your book is ready!");
+                String message = "The book: " + book + " that you have request is ready to be picked up.";
+                mail.setText(message);
 
-                mailSender.send(message);
+                mailSender.send(mail);
+                notificationConfig.sendNotification(queueCheckout.getUserId(), message);
             }
         }
 
@@ -242,12 +247,14 @@ public class CheckoutController {
                 Optional<User> userDueDate = userRepository.findById(checkout.getUserId());
                 if(userDueDate.isPresent()) {
                     String userEmail = userDueDate.get().getEmail();
-                    SimpleMailMessage message = new SimpleMailMessage();
-                    message.setTo(userEmail);
-                    message.setSubject("LibStock: " + notification);
-                    message.setText("The book: " + book + " you have checked out is overdue! Please return it!");
+                    SimpleMailMessage mail = new SimpleMailMessage();
+                    mail.setTo(userEmail);
+                    mail.setSubject("LibStock: " + notification);
+                    String message = "The book: " + book + " you have checked out is overdue! Please return it!";
+                    mail.setText(message);
 
-                    mailSender.send(message);
+                    mailSender.send(mail);
+                    notificationConfig.sendNotification(checkout.getUserId(), message);
                 }
             }
             else if (currentDate.isAfter(checkout.getDueDate().minus(48, java.time.temporal.ChronoUnit.HOURS)) &&
@@ -263,12 +270,15 @@ public class CheckoutController {
                 Optional<User> userCheckOut = userRepository.findById(checkout.getUserId());
                 if(userCheckOut.isPresent()) {
                     String userEmail = userCheckOut.get().getEmail();
-                    SimpleMailMessage message = new SimpleMailMessage();
-                    message.setTo(userEmail);
-                    message.setSubject("LibStock Your book is about to be overdue!");
-                    message.setText("The book: " + book + " you have checked out is about to be overdue. Please return it as soon as possible as to not incur overdue fees.");
+                    SimpleMailMessage mail = new SimpleMailMessage();
+                    mail.setTo(userEmail);
+                    mail.setSubject("LibStock Your book is about to be overdue!");
+                    String message = "The book: " + book + " you have checked out is about to be overdue. Please return it as soon as possible as to not incur overdue fees.";
+                    mail.setText(message);
 
-                    mailSender.send(message);
+                    mailSender.send(mail);
+                    notificationConfig.sendNotification(checkout.getUserId(), message);
+
                 }
             }
         }

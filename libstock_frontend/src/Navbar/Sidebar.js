@@ -26,6 +26,9 @@ function Sidebar() {
                 <button onClick={() => navigate("/user/favorite")} className="left-bar-button">
                     Favorite Items
                 </button>
+                <button onClick={() => navigate("/user/customList")} className="left-bar-button">
+                    Custom Lists
+                </button>
             </div>
         </div>
     );
