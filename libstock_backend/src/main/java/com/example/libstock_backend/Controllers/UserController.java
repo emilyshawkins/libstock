@@ -99,7 +99,7 @@ public class UserController {
             user.setImage(null);
         }
         userRepository.save(user);
-        
+
         notificationConfig.sendNotification(user.getId(), "Welcome " + user.getFirstName() + " to LibStrock!"); // semd login totification to frontend //
 
         return ResponseEntity.ok(new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.isAdmin(), null)); // 200 OK if account creation successful
@@ -289,7 +289,7 @@ public class UserController {
         userRepository.save(existingUser);
 
         // password reset link // 
-        String resetLink = "http://localhost:3000/reset-password?token=" + resetToken;
+        String resetLink = "http://localhost:3000/reset-password?token=" + resetToken + "&id=" + existingUser.getId();
 
         // sends email // 
         SimpleMailMessage message = new SimpleMailMessage();

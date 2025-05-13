@@ -1,6 +1,7 @@
 /* ./SignInPage/ResetPass.js */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import "./ResetPass.css";
@@ -13,8 +14,12 @@ function ResetPass() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    const location = useLocation();
+    const queryParms = new URLSearchParams(location.search);
+    const resetToken = queryParms.get("token");
+
     // Retrieve user ID from localStorage
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("id");
 
     // Reset Password
     const handlePasswordSubmit = async (e) => {
@@ -37,7 +42,8 @@ function ResetPass() {
         try {
             const response = await axios.patch("http://localhost:8080/user/reset_password", { 
                 id: userId, 
-                newPassword 
+                newPassword,
+                resetToken
             });
 
             if (response.data.success) {

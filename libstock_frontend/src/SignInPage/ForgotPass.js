@@ -8,6 +8,8 @@ function ForgotPass() {
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
     const [loading, setLoading] = useState(false);
+    const params = new URLSearchParams();
+    params.append("email", email);
 
     // Verify Email Exists
     const handleEmailSubmit = async (e) => {
