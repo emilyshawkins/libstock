@@ -19,7 +19,7 @@ function ResetPass() {
     const resetToken = queryParms.get("token");
 
     // Retrieve user ID from localStorage
-    const userId = localStorage.getItem("id");
+    // const userId = localStorage.getItem("id");
 
     // Reset Password
     const handlePasswordSubmit = async (e) => {
@@ -27,11 +27,11 @@ function ResetPass() {
         setLoading(true);
         setMessage("");
 
-        if (!userId) {
-            setMessage("User ID is missing. Please log in again.");
-            setLoading(false);
-            return;
-        }
+        // if (!userId) {
+        //     setMessage("User ID is missing. Please log in again.");
+        //     setLoading(false);
+        //     return;  
+        // }
 
         if (newPassword !== confirmPassword) {
             setMessage("Passwords do not match!");
@@ -41,7 +41,7 @@ function ResetPass() {
 
         try {
             const response = await axios.patch("http://localhost:8080/user/reset_password", { 
-                id: userId, 
+                // id: userId, 
                 newPassword,
                 resetToken
             });

@@ -305,7 +305,7 @@ public class UserController {
     @PatchMapping("/reset_password")
     // Reset password
     public ResponseEntity<Object> reset_password(@RequestBody ResetPasswordDTO resetPassword) {
-        User user = userRepository.findById(resetPassword.getId()).orElse(null);
+        User user = userRepository.findByResetToken(resetPassword.getResetToken());
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
