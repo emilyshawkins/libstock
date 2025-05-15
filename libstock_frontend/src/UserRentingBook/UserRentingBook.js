@@ -363,8 +363,7 @@ const UserRentingBook = () => {
                 <button
                   className="receipt-button"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering the book card click
-                    navigate(`/receipt/${book.id}`, {
+                    navigate(`/user/receipt/${book.id}`, {
                       state: {
                         purchaseData: {
                           bookId: book.id,

@@ -95,8 +95,7 @@ function MainContent() {
         {/* User Home page */}
         <Route path="/user/renting" element={<UserRentingBook />} />{" "}
         {/* User Renting Books */}
-        <Route path="/receipt" element={<Receipt />} /> {/* Receipt History */}
-        <Route path="/receipt/:id" element={<Receipt />} />{" "}
+        <Route path="user/receipt/:id" element={<Receipt />} />{" "}
         {/* Individual Receipt */}
         <Route path="/admin/collection" element={<CollectionPage />} />{" "}
         {/* User Collection */}
