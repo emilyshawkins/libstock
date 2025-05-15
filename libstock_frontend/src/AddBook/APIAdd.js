@@ -22,7 +22,6 @@ const AdminInventory = () => {
   const [useDefaultCover, setUseDefaultCover] = useState(true);
   const [previewImageUrl, setPreviewImageUrl] = useState(defaultBookCover);
   const [customFields, setCustomFields] = useState([]);
-  
 
   const navigate = useNavigate();
 
@@ -298,43 +297,6 @@ const AdminInventory = () => {
           </button>
         </div>
 
-        <div className="book-results">
-          <h3>Search Results</h3>
-          {searchResults.map((book) => {
-            if (!book.volumeInfo) return null;
-
-            const volumeInfo = book.volumeInfo;
-            return (
-              <div key={book.id} className="book-card">
-                <img
-                  src={volumeInfo.imageLinks?.thumbnail || "placeholder.jpg"}
-                  alt={volumeInfo.title || "No Title"}
-                />
-                <h3>{volumeInfo.title || "No Title"}</h3>
-                <p>
-                  <strong>Author:</strong>{" "}
-                  {volumeInfo.authors?.join(", ") || "Unknown Author"}
-                </p>
-                <p>
-                  <strong>ISBN:</strong>{" "}
-                  {volumeInfo.industryIdentifiers?.[0]?.identifier || "N/A"}
-                </p>
-                <p>
-                  <strong>Publisher:</strong>{" "}
-                  {volumeInfo.publisher || "Unknown Publisher"}
-                </p>
-                <p>
-                  <strong>Publication Date:</strong>{" "}
-                  {volumeInfo.publishedDate || "2024-05-02T00:00:00.000+00:00"}
-                </p>
-                <button onClick={() => handleAddBookClick(book)}>
-                  Add to Database
-                </button>
-              </div>
-            );
-          })}
-        </div>
-
         {selectedBook && (
           <div className="add-book-form">
             <h2>Enter Book Details</h2>
@@ -446,7 +408,9 @@ const AdminInventory = () => {
                   <button
                     type="button"
                     onClick={() =>
-                      setCustomFields((prev) => prev.filter((_, i) => i !== index))
+                      setCustomFields((prev) =>
+                        prev.filter((_, i) => i !== index)
+                      )
                     }
                   >
                     Remove
@@ -467,6 +431,42 @@ const AdminInventory = () => {
             <button onClick={() => setSelectedBook(null)}>Cancel</button>
           </div>
         )}
+        <div className="book-results">
+          <h3>Search Results</h3>
+          {searchResults.map((book) => {
+            if (!book.volumeInfo) return null;
+
+            const volumeInfo = book.volumeInfo;
+            return (
+              <div key={book.id} className="book-card">
+                <img
+                  src={volumeInfo.imageLinks?.thumbnail || "placeholder.jpg"}
+                  alt={volumeInfo.title || "No Title"}
+                />
+                <h3>{volumeInfo.title || "No Title"}</h3>
+                <p>
+                  <strong>Author:</strong>{" "}
+                  {volumeInfo.authors?.join(", ") || "Unknown Author"}
+                </p>
+                <p>
+                  <strong>ISBN:</strong>{" "}
+                  {volumeInfo.industryIdentifiers?.[0]?.identifier || "N/A"}
+                </p>
+                <p>
+                  <strong>Publisher:</strong>{" "}
+                  {volumeInfo.publisher || "Unknown Publisher"}
+                </p>
+                <p>
+                  <strong>Publication Date:</strong>{" "}
+                  {volumeInfo.publishedDate || "2024-05-02T00:00:00.000+00:00"}
+                </p>
+                <button onClick={() => handleAddBookClick(book)}>
+                  Add to Database
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
