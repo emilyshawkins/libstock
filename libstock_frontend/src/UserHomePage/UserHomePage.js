@@ -397,7 +397,7 @@ const UserHomePage = () => {
         { userId, bookId }
       );
 
-      const readable = new Date(response.data.dueDate * 1000).toLocaleString();
+      const readable = new Date(response.data.dueDate).toLocaleString();
       setUserCheckouts((prev) => new Set(prev).add(bookId));
       alert(
         "Checkout success! You have until " + readable + " to return the book."
@@ -432,9 +432,9 @@ const UserHomePage = () => {
       const response = await axios.get("http://localhost:8080/checkout/renew", {
         params: { userId, bookId },
       });
-      const readable = new Date(response.data.dueDate * 1000).toLocaleString();
+      const readable = new Date(response.data.dueDate).toLocaleString();
       alert(
-        "Renew success! You have until " + readable + " to return the book."
+        "Renew success! You have until " + response.data.dueDate + " to return the book."
       );
     } catch (error) {
       console.error("Error renewing book:", error);

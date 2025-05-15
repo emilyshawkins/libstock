@@ -21,7 +21,7 @@ import AccountSettings from "./AccountSetting/AccountSettings"; // Import User A
 import UserInventory from "./UserInventory/UserInventory"; // Import UserInventory
 import FavPage from "./FavPage/FavPage"; //Import Favourite Page
 import FavPageShare from "./FavPage/FavPageShare";
-import CustomListPage from "./CustomListPage/CustomListPage"; // Import Custom Lists Page
+import CustomListPage from "./CustomListPage/CustomListPage";
 import WishList from "./WishList/WishList"; //Import Wishlist Page
 import WishListShare from "./WishList/WishListShare";
 import UserBookDetails from "./BookDetails/UserBookDetails"; // Import BookDetails
@@ -84,7 +84,8 @@ function MainContent() {
         {/* User Home page */}
         <Route path="/user/favorite" element={<FavPage />} />{" "}
         <Route path="/favorite/share" element={<FavPageShare />} />{" "}
-        <Route path="/user/customList" element={<CustomListPage />} />{" "}
+        <Route path="/user/customlist" element={<CustomListPage />} />{" "}
+        {/* Custom List Page */}
         <Route path="/user/wishlist" element={<WishList />} />{" "}
         <Route path="/wishlist/share" element={<WishListShare />} />{" "}
         <Route path="/user/home/book" element={<UserBookDetails />} />{" "}
@@ -97,8 +98,7 @@ function MainContent() {
         {/* User Home page */}
         <Route path="/user/renting" element={<UserRentingBook />} />{" "}
         {/* User Renting Books */}
-        <Route path="/receipt" element={<Receipt />} /> {/* Receipt History */}
-        <Route path="/receipt/:id" element={<Receipt />} />{" "}
+        <Route path="user/receipt/:id" element={<Receipt />} />{" "}
         {/* Individual Receipt */}
         <Route path="/admin/collection" element={<CollectionPage />} />{" "}
         {/* User Collection */}

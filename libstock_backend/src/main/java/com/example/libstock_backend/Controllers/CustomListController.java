@@ -78,8 +78,8 @@ public class CustomListController {
     }
 
     @PostMapping("/addBook")
-    public ResponseEntity<Object> addBookToList(@RequestParam String userId, @RequestParam String listName, @RequestParam String bookId) {
-        CustomList customList = customListRepository.findByEmailAndListName(userId, listName);
+    public ResponseEntity<Object> addBookToList(@RequestParam String email, @RequestParam String listName, @RequestParam String bookId) {
+        CustomList customList = customListRepository.findByEmailAndListName(email, listName);
         if (customList == null) {
             return ResponseEntity.badRequest().body("Custom List not found.");
         }
@@ -94,8 +94,8 @@ public class CustomListController {
     }
 
     @DeleteMapping("/removeBook")
-    public ResponseEntity<Object> removeBookFromList(@RequestParam String userId, @RequestParam String listName, @RequestParam String bookId) {
-        CustomList customList = customListRepository.findByEmailAndListName(userId, listName);
+    public ResponseEntity<Object> removeBookFromList(@RequestParam String email, @RequestParam String listName, @RequestParam String bookId) {
+        CustomList customList = customListRepository.findByEmailAndListName(email, listName);
         if (customList == null) {
             return ResponseEntity.badRequest().body("Custom list not found.");
         }
@@ -113,42 +113,29 @@ public class CustomListController {
 
     @GetMapping("/read")
     // Read a custom list
-    public ResponseEntity<CustomList> read_custom_list(@RequestParam String id) { 
-        CustomList customList = customListRepository.findById(id).orElse(null);
+    public ResponseEntity<CustomList> readCustomList(@RequestParam String email, @RequestParam String listName) { 
+        CustomList customList = customListRepository.findByEmailAndListName(email, listName);
         if (customList == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); // No custom list found //
         }
         return ResponseEntity.ok(customList);
     }
 
-    // @PatchMapping("/update")
-    // // Update a custom list
-    // public ResponseEntity<CustomList> update_custom_list(@RequestBody CustomList customList) { // Delete will probably be a better option
-    //     CustomList existingCustomList= customListRepository.findById(customList.getId()).orElse(null);
-    //     if (existingCustomList == null) {
-    //         return ResponseEntity.notFound().build();
-    //     }
+    @GetMapping("/all")
+    public ResponseEntity<List<CustomList>> getAllListsr(@RequestParam String email) {
+        List<CustomList> lists = customListRepository.findByEmail(email);
+        return ResponseEntity.ok(lists);
+    }
 
-    //     if (customList.getUserId() != null) {
-    //         existingCustomList.setUserId(customList.getUserId());
-    //     }
-    //     if (customList.getBookIds() != null) {
-    //         existingCustomList.setBookIds(customList.getBookIds());
-    //     }
-
-    //     customListRepository.save(customList);
-    //     return ResponseEntity.ok(customList);
-    // }
 
     @DeleteMapping("/delete")
     // Delete a custom list by user and list name
-    public ResponseEntity<CustomList> delete_favorite_by_ids(@RequestParam String userId, @RequestParam String listName) {
-        CustomList customList = customListRepository.findByEmailAndListName(userId, listName);
+    public ResponseEntity<CustomList> deleteCustomList(@RequestParam String email, @RequestParam String listName) {
+        CustomList customList = customListRepository.findByEmailAndListName(email, listName);
         if (customList == null) {
             return ResponseEntity.notFound().build();
         }
         customListRepository.delete(customList);
         return ResponseEntity.ok(customList);
     }
-
 }

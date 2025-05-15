@@ -6,12 +6,6 @@ import {
   Paper,
   Typography,
   Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   CircularProgress,
   Alert,
   Divider,
@@ -38,7 +32,6 @@ const Receipt = () => {
     const fetchReceipt = async () => {
       try {
         setLoading(true);
-        const userId = localStorage.getItem("userId");
         if (purchaseData) {
           setReceipt(purchaseData);
           try {
@@ -52,44 +45,25 @@ const Receipt = () => {
           setLoading(false);
           return;
         }
-        if (id) {
-          // Fetch individual receipt
-          const response = await axios.get(
-            `http://localhost:8080/history/get_receipt?id=${id}`
+
+        if (!id) {
+          setError("No receipt ID provided");
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get(
+          `http://localhost:8080/history/get_receipt?id=${id}`
+        );
+        setReceipt(response.data);
+
+        try {
+          const bookResponse = await axios.get(
+            `http://localhost:8080/book/read?id=${response.data.bookId}`
           );
-          setReceipt(response.data);
-          try {
-            const bookResponse = await axios.get(
-              `http://localhost:8080/book/read?id=${response.data.bookId}`
-            );
-            setBookDetails({ [response.data.bookId]: bookResponse.data });
-          } catch (error) {
-            console.error(`Error fetching book details:`, error);
-          }
-        } else {
-          // Fetch all receipts for user
-          const response = await axios.get(
-            `http://localhost:8080/history/get?userId=${userId}`
-          );
-          setReceipt(response.data);
-          // Fetch book details for each purchase
-          const bookDetailsMap = {};
-          await Promise.all(
-            response.data.map(async (purchase) => {
-              try {
-                const bookResponse = await axios.get(
-                  `http://localhost:8080/book/read?id=${purchase.bookId}`
-                );
-                bookDetailsMap[purchase.bookId] = bookResponse.data;
-              } catch (error) {
-                console.error(
-                  `Error fetching book details for book ID ${purchase.bookId}:`,
-                  error
-                );
-              }
-            })
-          );
-          setBookDetails(bookDetailsMap);
+          setBookDetails({ [response.data.bookId]: bookResponse.data });
+        } catch (error) {
+          console.error(`Error fetching book details:`, error);
         }
       } catch (err) {
         setError("Failed to fetch receipt data");
@@ -107,7 +81,7 @@ const Receipt = () => {
 
   const formatDate = (timestamp) => {
     if (!timestamp) return "N/A";
-    const date = new Date(timestamp * 1000);
+    const date = new Date(timestamp);
     return date.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
@@ -134,11 +108,11 @@ const Receipt = () => {
           {error}
         </Alert>
         <Button
-          onClick={() => navigate("/user/home")}
+          onClick={() => navigate("/user/renting")}
           variant="contained"
           sx={{ mt: 2 }}
         >
-          Return to Home
+          Return to Renting
         </Button>
       </Container>
     );
@@ -151,110 +125,96 @@ const Receipt = () => {
           No receipt data available
         </Typography>
         <Button
-          onClick={() => navigate("/user/home")}
+          onClick={() => navigate("/user/renting")}
           variant="contained"
           sx={{ mt: 2 }}
         >
-          Return to Home
+          Return to Renting
         </Button>
       </Container>
     );
   }
 
-  // If we're viewing all receipts
-  if (Array.isArray(receipt)) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Purchase History
-        </Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Purchase Date</TableCell>
-                <TableCell>Book Title</TableCell>
-                <TableCell>ISBN</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Total Cost</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {receipt.map((purchase) => {
-                const book = bookDetails[purchase.bookId] || {};
-                return (
-                  <TableRow key={`${purchase.bookId}-${purchase.purchaseDate}`}>
-                    <TableCell>{formatDate(purchase.purchaseDate)}</TableCell>
-                    <TableCell>{book.title || "Loading..."}</TableCell>
-                    <TableCell>{book.isbn || "Loading..."}</TableCell>
-                    <TableCell>{purchase.quantity}</TableCell>
-                    <TableCell>${(purchase.cost / 100).toFixed(2)}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() => navigate(`/receipt/${purchase.id}`)}
-                      >
-                        Show Receipt
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box sx={{ mt: 2, textAlign: "center" }}>
-          <Button variant="contained" onClick={() => navigate("/user/home")}>
-            Return to Home
-          </Button>
-        </Box>
-      </Container>
-    );
-  }
-
-  // Individual receipt (plain, print-friendly)
   const book = bookDetails[receipt.bookId] || {};
   return (
-    <Container maxWidth="sm" sx={{ py: 4 }}>
+    <Container
+      maxWidth="sm"
+      sx={{
+        py: 4,
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Paper
-        elevation={1}
-        sx={{ p: 3, "@media print": { boxShadow: "none", border: "none" } }}
+        elevation={3}
+        sx={{
+          p: 4,
+          width: "100%",
+          maxWidth: "500px",
+          "@media print": {
+            boxShadow: "none",
+            border: "none",
+            width: "100%",
+            maxWidth: "none",
+          },
+        }}
       >
-        <Box sx={{ ...monoStyle, mb: 2 }}>
+        <Box sx={{ ...monoStyle, mb: 3, textAlign: "center" }}>
+          <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold" }}>
+            Purchase Receipt
+          </Typography>
           {formatDate(receipt.purchaseDate)}
         </Box>
-        <Divider sx={{ mb: 2, "@media print": { display: "none" } }} />
-        <Box sx={monoStyle}>
+        <Divider sx={{ mb: 3, "@media print": { display: "none" } }} />
+        <Box sx={{ ...monoStyle, mb: 3 }}>
           {`Item: ${book.isbn || ""}\nTitle: ${
             book.title || ""
           }\nMaterial: Book\n`}
         </Box>
-        <Box sx={monoStyle}>
+        <Box sx={{ ...monoStyle, mb: 3 }}>
           {`Quantity: ${receipt.quantity}\n`}
           {`Total: $${(receipt.cost / 100).toFixed(2)}`}
         </Box>
-        <Divider sx={{ my: 2, "@media print": { display: "none" } }} />
-        <Box sx={monoStyle}>
+        <Divider sx={{ my: 3, "@media print": { display: "none" } }} />
+        <Box sx={{ ...monoStyle, textAlign: "center", color: "#666" }}>
           {`Thank you for your purchase!\nNO REFUNDS or REPLACEMENTS ON LOST ITEMS`}
         </Box>
         <Box
           sx={{
             textAlign: "center",
-            mt: 3,
+            mt: 4,
             "@media print": { display: "none" },
           }}
         >
-          <Button variant="contained" onClick={handlePrint} sx={{ mr: 2 }}>
+          <Button
+            variant="contained"
+            onClick={handlePrint}
+            sx={{
+              mr: 2,
+              backgroundColor: "#4CAF50",
+              "&:hover": {
+                backgroundColor: "#45a049",
+              },
+            }}
+          >
             Print Receipt
           </Button>
           <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/user/home")}
+            variant="outlined"
+            onClick={() => navigate("/user/renting")}
+            sx={{
+              borderColor: "#4CAF50",
+              color: "#4CAF50",
+              "&:hover": {
+                borderColor: "#45a049",
+                backgroundColor: "rgba(76, 175, 80, 0.04)",
+              },
+            }}
           >
-            Return to Home
+            Return to Renting
           </Button>
         </Box>
       </Paper>

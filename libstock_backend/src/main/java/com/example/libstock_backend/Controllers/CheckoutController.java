@@ -2,6 +2,7 @@ package com.example.libstock_backend.Controllers;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,13 +182,34 @@ public class CheckoutController {
         existingCheckout.setStatus("Returned"); // Set status to returned
         checkoutRepository.save(existingCheckout);
 
-        Queue queue = queueRepository.findByBookId(bookId); // Find queue
-        if (queue != null && queue.getQueueList().size() > 0) { // Check if there are users in the queue
-            Checkout queueCheckout = new Checkout(queueRepository.findByBookId(bookId).getQueueList().get(0), bookId, Instant.now(), Instant.now().plus(14, java.time.temporal.ChronoUnit.DAYS), Instant.now(), "Checked Out"); // Create checkout for user in queue
-            this.create_checkout(0, queueCheckout); // Create checkout for user in queue
-            queueRepository.findByBookId(bookId).getQueueList().remove(0); // Remove user from queue
+        Queue queue = queueRepository.findByBookId(bookId); // Fetch queue only once
 
-            queueRepository.save(queue); // Save queue
+        if (queue != null && queue.getQueueList().size() > 0) {
+            String nextUser = queue.getQueueList().get(0); // Get first user in queue
+
+            Checkout queueCheckout = new Checkout(
+                nextUser,
+                bookId,
+                Instant.now(),
+                Instant.now().plus(14, ChronoUnit.DAYS),
+                Instant.now(),
+                "Checked Out"
+            );
+
+            this.create_checkout(0, queueCheckout); // Create checkout
+
+            queue.getQueueList().remove(0); // Remove user from queue directly on the object you will save
+
+            queueRepository.save(queue); // Persist updated queue
+
+            Notification notification = new Notification(
+                queueCheckout.getUserId(),
+                Instant.now(),
+                "Book " + book.getTitle() + " is available for checkout",
+                false
+            );
+
+            notificationRepository.save(notification); // Save notification
 
             //TODO: Send email to user in queue
             // Create notification for user in queue
