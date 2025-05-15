@@ -1,88 +1,109 @@
-.custom-list-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  text-align: center;
+/* src/CustomListPage/CustomListPage.css */
+
+.customlist-container {
+    max-width: 1600px;
+    margin-top: 50px;
+    margin-left: 260px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #476778;
 }
 
-h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
+.new-list-form {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
 }
 
-.action-message {
-  color: green;
-  margin-bottom: 15px;
-  font-weight: bold;
+.new-list-form input {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
 }
 
-.create-list-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+.new-list-form button {
+    background-color: #476778;
+    color: white;
+    padding: 9px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
 }
 
-.input-field {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 200px;
+.new-list-form button:hover {
+    background-color: #35505d;
 }
 
-.create-list-button {
-  padding: 10px 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.list-selector {
+    margin-bottom: 30px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-.create-list-button:hover {
-  background-color: #45a049;
-}
-
-.dropdown {
-  padding: 8px 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  border-radius: 6px;
+.list-selector select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
 
 .book-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
-  padding-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+    padding: 0 15px;
 }
 
 .book-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 12px;
-  background-color: #f9f9f9;
-  transition: box-shadow 0.3s ease;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    text-align: left;
 }
 
 .book-card:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-.book-card img {
-  max-width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 4px;
+.book-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #35505d;
+    font-weight: 600;
 }
 
-.book-details h4 {
-  margin: 10px 0 5px;
+.book-card p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #476778;
 }
 
-.book-details p {
-  margin: 0;
-  color: #555;
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .new-list-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-list-form input,
+    .list-selector select {
+        width: 100%;
+        max-width: 300px;
+    }
 }

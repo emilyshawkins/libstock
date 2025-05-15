@@ -1,147 +1,155 @@
-import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+// src/CustomListPage/CustomListPage.js
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./CustomListPage.css";
 
-const CustomListPage = ({ currentUser }) => {
+const CustomListPage = () => {
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
   const [customLists, setCustomLists] = useState([]);
-  const [selectedListId, setSelectedListId] = useState("");
-  const [selectedListBooks, setSelectedListBooks] = useState([]);
-  const [selectedListName, setSelectedListName] = useState("");
-  const [newListName, setNewListName] = useState("");
-  const [message, setMessage] = useState("");
+  const [selectedListId, setSelectedListId] = useState(null);
+  const [listBooks, setListBooks] = useState([]);
+  const [bookAuthors, setBookAuthors] = useState({});
+  const [bookGenres, setBookGenres] = useState({});
+  const [newListTitle, setNewListTitle] = useState("");
+  const [newBookISBN, setNewBookISBN] = useState("");
 
-  // Fetch all custom lists for the current user
   useEffect(() => {
-    if (!currentUser?.email) return;
+    if (userId) fetchUserCustomLists();
+  }, [userId]);
 
-    axios
-      .get("/customList/findByEmail", {
-        params: { email: currentUser.email },
-      })
-      .then((res) => {
-        const lists = res.data || [];
-        setCustomLists(lists);
-
-        if (lists.length > 0) {
-          setSelectedListId(lists[0].id);
-          setSelectedListName(lists[0].listName);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching custom lists:", err);
-        setMessage("Failed to load lists.");
-      });
-  }, [currentUser]);
-
-  // Fetch books for selected list
   useEffect(() => {
-    if (!selectedListId) return;
-
-    axios
-      .get("/customList/read", {
-        params: { id: selectedListId },
-      })
-      .then(async (res) => {
-        const list = res.data;
-        setSelectedListName(list.listName);
-
-        const bookResponses = await Promise.all(
-          list.bookIds.map((isbn) =>
-            axios.get("/books/isbn", { params: { isbn } }).then((r) => r.data)
-          )
-        );
-        setSelectedListBooks(bookResponses);
-      })
-      .catch((err) => {
-        console.error("Error fetching list books:", err);
-        setMessage("Failed to load books.");
-      });
+    if (selectedListId) fetchBooksForList(selectedListId);
   }, [selectedListId]);
 
-  const handleCreateList = () => {
-    if (!newListName.trim()) {
-      setMessage("List name cannot be empty.");
-      return;
+  const fetchUserCustomLists = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/custom_list/get_by_user?userId=${userId}`);
+      setCustomLists(res.data);
+      if (res.data.length > 0) setSelectedListId(res.data[0].id);
+    } catch (error) {
+      console.error("Error fetching custom lists:", error);
     }
-
-    axios
-      .post("/customList/create", {
-        email: currentUser.email,
-        listName: newListName.trim(),
-      })
-      .then((res) => {
-        setMessage("List created successfully.");
-        setCustomLists((prev) => [...prev, res.data]);
-        setNewListName("");
-      })
-      .catch((err) => {
-        console.error("Error creating list:", err);
-        setMessage("Failed to create list.");
-      });
   };
 
-  const handleChange = (e) => {
-    setSelectedListId(e.target.value);
+  const fetchBooksForList = async (listId) => {
+    try {
+      const res = await axios.get(`http://localhost:8080/custom_list/get_books_by_list?listId=${listId}`);
+      setListBooks(res.data);
+      fetchAuthors(res.data);
+      fetchGenres(res.data);
+    } catch (error) {
+      console.error("Error fetching books in custom list:", error);
+    }
+  };
+
+  const fetchAuthors = async (books) => {
+    const authorsMap = {};
+    for (const book of books) {
+      try {
+        const res = await axios.get(`http://localhost:8080/bookauthor/get_authors_by_book?bookId=${book.id}`);
+        authorsMap[book.id] = res.data.map(a => `${a.firstName} ${a.lastName}`);
+      } catch {
+        authorsMap[book.id] = ["Unknown Author"];
+      }
+    }
+    setBookAuthors(authorsMap);
+  };
+
+  const fetchGenres = async (books) => {
+    const genresMap = {};
+    for (const book of books) {
+      try {
+        const res = await axios.get(`http://localhost:8080/bookgenre/get_genres_by_book?bookId=${book.id}`);
+        genresMap[book.id] = res.data.map(g => g.name);
+      } catch {
+        genresMap[book.id] = ["Unknown Genre"];
+      }
+    }
+    setBookGenres(genresMap);
+  };
+
+  const handleCreateList = async () => {
+    if (!newListTitle.trim()) return;
+    try {
+      await axios.post("http://localhost:8080/custom_list/create", {
+        userId,
+        title: newListTitle,
+        isbn: newBookISBN || null
+      });
+      setNewListTitle("");
+      setNewBookISBN("");
+      fetchUserCustomLists();
+    } catch (error) {
+      console.error("Error creating custom list:", error);
+    }
+  };
+
+  const handleBookClick = (bookId) => {
+    const book = listBooks.find((b) => b.id === bookId);
+    navigate(`/user/home/book?id=${bookId}`, {
+      state: {
+        book,
+        author: bookAuthors[bookId]?.join(", ") || "Unknown Author",
+        genre: bookGenres[bookId]?.join(", ") || "Unknown Genre"
+      }
+    });
   };
 
   return (
-    <div className="custom-list-page">
-      <h2>Your Custom Lists</h2>
+    <div className="customlist-container">
+      <h1>Your Custom Book Lists</h1>
 
-      {message && <p className="action-message">{message}</p>}
-
-      <div className="create-list-form">
+      {/* Create new list */}
+      <div className="new-list-form">
         <input
           type="text"
-          value={newListName}
-          onChange={(e) => setNewListName(e.target.value)}
-          placeholder="New List Name"
-          className="input-field"
+          placeholder="List title"
+          value={newListTitle}
+          onChange={(e) => setNewListTitle(e.target.value)}
         />
-        <button onClick={handleCreateList} className="create-list-button">
-          Create List
-        </button>
+        <input
+          type="text"
+          placeholder="Optional Book ISBN"
+          value={newBookISBN}
+          onChange={(e) => setNewBookISBN(e.target.value)}
+        />
+        <button onClick={handleCreateList}>Create List</button>
       </div>
 
-      {customLists.length > 0 ? (
-        <>
-          <select
-            value={selectedListId}
-            onChange={handleChange}
-            className="dropdown"
-          >
-            {customLists.map((list) => (
-              <option key={list.id} value={list.id}>
-                {list.listName}
-              </option>
-            ))}
-          </select>
+      {/* Select list */}
+      <div className="list-selector">
+        <label>Select a list: </label>
+        <select
+          value={selectedListId || ""}
+          onChange={(e) => setSelectedListId(e.target.value)}
+        >
+          {customLists.map((list) => (
+            <option key={list.id} value={list.id}>
+              {list.title}
+            </option>
+          ))}
+        </select>
+      </div>
 
-          <h3>{selectedListName}</h3>
-
-          <div className="book-grid">
-            {selectedListBooks.length > 0 ? (
-              selectedListBooks.map((book) => (
-                <div className="book-card" key={book.ISBN}>
-                  <img
-                    src={book.coverImage || "/placeholder.png"}
-                    alt={book.title}
-                  />
-                  <div className="book-details">
-                    <h4>{book.title}</h4>
-                    <p>{book.author}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No books in this list.</p>
-            )}
-          </div>
-        </>
-      ) : (
-        <p>You have no custom lists yet.</p>
-      )}
+      {/* Books in selected list */}
+      <div className="book-grid">
+        {listBooks.length > 0 ? (
+          listBooks.map((book) => (
+            <div key={book.id} className="book-card" onClick={() => handleBookClick(book.id)}>
+              <h3>{book.title}</h3>
+              <p><strong>ISBN:</strong> {book.isbn}</p>
+              <p><strong>Author:</strong> {bookAuthors[book.id]?.join(", ") || "Unknown"}</p>
+              <p><strong>Genre:</strong> {bookGenres[book.id]?.join(", ") || "Unknown"}</p>
+              <p><strong>Publication:</strong> {book.publicationDate}</p>
+              <p><strong>Price:</strong> ${book.price?.toFixed(2) || "N/A"}</p>
+            </div>
+          ))
+        ) : (
+          <p>No books in this list.</p>
+        )}
+      </div>
     </div>
   );
 };
