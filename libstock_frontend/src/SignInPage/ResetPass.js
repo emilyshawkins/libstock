@@ -46,7 +46,7 @@ function ResetPass() {
                 resetToken
             });
 
-            if (response.data.success) {
+            if (response.status === 200) {
                 alert("Password reset successful! You can sign in now!");
                 navigate("/signin");
             } else {

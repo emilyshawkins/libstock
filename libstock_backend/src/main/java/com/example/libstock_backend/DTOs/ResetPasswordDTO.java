@@ -1,20 +1,14 @@
 package com.example.libstock_backend.DTOs;
 
 public class ResetPasswordDTO {
-    private String id;
     private String newPassword;
     private String resetToken;
     
     public ResetPasswordDTO() {}
 
-    public ResetPasswordDTO(String id, String newPassword, String resetToken) {
-        this.id = id;
+    public ResetPasswordDTO(String newPassword, String resetToken) {
         this.newPassword = newPassword;
         this.resetToken = resetToken;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getNewPassword() {

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Base64; // used for list of admin emails //
 import java.util.List;
 import java.util.UUID; // used for simple mail, as random token hash //
+import java.util.Map; // for better frontend error handling //
 
 import org.apache.catalina.connector.Response; // the cookie itself //
 import org.springframework.beans.factory.annotation.Autowired; // used for Reading cookie //
@@ -318,7 +319,7 @@ public class UserController {
         user.setExpiration(null);
         userRepository.save(user);
 
-        return ResponseEntity.ok("Password reset successful");
+        return ResponseEntity.ok(Map.of("success", true, "messege", "Password reset successful"));
     }
 
     @PostMapping("/refreshToken") // used to generate new access token from valid refresh token //
