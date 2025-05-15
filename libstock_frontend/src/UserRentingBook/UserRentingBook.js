@@ -233,25 +233,6 @@ const UserRentingBook = () => {
     setBookGenres(genres);
   };
 
-  const handleBookClick = (bookId) => {
-    const book = [...checkedOutBooks, ...purchasedBooks].find(
-      (book) => book.id === bookId
-    );
-    const author = bookAuthors[bookId]
-      ? bookAuthors[bookId].join(", ")
-      : "Unknown Author";
-    const genre = bookGenres[bookId]
-      ? bookGenres[bookId].join(", ")
-      : "Unknown Genre";
-    navigate(`/user/home/book?id=${bookId}`, {
-      state: {
-        book,
-        author,
-        genre,
-      },
-    });
-  };
-
   const formatDate = (timestamp) => {
     if (!timestamp) return "N/A";
     // Convert Unix timestamp (seconds) to milliseconds
@@ -311,11 +292,7 @@ const UserRentingBook = () => {
         {filteredCheckedOutBooks.length > 0 ? (
           <div className="book-grid">
             {filteredCheckedOutBooks.map((book) => (
-              <div
-                key={book.id}
-                className="book-card"
-                onClick={() => handleBookClick(book.id)}
-              >
+              <div key={book.id} className="book-card">
                 <h3>{book.title}</h3>
                 <p>
                   <strong>ISBN:</strong> {book.isbn}
@@ -356,11 +333,7 @@ const UserRentingBook = () => {
         {filteredPurchasedBooks.length > 0 ? (
           <div className="book-grid">
             {filteredPurchasedBooks.map((book) => (
-              <div
-                key={book.id}
-                className="book-card"
-                onClick={() => handleBookClick(book.id)}
-              >
+              <div key={book.id} className="book-card">
                 <h3>{book.title}</h3>
                 <p>
                   <strong>ISBN:</strong> {book.isbn}
@@ -387,6 +360,25 @@ const UserRentingBook = () => {
                 <p>
                   <strong>Cost:</strong> ${(book.cost / 100).toFixed(2)}
                 </p>
+                <button
+                  className="receipt-button"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering the book card click
+                    navigate(`/receipt/${book.id}`, {
+                      state: {
+                        purchaseData: {
+                          bookId: book.id,
+                          purchaseDate: book.purchaseDate,
+                          quantity: book.quantity,
+                          cost: book.cost,
+                          id: book.id,
+                        },
+                      },
+                    });
+                  }}
+                >
+                  View Receipt
+                </button>
               </div>
             ))}
           </div>

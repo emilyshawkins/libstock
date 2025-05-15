@@ -57,6 +57,26 @@
   box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
 }
 
+.receipt-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.receipt-button:hover {
+  background-color: #45a049;
+}
+
+.receipt-button:active {
+  background-color: #3d8b40;
+}
+
 @media (max-width: 768px) {
   .user-renting-container {
     margin: 20px;
@@ -66,4 +86,4 @@
   .book-grid {
     grid-template-columns: 1fr;
   }
-} 
+}

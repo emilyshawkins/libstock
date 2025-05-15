@@ -134,11 +134,11 @@ const Receipt = () => {
           {error}
         </Alert>
         <Button
-          onClick={() => navigate("/user/home")}
+          onClick={() => navigate("/user/renting")}
           variant="contained"
           sx={{ mt: 2 }}
         >
-          Return to Home
+          Return to Renting
         </Button>
       </Container>
     );
@@ -151,11 +151,11 @@ const Receipt = () => {
           No receipt data available
         </Typography>
         <Button
-          onClick={() => navigate("/user/home")}
+          onClick={() => navigate("/user/renting")}
           variant="contained"
           sx={{ mt: 2 }}
         >
-          Return to Home
+          Return to Renting
         </Button>
       </Container>
     );
@@ -206,8 +206,8 @@ const Receipt = () => {
           </Table>
         </TableContainer>
         <Box sx={{ mt: 2, textAlign: "center" }}>
-          <Button variant="contained" onClick={() => navigate("/user/home")}>
-            Return to Home
+          <Button variant="contained" onClick={() => navigate("/user/renting")}>
+            Return to Renting
           </Button>
         </Box>
       </Container>
@@ -252,9 +252,9 @@ const Receipt = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate("/user/home")}
+            onClick={() => navigate("/user/renting")}
           >
-            Return to Home
+            Return to Renting
           </Button>
         </Box>
       </Paper>
