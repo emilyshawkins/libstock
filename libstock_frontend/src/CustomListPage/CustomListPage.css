@@ -1,0 +1,45 @@
+.customlist-page {
+  margin-left: 250px; /* pushes content right of sidebar */
+  margin-top: 40px;
+  padding: 1rem;
+  overflow-x: hidden;
+}
+
+.form-row {
+  margin: 1rem 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.book-card {
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  padding: 1rem;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
