@@ -47,6 +47,7 @@ public class SecurityConfig {
 
                 // all other requests made must be authenticated //
                 .anyRequest().permitAll()
+                //.anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Jwt filter to intercept incoming requests, i.e. AuthenticationConfig function //
